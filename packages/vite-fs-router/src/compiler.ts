@@ -1,7 +1,11 @@
-export const makeCompile = () => {
+export const makeCompile = (): void => {
   console.log('compiling [compile fn]')
 }
 
-export const splitFile = async ({}) => {
-  console.log('Split file [splitFile fn]')
+interface SplitFileFnArgs {
+  code: string
+}
+
+export const splitFile = async ({ code }: SplitFileFnArgs): Promise<void> => {
+  console.log('Split file [splitFile fn]', code)
 }

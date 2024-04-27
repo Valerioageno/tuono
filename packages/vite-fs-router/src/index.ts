@@ -1,7 +1,9 @@
-import { normalize } from 'path'
 import { fileURLToPath, pathToFileURL } from 'url'
-import type { Plugin } from 'vite'
+
+import { normalize } from 'path'
+// eslint-disable-next-line sort-imports
 import { makeCompile, splitFile } from './compiler'
+import type { Plugin } from 'vite'
 
 const SPLIT_PREFIX = 'sp-'
 const ROUTES_DIRECTORY_PATH = 'src/routes'
@@ -10,7 +12,7 @@ const DEBUG = true
 let lock = false
 
 export function RouterGenerator(): Plugin {
-  const _generate = async () => {
+  const _generate = async (): Promise<void> => {
     if (lock) return
     lock = true
 
@@ -24,7 +26,7 @@ export function RouterGenerator(): Plugin {
     }
   }
 
-  const handleFile = async (file: string) => {
+  const handleFile = async (file: string): Promise<void> => {
     const filePath = normalize(file)
 
     if (filePath.startsWith(ROUTES_DIRECTORY_PATH)) {
@@ -35,7 +37,10 @@ export function RouterGenerator(): Plugin {
 
   return {
     name: 'vite-plugin-fs-router-generator',
-    watchChange: async (file: string, context: { event: string }) => {
+    watchChange: async (
+      file: string,
+      context: { event: string },
+    ): Promise<void> => {
       if (['create', 'update', 'delete'].includes(context.event)) {
         await handleFile(file)
       }
@@ -47,13 +52,13 @@ export function RouterCodeSplitter(): Plugin {
   return {
     name: 'vite-plugin-fs-router-code-splitter',
     enforce: 'pre',
-    resolveId(source) {
+    resolveId(source): string {
       if (source.startsWith(SPLIT_PREFIX + ':')) {
         return source.replace(SPLIT_PREFIX + ':', '')
       }
-      return
+      return ''
     },
-    async transform(code, id) {
+    async transform(code, id): Promise<void> {
       const url = pathToFileURL(id)
       url.searchParams.delete('v')
       id = fileURLToPath(url).replace(/\\/g, '/')
@@ -91,6 +96,6 @@ export function RouterCodeSplitter(): Plugin {
   }
 }
 
-export function ViteFsRouter(): Array<Plugin> {
+export function ViteFsRouter(): Plugin[] {
   return [RouterGenerator(), RouterCodeSplitter()]
 }
