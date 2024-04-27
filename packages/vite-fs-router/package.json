@@ -1,0 +1,13 @@
+{
+  "name": "vite-fs-router",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+		"lint": "eslint --ext .ts,.tsx ./src -c ../../eslintrc.cjs",
+		"format": "prettier --ignore-unknown '**/*'"
+  },
+  "keywords": [],
+  "author": "Valerio Ageno",
+  "license": "MIT"
+}
