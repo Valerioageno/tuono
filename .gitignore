@@ -3,3 +3,6 @@ dist/
 .turbo/
 
 pnpm-lock.yaml
+
+examples/playground/
+

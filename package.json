@@ -5,13 +5,14 @@
   "main": "index.js",
   "packageManager": "pnpm@8.12.1",
   "scripts": {
-		"lint": "turbo lint",
-		"format": "turbo format"
+    "lint": "turbo lint",
+    "format": "turbo format"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.56.0",
