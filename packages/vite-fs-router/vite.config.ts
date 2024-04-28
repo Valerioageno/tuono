@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
-import { preserveDirectives } from 'rollup-plugin-preserve-directives'
-import { externalizeDeps } from 'vite-plugin-externalize-deps'
 import dts from 'vite-plugin-dts'
+import { externalizeDeps } from 'vite-plugin-externalize-deps'
+import { preserveDirectives } from 'rollup-plugin-preserve-directives'
 
-const config = ({ entryRoot, include, exclude }) =>
+const config = ({ entryRoot, include, exclude }): any =>
   defineConfig({
     plugins: [
       externalizeDeps(),
@@ -72,4 +72,5 @@ const config = ({ entryRoot, include, exclude }) =>
 export default config({
   entryRoot: './src/index.ts',
   include: './src',
+  exclude: ['./src/tests/'],
 })

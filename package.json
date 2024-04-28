@@ -9,6 +9,7 @@
     "format": "turbo format"
   },
   "keywords": [],
+  "type": "module",
   "author": "",
   "license": "MIT",
   "devDependencies": {

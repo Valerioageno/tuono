@@ -3,21 +3,23 @@ import { fileURLToPath, pathToFileURL } from 'url'
 import { normalize } from 'path'
 // eslint-disable-next-line sort-imports
 import { makeCompile, splitFile } from './compiler'
+import { SPLIT_PREFIX } from './constants'
+
 import type { Plugin } from 'vite'
 
-const SPLIT_PREFIX = 'sp-'
 const ROUTES_DIRECTORY_PATH = 'src/routes'
 const DEBUG = true
 
 let lock = false
 
 export function RouterGenerator(): Plugin {
-  const _generate = async (): Promise<void> => {
+  const generate = async (): Promise<void> => {
     if (lock) return
     lock = true
 
     try {
       // TODO: generator function
+      // This generator function is from the router-generator package
       console.log('Generating [generate fn]')
     } catch (err) {
       console.log(err)
@@ -32,11 +34,15 @@ export function RouterGenerator(): Plugin {
     if (filePath.startsWith(ROUTES_DIRECTORY_PATH)) {
       // TODO: generator function
       console.log('Generating [handleFile fn]')
+      await generate()
     }
   }
 
   return {
     name: 'vite-plugin-fs-router-generator',
+    configResolved: async (): Promise<void> => {
+      await generate()
+    },
     watchChange: async (
       file: string,
       context: { event: string },
@@ -49,6 +55,8 @@ export function RouterGenerator(): Plugin {
 }
 
 export function RouterCodeSplitter(): Plugin {
+  const ROOT: string = process.cwd()
+
   return {
     name: 'vite-plugin-fs-router-code-splitter',
     enforce: 'pre',
@@ -63,7 +71,8 @@ export function RouterCodeSplitter(): Plugin {
       url.searchParams.delete('v')
       id = fileURLToPath(url).replace(/\\/g, '/')
 
-      const compile = makeCompile()
+      const compile = makeCompile({ root: ROOT })
+
       if (DEBUG) console.info('Route: ', id)
 
       if (id.includes(SPLIT_PREFIX)) {
