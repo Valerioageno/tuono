@@ -1,3 +1,3 @@
-export const ImportedRoute(): JSX.Element => {
-return <h1>Imported route</h1>
+export const ImportedRoute = (): JSX.Element => {
+  return <h1>Imported route</h1>
 }
