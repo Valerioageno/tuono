@@ -2,6 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
 		"lint": {},
-		"format": {}
+		"format": {},
+		"test": {}
   }
 }

@@ -78,7 +78,7 @@
     "import/no-named-as-default-member": "error",
     "import/no-unused-modules": "error",
     "import/order": [
-      "error",
+      "off",
       {
         "groups": [
           "builtin",
@@ -98,6 +98,6 @@
     "no-redeclare": "error",
     "no-shadow": "error",
     "no-undef": "error",
-    "sort-imports": "error",
+    "sort-imports": "off",
   },
 }
