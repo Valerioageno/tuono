@@ -1,2 +1,2 @@
-import { ImportedRoute } from '../shared/imported'
-export default ImportedRoute
+import { ImportedRoute } from '../shared/imported';
+export default ImportedRoute;

@@ -99,7 +99,7 @@ export const splitFile = async ({
   code,
   compile,
   filename,
-}: SplitFileFnArgs): Promise<void> => {
+}: SplitFileFnArgs): Promise<CompileOutput> => {
   console.log('Split file [splitFile fn]', code)
   return compile({
     code,
