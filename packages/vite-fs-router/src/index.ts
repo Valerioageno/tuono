@@ -1,4 +1,5 @@
 import { fileURLToPath, pathToFileURL } from 'url'
+import { routeGenerator } from 'router-generator'
 
 import { normalize } from 'path'
 // eslint-disable-next-line sort-imports
@@ -19,8 +20,8 @@ export function RouterGenerator(): Plugin {
 
     try {
       // TODO: generator function
-      // This generator function is from the router-generator package
       console.log('Generating [generate fn]')
+      await routeGenerator()
     } catch (err) {
       console.log(err)
     } finally {

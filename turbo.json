@@ -3,6 +3,9 @@
   "pipeline": {
 		"lint": {},
 		"format": {},
-		"test": {}
+		"test": {},
+		"build": {
+				"outputs": ["dist/**"]
+		}
   }
 }

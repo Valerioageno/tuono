@@ -45,6 +45,7 @@
     "@tanstack/config": "^0.7.0",
     "@types/babel__core": "^7.20.5",
     "@vitejs/plugin-react": "^4.2.1",
+	"router-generator": "workspace:*",
     "vite": "^5.2.10",
     "vitest": "^1.5.2"
   },
