@@ -7,8 +7,7 @@
 > Highly inspired by [@tanstack/router](https://tanstack.com/router/latest)
 
 - vite-fs-router
-    - vite plugin interface
-    - router generator
+- router-generator
 - react-router
 - react-router-server
 - tuono-runtime (entry point)
