@@ -28,7 +28,8 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+	"README.md"
   ],
   "sideEffects": false,
   "keywords": [],

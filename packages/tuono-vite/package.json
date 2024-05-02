@@ -44,7 +44,7 @@
     "@babel/types": "^7.24.0",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^20.12.7",
-    "router-generator": "workspace:*"
+    "tuono-routes-generator": "workspace:*"
   },
   "devDependencies": {
     "@types/babel-traverse": "^6.25.10"
