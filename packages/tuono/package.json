@@ -1,0 +1,37 @@
+{
+  "name": "tuono",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
+    "format": "prettier -u --write '**/*'",
+    "types": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": false,
+  "keywords": [],
+  "author": "Valerio Ageno",
+  "license": "MIT"
+}
