@@ -1,5 +1,5 @@
 {
-  "name": "router-generator",
+  "name": "tuono-routes-generator",
   "version": "0.1.0",
   "description": "",
   "scripts": {
@@ -28,9 +28,7 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "prettier": "^3.2.4"
-  },
+  "dependencies": {},
   "type": "module",
   "types": "dist/esm/index.d.ts",
   "main": "dist/cjs/index.cjs",
