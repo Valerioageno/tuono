@@ -12,6 +12,7 @@ The fullstack react/rust framework.
 ## Folder structure
 
 ```
+- .tuono
 - public/
 - src/
 | - routes/

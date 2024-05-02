@@ -22,7 +22,7 @@ import { format } from 'prettier'
 
 const ROUTES_FOLDER = './src/routes/'
 const ROOT_PATH_ID = '__root'
-const GENERATED_ROUTE_TREE = './src/routeTree.gen.ts'
+const GENERATED_ROUTE_TREE = './.tuono/routeTree.gen.ts'
 
 let latestTask = 0
 
