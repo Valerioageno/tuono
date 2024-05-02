@@ -42,13 +42,9 @@
     "@babel/template": "^7.24.0",
     "@babel/traverse": "^7.24.1",
     "@babel/types": "^7.24.0",
-    "@tanstack/config": "^0.7.0",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^20.12.7",
-    "@vitejs/plugin-react": "^4.2.1",
-    "router-generator": "workspace:*",
-    "vite": "^5.2.10",
-    "vitest": "^1.5.2"
+    "router-generator": "workspace:*"
   },
   "devDependencies": {
     "@types/babel-traverse": "^6.25.10"

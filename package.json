@@ -8,16 +8,18 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "turbo format",
-	"test": "turbo test"
+    "test": "turbo test"
   },
   "keywords": [],
   "type": "module",
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@tanstack/config": "^0.7.0",
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -25,6 +27,8 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.2.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vitest": "^1.5.2"
   }
 }

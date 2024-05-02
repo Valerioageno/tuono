@@ -29,10 +29,7 @@
     "src"
   ],
   "dependencies": {
-    "@tanstack/config": "^0.7.0",
-    "prettier": "^3.2.4",
-    "vite": "^5.2.10",
-    "vitest": "^1.5.2"
+    "prettier": "^3.2.4"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",
