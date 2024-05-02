@@ -1,6 +1,9 @@
 # Tuono.js
 
-The fullstack react/rust framework.
+> The fullstack react/rust framework.
+
+Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
+Why Tuono? Just a badass name.
 
 > This project is under heavy development. API might drastically change!
 
