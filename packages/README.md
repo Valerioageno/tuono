@@ -2,5 +2,5 @@
 
 - `tuono-vite`: Handles the bundling (with chunk splitting)
 - `tuono-routes-generator`: Handles the creation of the `routeGen.tree.ts` file
-- `tuono-router`: Expose all the Functions and Components related to the routing
-- `tuono`: Collect and expose all the public APIs. Is the only published package
+- `tuono-router`: Exposes all the Functions and Components related to the routing
+- `tuono`: Collects and exposes all the public APIs. It's the only published package

@@ -1,4 +1,4 @@
-# Tuono.js
+# Tuono
 
 > The fullstack react/rust framework.
 
