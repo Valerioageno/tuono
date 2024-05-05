@@ -11,6 +11,7 @@ Why Tuono? Just a badass name.
 - Rust based server side rendering
 - FS routing
 - CSS modules
+- React Server Components*
 
 ## Folder structure
 
