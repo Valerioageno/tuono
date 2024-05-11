@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useRouter } from '../hooks/useRouter'
 import { useRouterStore } from '../hooks/useRouterStore'
+import NotFound from './NotFound'
 
 export function Matches(): JSX.Element | undefined {
   const matchId = useRouterStore.getState().matches[0]?.id
@@ -25,6 +26,10 @@ const Match = React.memo(function ({ id }: MatchProps) {
   console.log(router, location)
 
   const route = router.routesById[location?.pathname]
+
+  if (!route) {
+    return <NotFound />
+  }
 
   if (route.options.hasHandler) {
     console.log('Has rust handler')

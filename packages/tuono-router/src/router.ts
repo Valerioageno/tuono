@@ -1,9 +1,19 @@
-import { trimPath, trimPathRight, trimPathLeft, parsePathname } from './utils'
+import { trimPath, trimPathRight } from './utils'
 import type { Route } from './route'
+import type { ReactNode } from 'react'
+
+type RouteTree = any
 
 interface CreateRouter {
-  routeTree: any
+  routeTree: RouteTree
   basePath?: string
+  options: RouteOptions
+}
+
+interface RouteOptions {
+  component?: ReactNode
+  hasHandler?: boolean
+  routeTree?: RouteTree
 }
 export type RouterType = any
 
@@ -12,13 +22,14 @@ export function createRouter(options: CreateRouterArgs): Router {
 }
 
 export class Router {
-  options: any
+  options?: RouteOptions
   basePath = '/'
   routeTree: any
   history: any
   isServer = typeof document === 'undefined'
-  routesById = {}
-  routesByPath = {}
+  routesById: Record<string, Route> = {}
+  // Not used
+  routesByPath: Record<string, Route> = {}
   flatRoutes: any
 
   constructor(options: CreateRouter) {
