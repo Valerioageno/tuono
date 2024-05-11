@@ -1,6 +1,7 @@
-import * as React from 'react'
 import { getRouterContext } from './RouterContext'
 import { Matches } from './Matches'
+import { useRouterStore } from '../hooks/useRouterStore'
+import React, { useLayoutEffect, type ReactNode } from 'react'
 
 type Router = any
 
@@ -30,28 +31,37 @@ function RouterContextProvider({
     <router.options.defaultPendingComponent />
   ) : null
 
-  const provider = (
+  return (
     <React.Suspense fallback={pendingElement}>
       <routerContext.Provider value={router}>{children}</routerContext.Provider>
     </React.Suspense>
   )
-
-  // NOTE: verify usefulness
-  if (router.options.Wrap) {
-    return <router.options.Wrap>{provider}</router.options.Wrap>
-  }
-
-  return provider
 }
 
 interface RouterProviderProps {
   router: Router
 }
 
+const initRouterStore = (): void => {
+  const updateLocation = useRouterStore((st) => st.updateLocation)
+  console.log(window.location)
+  useLayoutEffect(() => {
+    const { pathname, hash, href, search } = window.location
+    updateLocation({
+      pathname,
+      hash,
+      href,
+      searchStr: search,
+      search: new URLSearchParams(search),
+    })
+  }, [])
+}
+
 export function RouterProvider({
   router,
   ...rest
 }: RouterProviderProps): JSX.Element {
+  initRouterStore()
   return (
     <RouterContextProvider router={router} {...rest}>
       <Matches />

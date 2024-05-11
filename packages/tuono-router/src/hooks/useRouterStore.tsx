@@ -4,7 +4,7 @@ import { create } from 'zustand'
 export interface ParsedLocation {
   href: string
   pathname: string
-  search: Record<string, string>
+  search: URLSearchParams
   searchStr: string
   hash: string
 }

@@ -11,7 +11,7 @@ interface CreateRouter {
 }
 
 interface RouteOptions {
-  component?: ReactNode
+  component?: () => ReactNode
   hasHandler?: boolean
   routeTree?: RouteTree
 }

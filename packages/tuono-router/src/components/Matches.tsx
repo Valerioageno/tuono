@@ -3,29 +3,11 @@ import { useRouter } from '../hooks/useRouter'
 import { useRouterStore } from '../hooks/useRouterStore'
 import NotFound from './NotFound'
 
-export function Matches(): JSX.Element | undefined {
-  const matchId = useRouterStore.getState().matches[0]?.id
-
-  //if (!matchId) return <></>
-
-  return (
-    <React.Suspense>
-      <Match id={matchId} />
-    </React.Suspense>
-  )
-}
-
-interface MatchProps {
-  id: string
-}
-
-const Match = React.memo(function ({ id }: MatchProps) {
+export const Matches = React.memo(function () {
   const location = useRouterStore((st) => st.location)
   const router = useRouter()
 
-  console.log(router, location)
-
-  const route = router.routesById[location?.pathname]
+  const route = router.routesById[location?.pathname || '']
 
   if (!route) {
     return <NotFound />
@@ -35,5 +17,5 @@ const Match = React.memo(function ({ id }: MatchProps) {
     console.log('Has rust handler')
   }
 
-  return route.component()
+  return route.options.component()
 })
