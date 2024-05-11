@@ -294,6 +294,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
             .filter(Boolean)
             .join(',')}
         } as any)`,
+          // Verify if needed
           loaderNode
             ? `.updateLoader({ loader: lazyFn(() => import('./${replaceBackslash(
                 removeExt(
