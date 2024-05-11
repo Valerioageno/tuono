@@ -26,5 +26,9 @@ const Match = React.memo(function ({ id }: MatchProps) {
 
   const route = router.routesById[location?.pathname]
 
+  if (route.options.hasHandler) {
+    console.log('Has rust handler')
+  }
+
   return route.component()
 })
