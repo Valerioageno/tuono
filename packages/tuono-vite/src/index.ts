@@ -40,7 +40,7 @@ export function RouterGenerator(): Plugin {
   }
 
   return {
-    name: 'vite-plugin-fs-router-generator',
+    name: 'vite-plugin-tuono-fs-router-generator',
     configResolved: async (): Promise<void> => {
       await generate()
     },
@@ -59,7 +59,7 @@ export function RouterCodeSplitter(): Plugin {
   const ROOT: string = process.cwd()
 
   return {
-    name: 'vite-plugin-fs-router-code-splitter',
+    name: 'vite-plugin-tuono-fs-router-code-splitter',
     enforce: 'pre',
     resolveId(source): string {
       if (source.startsWith(SPLIT_PREFIX + ':')) {

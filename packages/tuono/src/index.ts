@@ -1,3 +1,9 @@
-export default function sum(a: number, b: number): number {
-  return a + b
-}
+import {
+  createRoute,
+  createRootRoute,
+  createRouter,
+  Link,
+  RouterProvider,
+} from 'tuono-router'
+
+export { createRoute, createRootRoute, createRouter, Link, RouterProvider }

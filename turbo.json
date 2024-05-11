@@ -5,7 +5,11 @@
 		"format": {},
 		"test": {},
 		"build": {
-				"outputs": ["dist/**"]
+				"outputs": ["dist/**"],
+				"dependsOn": ["^build"]
+		},
+        "dev": {
+				"dependsOn": ["^dev"]
 		}
   }
 }

@@ -1,9 +1,12 @@
 {
   "name": "tuono-vite",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/cjs/index.cjs",
+  "types": "dist/esm/index.d.ts",
+  "module": "dist/esm/index.js",
   "scripts": {
+    "dev": "vite build --watch",
     "build": "vite build",
     "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
     "format": "prettier -u --write '**/*'",

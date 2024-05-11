@@ -97,7 +97,7 @@
     "no-prototype-builtins": "error",
     "no-redeclare": "error",
     "no-shadow": "error",
-    "no-undef": "error",
+    "no-undef": "off",
     "sort-imports": "off",
   },
 }

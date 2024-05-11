@@ -22,3 +22,13 @@ Why Tuono? Just a badass name.
 | - routes/
 | | - api/
 ```
+
+```tsx
+// Data is passed by the loading function
+const IndexPage = ({data, isLoading, isError}) => <h1>Index Page</h1>
+
+export const Route = createFileRoute({
+    loader: (params) => fetchApi(params),
+    component: IndexPage
+})
+```

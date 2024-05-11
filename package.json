@@ -2,9 +2,10 @@
   "name": "tuono",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "packageManager": "pnpm@8.12.1",
   "scripts": {
+    "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "turbo format",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@tanstack/config": "^0.7.0",
     "@types/node": "^20.12.7",
+    "@types/react": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "@vitejs/plugin-react": "^4.2.1",
@@ -28,7 +30,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.2.4",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vitest": "^1.5.2"
   }
 }

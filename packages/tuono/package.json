@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
+    "dev": "vite build --watch",
     "build": "vite build",
     "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
     "format": "prettier -u --write '**/*'",
@@ -31,6 +32,9 @@
     "src",
 	"README.md"
   ],
+  "dependencies": {
+     "tuono-router": "workspace:*"
+  },
   "sideEffects": false,
   "keywords": [],
   "author": "Valerio Ageno",
