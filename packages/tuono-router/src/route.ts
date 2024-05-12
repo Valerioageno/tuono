@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import type { RouterType } from './router'
 import { trimPathLeft, joinPaths } from './utils'
 
@@ -6,7 +5,7 @@ interface RouteOptions {
   isRoot?: boolean
   getParentRoute?: () => Route
   path?: string
-  component: ReactNode
+  component: () => JSX.Element
 }
 
 export function createRoute(options: RouteOptions): Route {
@@ -26,10 +25,10 @@ export class Route {
   router: RouterType
   isRoot: boolean
   originalIndex: number
-  component: ReactNode
+  component: () => JSX.Element
 
   constructor(options: RouteOptions) {
-    this.isRoot = options.isRoot || !options.getParentRoute
+    this.isRoot = options.isRoot ?? typeof options.getParentRoute !== 'function'
     this.options = options
     ;(this as any).$$typeof = Symbol.for('react.memo')
 
@@ -45,7 +44,7 @@ export class Route {
     this.parentRoute = this.options?.getParentRoute?.()
 
     if (isRoot) {
-      this.path = rootRouteId as TPath
+      this.path = rootRouteId
     }
 
     let path: undefined | string = isRoot ? rootRouteId : this.options.path
@@ -90,6 +89,7 @@ export class Route {
 
   update = (options: RouteOptions): this => {
     Object.assign(this.options, options)
+    this.isRoot = options.isRoot || !options.getParentRoute
     return this
   }
 

@@ -1,6 +1,5 @@
 import { trimPath, trimPathRight } from './utils'
 import type { Route } from './route'
-import type { ReactNode } from 'react'
 
 type RouteTree = any
 
@@ -11,7 +10,7 @@ interface CreateRouter {
 }
 
 interface RouteOptions {
-  component?: () => ReactNode
+  component?: () => JSX.Element
   hasHandler?: boolean
   routeTree?: RouteTree
 }

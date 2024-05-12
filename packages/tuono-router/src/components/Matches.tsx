@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useRouter } from '../hooks/useRouter'
 import { useRouterStore } from '../hooks/useRouterStore'
+import { RouteMatch } from './RouteMatch'
 import NotFound from './NotFound'
 
 export const Matches = React.memo(function () {
@@ -13,9 +14,5 @@ export const Matches = React.memo(function () {
     return <NotFound />
   }
 
-  if (route.options.hasHandler) {
-    console.log('Has rust handler')
-  }
-
-  return route.options.component()
+  return <RouteMatch route={route} />
 })

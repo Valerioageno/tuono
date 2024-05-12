@@ -44,7 +44,6 @@ interface RouterProviderProps {
 
 const initRouterStore = (): void => {
   const updateLocation = useRouterStore((st) => st.updateLocation)
-  console.log(window.location)
   useLayoutEffect(() => {
     const { pathname, hash, href, search } = window.location
     updateLocation({
