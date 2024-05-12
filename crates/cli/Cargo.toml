@@ -1,0 +1,15 @@
+[package]
+name = "tuono"
+version = "0.0.1"
+edition = "2021"
+authors = ["V. Ageno <valerioageno@yahoo.it>"]
+
+[lib]
+name = "tuono"
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
+cargo-watch = "8.5.2"
+
+
