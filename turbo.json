@@ -9,7 +9,7 @@
 				"dependsOn": ["^build"]
 		},
         "dev": {
-				"dependsOn": ["^dev"]
+				"dependsOn": ["^build"]
 		}
   }
 }

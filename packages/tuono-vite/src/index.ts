@@ -8,7 +8,7 @@ import { SPLIT_PREFIX } from './constants'
 
 import type { Plugin } from 'vite'
 
-const ROUTES_DIRECTORY_PATH = 'src/routes'
+const ROUTES_DIRECTORY_PATH = './src/routes'
 const DEBUG = true
 
 let lock = false
@@ -57,17 +57,18 @@ export function RouterGenerator(): Plugin {
 
 export function RouterCodeSplitter(): Plugin {
   const ROOT: string = process.cwd()
+  console.log('ROOT', ROOT)
 
   return {
     name: 'vite-plugin-tuono-fs-router-code-splitter',
     enforce: 'pre',
-    resolveId(source): string {
+    resolveId(source): string | null {
       if (source.startsWith(SPLIT_PREFIX + ':')) {
         return source.replace(SPLIT_PREFIX + ':', '')
       }
-      return ''
+      return null
     },
-    async transform(code, id): Promise<void> {
+    async transform(code, id): Promise<any> {
       const url = pathToFileURL(id)
       url.searchParams.delete('v')
       id = fileURLToPath(url).replace(/\\/g, '/')
@@ -77,6 +78,7 @@ export function RouterCodeSplitter(): Plugin {
       if (DEBUG) console.info('Route: ', id)
 
       if (id.includes(SPLIT_PREFIX)) {
+        console.log('Split')
         if (DEBUG) console.info('Splitting route: ', id)
 
         const compiled = await splitFile({
@@ -101,7 +103,11 @@ export function RouterCodeSplitter(): Plugin {
         }
 
         return compiled
+      } else {
+        console.log('Non split')
       }
+
+      return null
     },
   }
 }
