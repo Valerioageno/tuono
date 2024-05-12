@@ -1,6 +1,7 @@
-# Tuono
-
-> The fullstack react/rust framework.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png">
+</p>
+<h1 align="center">Tuono<br>The react/rust fullstack framework</h1>
 
 Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
 Why Tuono? Just a badass name.
@@ -11,7 +12,6 @@ Why Tuono? Just a badass name.
 - Rust based server side rendering
 - FS routing
 - CSS modules
-- React Server Components*
 
 ## Folder structure
 
