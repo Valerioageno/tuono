@@ -1,20 +1,15 @@
 use clap::{Parser, Subcommand};
 pub mod actions;
+use actions::{build, dev, new};
 
 #[derive(Subcommand, Debug)]
 enum Actions {
     /// Start the development environment
     Dev,
     /// Build the production assets
-    Build {
-        #[arg(short, long, default_value_t = String::from("."))]
-        directory: String,
-    },
+    Build,
     /// Create a new project folder
-    New {
-        #[arg(short, long, default_value_t = String::from("."))]
-        _directory: String,
-    },
+    New,
 }
 
 #[derive(Parser, Debug)]
@@ -28,8 +23,8 @@ pub fn cli() {
     let args = Args::parse();
 
     match args.action.unwrap() {
-        Actions::Dev => actions::dev::run(),
-        Actions::Build { directory } => actions::build::run(directory),
-        Actions::New { _directory } => actions::new::run(),
+        Actions::Dev => dev::run(),
+        Actions::Build => build::run(),
+        Actions::New => new::run(),
     }
 }

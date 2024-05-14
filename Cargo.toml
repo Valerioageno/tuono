@@ -1,5 +1,8 @@
 [workspace]
 members = [
-		"crates/cli"
+		"crates/cli",
+		"crates/axum_bundler"
 ]
-
+exclude = [
+		"examples/playground"
+]
