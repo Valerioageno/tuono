@@ -40,10 +40,14 @@ function RouterContextProvider({
 
 interface RouterProviderProps {
   router: Router
+  serverProps: {
+    path?: string
+  }
 }
 
 const initRouterStore = (): void => {
   const updateLocation = useRouterStore((st) => st.updateLocation)
+
   useLayoutEffect(() => {
     const { pathname, hash, href, search } = window.location
     updateLocation({
@@ -58,12 +62,14 @@ const initRouterStore = (): void => {
 
 export function RouterProvider({
   router,
+  serverProps,
   ...rest
 }: RouterProviderProps): JSX.Element {
   initRouterStore()
+
   return (
     <RouterContextProvider router={router} {...rest}>
-      <Matches />
+      <Matches serverPath={serverProps.path} />
     </RouterContextProvider>
   )
 }

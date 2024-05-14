@@ -39,7 +39,15 @@ async fn main() {
 
 async fn catch_all(uri: Uri) -> Html<String> {
     dbg!(&uri.path());
-    let result = SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&uri.path())));
+    let path = &uri.path();
+
+    let payload = format!(
+        r#"{{
+            "path": "{path}"
+    }}"#
+    );
+
+    let result = SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
 
     match result {
         Ok(html) => Html(html),

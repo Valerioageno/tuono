@@ -4,7 +4,7 @@ import { create } from 'zustand'
 export interface ParsedLocation {
   href: string
   pathname: string
-  search: URLSearchParams
+  search?: URLSearchParams
   searchStr: string
   hash: string
 }
@@ -27,8 +27,8 @@ export const useRouterStore = create<RouterState>()((set) => ({
   status: 'idle',
   location: {
     href: '',
-    pathname: '/',
-    search: {},
+    pathname: '',
+    search: undefined,
     searchStr: '',
     hash: '',
   },

@@ -4,15 +4,19 @@ import { useRouterStore } from '../hooks/useRouterStore'
 import { RouteMatch } from './RouteMatch'
 import NotFound from './NotFound'
 
-export const Matches = React.memo(function () {
+interface MatchesProps {
+  serverPath?: string
+}
+
+export function Matches({ serverPath }: MatchesProps): JSX.Element {
   const location = useRouterStore((st) => st.location)
   const router = useRouter()
 
-  const route = router.routesById[location?.pathname || '']
+  const route = router.routesById[location?.pathname || serverPath || '']
 
   if (!route) {
     return <NotFound />
   }
 
   return <RouteMatch route={route} />
-})
+}
