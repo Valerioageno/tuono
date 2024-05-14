@@ -5,19 +5,21 @@ use std::io::prelude::*;
 use std::path::Path;
 use std::path::PathBuf;
 
-const AXUM_ENTRY_POINT: &'static str = r##"// File automatically generated
+const AXUM_ENTRY_POINT: &'static str = r##"
+// File automatically generated
 // Do not manually change it
 
 use axum::response::Html;
-use axum::{routing::get, Router};
+use axum::{http::Uri, routing::get, Router};
 use ssr_rs::Ssr;
 use std::cell::RefCell;
 use std::fs::read_to_string;
+use tower_http::services::ServeDir;
 
 thread_local! {
     static SSR: RefCell<Ssr<'static, 'static>> = RefCell::new(
             Ssr::from(
-                read_to_string("out/server/server-main.js").unwrap(),
+                read_to_string("./out/server/server-main.js").unwrap(),
                 ""
                 ).unwrap()
             )
@@ -29,19 +31,25 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
-        .route("/*key", get(catch_all));
+        .fallback_service(ServeDir::new("public").fallback(get(catch_all)));
 
-    let app = app.fallback("Catch all route");
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn catch_all() -> Html<String> {
-    let result = SSR.with(|ssr| ssr.borrow_mut().render_to_string(None));
-    Html(result.unwrap())
+async fn catch_all(uri: Uri) -> Html<String> {
+    dbg!(&uri.path());
+    let result = SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&uri.path())));
+
+    match result {
+        Ok(html) => Html(html),
+        _ => Html("500 internal server error".to_string()),
+    }
 }
 
+
 // ROUTE_DECLARATIONS
+
 
 "##;
 
