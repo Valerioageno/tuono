@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { create } from 'zustand'
 
 export interface ParsedLocation {
@@ -13,7 +12,7 @@ interface RouterState {
   isLoading: boolean
   isTransitioning: boolean
   status: 'idle'
-  location?: ParsedLocation
+  location: ParsedLocation
   matches: string[]
   pendingMatches: string[]
   cachedMatches: string[]
