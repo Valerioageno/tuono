@@ -16,6 +16,12 @@ Why Tuono? Just a badass name.
 cargo install tuono
 ```
 
+## Create a new project
+
+```
+tuono new 
+```
+
 ## Development
 
 ```

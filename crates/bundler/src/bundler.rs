@@ -9,6 +9,7 @@ use watchexec_supervisor::job::start_job;
 
 #[tokio::main]
 pub async fn watch() -> Result<()> {
+    bundle();
     let (job, _) = start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "cargo".into(),
