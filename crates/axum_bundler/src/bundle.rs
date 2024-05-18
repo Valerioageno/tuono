@@ -31,6 +31,7 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
+        .nest_service("/__tuono", ServeDir::new(".tuono"))
         .fallback_service(ServeDir::new("public").fallback(get(catch_all)));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();

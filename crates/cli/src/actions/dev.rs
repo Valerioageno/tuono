@@ -1,24 +1,23 @@
+use bundler::bundler;
 use std::path::Path;
-use std::process::{Command, Stdio};
+use std::process::Command;
+use std::thread;
 
-fn spawn_vite_process() -> std::io::Result<()> {
-    println!("Spawing vite process");
-    let current_dir = std::env::current_dir()?;
+pub fn run() {
+    let current_dir = std::env::current_dir().unwrap();
 
     let vite_path = Path::new("node_modules/.bin/vite");
     let vite = current_dir.join(vite_path);
 
-    dbg!(&vite);
+    let vite_handler = thread::spawn(move || {
+        println!("Spawing vite process");
+        let _ = Command::new(vite).arg("dev").output();
+    });
 
-    let _ = Command::new(vite)
-        .arg("dev")
-        .stdout(Stdio::inherit())
-        .output()?;
+    let build_rs_handler = thread::spawn(move || {
+        bundler::watch().unwrap();
+    });
 
-    Ok(())
-}
-
-pub fn run() {
-    println!("Running dev environment");
-    let _ = spawn_vite_process();
+    let _ = vite_handler.join();
+    let _ = build_rs_handler.join();
 }

@@ -1,7 +1,9 @@
 [workspace]
+resolver = "2"
 members = [
 		"crates/cli",
-		"crates/axum_bundler"
+		"crates/axum_bundler",
+		"crates/bundler"
 ]
 exclude = [
 		"examples/playground"

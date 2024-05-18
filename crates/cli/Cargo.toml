@@ -10,6 +10,6 @@ path = "src/lib.rs"
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
-cargo-watch = "8.5.2"
 
 axum_bundler = { path = "../axum_bundler" }
+tuono_bundler = { path = "../bundler"}
