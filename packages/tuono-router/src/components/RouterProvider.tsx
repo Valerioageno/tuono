@@ -44,7 +44,7 @@ interface RouterProviderProps {
 }
 
 interface ServerProps {
-  path: string
+  router: Location
 }
 
 const initRouterStore = (props?: ServerProps): void => {
@@ -52,7 +52,7 @@ const initRouterStore = (props?: ServerProps): void => {
 
   if (typeof window === 'undefined') {
     updateLocation({
-      pathname: props?.path || '',
+      pathname: props?.router.pathname || '',
       hash: '',
       href: '',
       searchStr: '',

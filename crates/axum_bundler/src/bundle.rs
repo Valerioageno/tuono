@@ -11,8 +11,9 @@ const AXUM_ENTRY_POINT: &'static str = r##"
 // File automatically generated
 // Do not manually change it
 
+use axum::extract::Request;
 use axum::response::Html;
-use axum::{http::Uri, routing::get, Router};
+use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
 use tuono_lib::{ssr, Ssr};
 
@@ -31,15 +32,13 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn catch_all(uri: Uri) -> Html<String> {
-    dbg!(&uri.path());
-    let path = &uri.path();
+async fn catch_all(request: Request) -> Html<String> {
+    let pathname = &request.uri();
+    let headers = &request.headers();
 
-    let payload = format!(
-        r#"{{
-            "path": "{path}"
-    }}"#
-    );
+    let req = tuono_lib::Request::new(pathname, headers);
+
+    let payload = tuono_lib::Payload::new(&req, "".to_string()).client_payload();
 
     let result = ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
 
