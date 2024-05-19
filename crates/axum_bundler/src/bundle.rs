@@ -38,7 +38,11 @@ async fn catch_all(request: Request) -> Html<String> {
 
     let req = tuono_lib::Request::new(pathname, headers);
 
-    let payload = tuono_lib::Payload::new(&req, "".to_string()).client_payload();
+
+    // TODO: remove unwrap
+    let payload = tuono_lib::Payload::new(&req, Box::new(""))
+        .client_payload()
+        .unwrap();
 
     let result = ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
 
