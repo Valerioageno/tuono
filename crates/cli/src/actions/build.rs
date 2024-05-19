@@ -1,5 +1,5 @@
-use axum_bundler::bundle;
+use axum_bundler::bundle_axum_source;
 
 pub fn run() {
-    bundle();
+    bundle_axum_source();
 }

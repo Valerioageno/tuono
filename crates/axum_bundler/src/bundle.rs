@@ -139,7 +139,7 @@ mod {route};
     route_declarations
 }
 
-pub fn bundle() {
+pub fn bundle_axum_source() {
     println!("Axum project bundling");
 
     let base_path = std::env::current_dir().unwrap();

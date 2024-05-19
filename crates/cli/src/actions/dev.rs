@@ -9,15 +9,14 @@ pub fn run() {
     let vite_path = Path::new("node_modules/.bin/vite");
     let vite = current_dir.join(vite_path);
 
-    let vite_handler = thread::spawn(move || {
-        println!("Spawing vite process");
+    let client_handler = thread::spawn(move || {
         let _ = Command::new(vite).arg("dev").output();
     });
 
-    let build_rs_handler = thread::spawn(move || {
+    let server_handler = thread::spawn(move || {
         bundler::watch().unwrap();
     });
 
-    let _ = vite_handler.join();
-    let _ = build_rs_handler.join();
+    let _ = client_handler.join();
+    let _ = server_handler.join();
 }
