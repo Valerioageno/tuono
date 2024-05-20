@@ -8,12 +8,11 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
     let fn_name = item.clone().sig.ident;
 
     quote! {
-        use axum::response::Html;
+        use axum::response::{Html, IntoResponse};
 
         #item
 
         pub async fn route(request: axum::extract::Request) -> Html<String> {
-           println!("Custom handler");
            let pathname = &request.uri();
            let headers = &request.headers();
 
@@ -35,12 +34,24 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
                 _ => Ok("500 Internal server error".to_string())
             };
 
-
             match res {
                 Ok(html) => Html(html),
                 _ => Html("500 internal server error".to_string())
             }
-            
+        }
+
+        pub async fn api(request: axum::extract::Request) -> axum::response::Response {
+            let pathname = &request.uri();
+           let headers = &request.headers();
+
+           let req = tuono_lib::Request::new(pathname, headers);
+
+           let local_response = #fn_name(&req);
+
+            let res = match local_response{
+                tuono_lib::Response::Props(val) => return axum::Json(val).into_response(),
+                _ => return axum::Json("").into_response()
+            };
         }
     }
     .into()

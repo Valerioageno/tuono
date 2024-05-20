@@ -25,7 +25,6 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
-        .nest_service("/__tuono", ServeDir::new(".tuono"))
         .fallback_service(ServeDir::new("public").fallback(get(catch_all)));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
@@ -119,7 +118,10 @@ fn create_axum_routes_declaration(routes: &HashMap<String, String>) -> String {
     let mut route_declarations = String::from("// ROUTE_BUILDER\n");
 
     for (route, _path) in routes.iter() {
-        route_declarations.push_str(&format!(r#".route("/{route}", get({route}::route))"#))
+        route_declarations.push_str(&format!(r#".route("/{route}", get({route}::route))"#));
+        route_declarations.push_str(&format!(
+            r#".route("/__tuono/data/{route}", get({route}::api))"#
+        ));
     }
 
     route_declarations
