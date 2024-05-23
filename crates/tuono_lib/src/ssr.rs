@@ -7,7 +7,7 @@ impl Js {
     thread_local! {
         pub static SSR: RefCell<Ssr<'static, 'static>> = RefCell::new(
                 Ssr::from(
-                    read_to_string("./out/server/server-main.js").unwrap(),
+                    read_to_string("./.tuono/server/dev-server.js").unwrap(),
                     ""
                     ).unwrap()
                 )

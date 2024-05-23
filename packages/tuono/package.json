@@ -15,6 +15,16 @@
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "exports": {
+    "./build": {
+      "import": {
+        "types": "./dist/esm/build/index.d.ts",
+        "default": "./dist/esm/build/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/build/index.d.ts",
+        "default": "./dist/cjs/build/index.js"
+      }
+    },
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
@@ -27,13 +37,21 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": {
+    "tuono-dev-ssr": "./bin/dev-ssr.js",
+    "tuono-dev-watch": "./bin/watch.js"
+  },
   "files": [
     "dist",
     "src",
-	"README.md"
+    "README.md",
+    "bin/**"
   ],
   "dependencies": {
-     "tuono-router": "workspace:*"
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "tuono-router": "workspace:*",
+    "tuono-vite": "workspace:*",
+    "vite": "^5.2.11"
   },
   "sideEffects": false,
   "keywords": [],
