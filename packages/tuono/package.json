@@ -39,7 +39,8 @@
   },
   "bin": {
     "tuono-dev-ssr": "./bin/dev-ssr.js",
-    "tuono-dev-watch": "./bin/watch.js"
+    "tuono-dev-watch": "./bin/watch.js",
+    "tuono-build-prod": "./bin/build-prod.js"
   },
   "files": [
     "dist",

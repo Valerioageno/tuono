@@ -48,7 +48,6 @@ export function developmentCSRWatch() {
       },
       build: {
         manifest: true,
-        outDir: '../out',
         emptyOutDir: true,
         rollupOptions: {
           input: './.tuono/client-main.tsx',
@@ -56,5 +55,42 @@ export function developmentCSRWatch() {
       },
     })
     await server.listen()
+  })()
+}
+
+export function buildProd() {
+  ;(async () => {
+    await build({
+      ...BASE_CONFIG,
+      manifest: true,
+      build: {
+        outDir: '../out/client',
+      },
+      emptyOutDir: true,
+      rollupOptions: {
+        input: './.tuono/client-main.tsx',
+      },
+    })
+
+    await build({
+      ...BASE_CONFIG,
+      build: {
+        ssr: true,
+        minify: false,
+        outDir: '../out/server',
+        emptyOutDir: true,
+        rollupOptions: {
+          input: './.tuono/server-main.tsx',
+          output: {
+            entryFileNames: 'prod-server.js',
+            format: 'iife',
+          },
+        },
+      },
+      ssr: {
+        target: 'webworker',
+        noExternal: true,
+      },
+    })
   })()
 }

@@ -7,6 +7,11 @@ use std::path::PathBuf;
 
 const ROOT_FOLDER: &'static str = "src/routes";
 
+enum Mode {
+    Prod,
+    Dev,
+}
+
 const AXUM_ENTRY_POINT: &'static str = r##"
 // File automatically generated
 // Do not manually change it
@@ -16,6 +21,8 @@ use axum::response::Html;
 use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
 use tuono_lib::{ssr, Ssr};
+
+const MODE: &'static = "prod";
 
 // MODULE_IMPORTS
 
