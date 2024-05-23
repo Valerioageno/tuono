@@ -21,6 +21,8 @@ export const RouteMatch = ({
   if (!route.isRoot) {
     return route.options.getParentRoute().component({
       children: route.options.component({ data, isLoading }),
+      data,
+      isLoading,
     })
   }
 

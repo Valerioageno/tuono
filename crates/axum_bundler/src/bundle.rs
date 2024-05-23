@@ -22,8 +22,6 @@ use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
 use tuono_lib::{ssr, Ssr};
 
-const MODE: &'static = "prod";
-
 // MODULE_IMPORTS
 
 #[tokio::main]

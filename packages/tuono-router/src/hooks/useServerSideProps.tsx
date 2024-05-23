@@ -7,6 +7,7 @@ interface UseServerSidePropsReturn {
   data: any
   isLoading: boolean
 }
+
 /*
  * Use the props provided by the SSR and dehydrate the
  * props for client side usage.
@@ -15,6 +16,7 @@ interface UseServerSidePropsReturn {
  */
 export function useServerSideProps(
   route: Route,
+  // User defined props
   serverSideProps: any,
 ): UseServerSidePropsReturn {
   const isFirstRendering = useRef<boolean>(true)
@@ -27,8 +29,8 @@ export function useServerSideProps(
       !isFirstRendering.current,
   )
 
-  const [data, setData] = useState(
-    serverSideProps || window.__TUONO_SSR_PROPS__.props,
+  const [data, setData] = useState<any>(
+    serverSideProps ?? window.__TUONO_SSR_PROPS__?.props,
   )
 
   useEffect(() => {
