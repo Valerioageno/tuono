@@ -3,7 +3,12 @@ import { useRouterStore } from '../hooks/useRouterStore'
 import { RouteMatch } from './RouteMatch'
 import NotFound from './NotFound'
 
-export function Matches(): JSX.Element {
+interface MatchesProps {
+  // user defined props
+  serverSideProps: any
+}
+
+export function Matches({ serverSideProps }: MatchesProps): JSX.Element {
   const location = useRouterStore((st) => st.location)
   const router = useRouter()
 
@@ -13,5 +18,5 @@ export function Matches(): JSX.Element {
     return <NotFound />
   }
 
-  return <RouteMatch route={route} />
+  return <RouteMatch route={route} serverSideProps={serverSideProps} />
 }

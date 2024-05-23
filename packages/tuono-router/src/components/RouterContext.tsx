@@ -3,18 +3,18 @@ import type { Router } from '../router'
 
 const routerContext = React.createContext<Router>(null!)
 
-const ROUTER_DOM_CONTEXT = '__TUONO_ROUTER__CONTEXT__'
+const TUONO_CONTEXT = '__TUONO_CONTEXT__'
 
 export function getRouterContext(): any {
   if (typeof document === 'undefined') {
     return routerContext
   }
 
-  if (window[ROUTER_DOM_CONTEXT as any]) {
-    return window[ROUTER_DOM_CONTEXT as any]
+  if (window[TUONO_CONTEXT as any]) {
+    return window[TUONO_CONTEXT as any]
   }
 
-  window[ROUTER_DOM_CONTEXT as any] = routerContext as any
+  window[TUONO_CONTEXT as any] = routerContext as any
 
   return routerContext
 }

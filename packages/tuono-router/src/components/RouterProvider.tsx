@@ -45,6 +45,7 @@ interface RouterProviderProps {
 
 interface ServerProps {
   router: Location
+  props: any
 }
 
 const initRouterStore = (props?: ServerProps): void => {
@@ -74,13 +75,12 @@ const initRouterStore = (props?: ServerProps): void => {
 export function RouterProvider({
   router,
   serverProps,
-  ...rest
 }: RouterProviderProps): JSX.Element {
   initRouterStore(serverProps)
 
   return (
-    <RouterContextProvider router={router} {...rest}>
-      <Matches />
+    <RouterContextProvider router={router}>
+      <Matches serverSideProps={serverProps?.props} />
     </RouterContextProvider>
   )
 }
