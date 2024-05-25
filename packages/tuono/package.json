@@ -48,11 +48,29 @@
     "README.md",
     "bin/**"
   ],
+  "peerDependencies": {
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
+  },
   "dependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/generator": "^7.23.6",
+    "@babel/plugin-syntax-jsx": "^7.24.1",
+    "@babel/plugin-syntax-typescript": "^7.24.1",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/plugin-transform-typescript": "^7.24.1",
+    "@babel/template": "^7.24.0",
+    "@babel/traverse": "^7.24.1",
+    "@babel/types": "^7.24.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^20.12.7",
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "tuono-router": "workspace:*",
-    "tuono-vite": "workspace:*",
-    "vite": "^5.2.11"
+	"prettier": "^3.2.4",
+    "vite": "^5.2.11",
+    "zustand": "4.4.7"
+  },
+  "devDependencies": {
+    "@types/babel-traverse": "^6.25.10"
   },
   "sideEffects": false,
   "keywords": [],

@@ -4,6 +4,6 @@ import {
   createRouter,
   Link,
   RouterProvider,
-} from 'tuono-router'
+} from './router'
 
 export { createRoute, createRootRoute, createRouter, Link, RouterProvider }

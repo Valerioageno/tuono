@@ -1,5 +1,5 @@
 import { fileURLToPath, pathToFileURL } from 'url'
-import { routeGenerator } from 'tuono-routes-generator'
+import { routeGenerator } from '../routes-generator'
 
 import { normalize } from 'path'
 // eslint-disable-next-line sort-imports

@@ -1,6 +1,6 @@
 import { build, createServer } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { ViteFsRouter } from 'tuono-vite'
+import { ViteFsRouter } from './tuono-vite-plugin'
 
 const BASE_CONFIG = {
   silent: true,
