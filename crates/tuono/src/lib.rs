@@ -1,6 +1,8 @@
 use clap::{Parser, Subcommand};
 use std::process::Command;
-mod axum_source_builder;
+
+mod source_builder;
+use source_builder::{bundle_axum_source, create_client_entry_files};
 mod watch;
 
 #[derive(Subcommand, Debug)]
@@ -24,11 +26,14 @@ pub fn cli() {
     let args = Args::parse();
 
     match args.action.unwrap() {
-        Actions::Dev => watch::watch().unwrap(),
+        Actions::Dev => {
+            bundle_axum_source();
+            create_client_entry_files().unwrap();
+            watch::watch().unwrap();
+        }
         Actions::Build => {
-            axum_source_builder::bundle_axum_source();
-
-            println!("Build JS source");
+            bundle_axum_source();
+            create_client_entry_files().unwrap();
             let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
             let _ = &vite_build.output().unwrap();
         }

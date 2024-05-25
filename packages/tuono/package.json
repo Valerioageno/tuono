@@ -25,6 +25,26 @@
         "default": "./dist/cjs/build/index.js"
       }
     },
+    "./ssr": {
+      "import": {
+        "types": "./dist/esm/ssr/index.d.ts",
+        "default": "./dist/esm/ssr/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/ssr/index.d.ts",
+        "default": "./dist/cjs/ssr/index.js"
+      }
+    },
+    "./hydration": {
+      "import": {
+        "types": "./dist/esm/hydration/index.d.ts",
+        "default": "./dist/esm/hydration/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/ssr/index.d.ts",
+        "default": "./dist/cjs/ssr/index.js"
+      }
+    },
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
@@ -65,6 +85,7 @@
     "@types/babel__core": "^7.20.5",
     "@types/node": "^20.12.7",
     "@vitejs/plugin-react-swc": "^3.7.0",
+    "fast-text-encoding": "^1.0.6",
 	"prettier": "^3.2.4",
     "vite": "^5.2.11",
     "zustand": "4.4.7"
