@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "scripts": {
     "dev": "vite build --watch",
@@ -45,7 +45,7 @@
   "files": [
     "dist",
     "src",
-    "../../README.md",
+    "README.md",
     "bin/**"
   ],
   "dependencies": {
