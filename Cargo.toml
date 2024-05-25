@@ -1,11 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-		"crates/cli",
-		"crates/axum_bundler",
-		"crates/bundler",
+		"crates/tuono",
 		"crates/tuono_lib",
-		"crates/tuono_lib_macros"
 ]
 exclude = [
 		"examples/playground"

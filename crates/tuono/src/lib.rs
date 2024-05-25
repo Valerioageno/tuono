@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
-pub mod actions;
-use actions::{build, dev, new};
+use std::process::Command;
+mod axum_source_builder;
+mod watch;
 
 #[derive(Subcommand, Debug)]
 enum Actions {
@@ -23,8 +24,16 @@ pub fn cli() {
     let args = Args::parse();
 
     match args.action.unwrap() {
-        Actions::Dev => dev::run(),
-        Actions::Build => build::run(),
-        Actions::New => new::run(),
+        Actions::Dev => watch::watch().unwrap(),
+        Actions::Build => {
+            axum_source_builder::bundle_axum_source();
+
+            println!("Build JS source");
+            let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
+            let _ = &vite_build.output().unwrap();
+        }
+        Actions::New => {
+            println!("Scaffold new project")
+        }
     }
 }

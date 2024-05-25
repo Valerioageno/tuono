@@ -1,11 +1,12 @@
 use std::sync::Arc;
 use watchexec_supervisor::command::{Command, Program};
 
-use axum_bundler::bundle_axum_source;
 use miette::{IntoDiagnostic, Result};
 use watchexec::Watchexec;
 use watchexec_signals::Signal;
 use watchexec_supervisor::job::start_job;
+
+use crate::axum_source_builder::bundle_axum_source;
 
 // What is the development pipeline?
 //
@@ -22,7 +23,6 @@ use watchexec_supervisor::job::start_job;
 #[tokio::main]
 pub async fn watch() -> Result<()> {
     bundle_axum_source();
-
     let (watch_client, _) = start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "node_modules/.bin/tuono-dev-watch".into(),
