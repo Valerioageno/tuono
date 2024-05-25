@@ -37,7 +37,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-on-crates-dry-run:
-    name: Publish
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -47,7 +46,7 @@ jobs:
           override: true
     - uses: katyo/publish-crates@v2
       with:
-          args: -p tuono
+          path: './crates/tuono'
           dry-run: true
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
@@ -96,6 +95,6 @@ jobs:
           override: true
     - uses: katyo/publish-crates@v2
       with:
-          args: -p tuono
+          path: './crates/tuono'
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
