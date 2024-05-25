@@ -47,6 +47,7 @@ jobs:
           override: true
     - uses: katyo/publish-crates@v2
       with:
+          args: -p tuono
           dry-run: true
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
@@ -95,5 +96,6 @@ jobs:
           override: true
     - uses: katyo/publish-crates@v2
       with:
+          args: -p tuono
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
