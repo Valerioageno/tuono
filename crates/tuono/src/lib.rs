@@ -11,7 +11,7 @@ enum Actions {
     Dev,
     /// Build the production assets
     Build,
-    /// Create a new project folder
+    /// Scaffold a new project
     New,
 }
 
@@ -19,13 +19,13 @@ enum Actions {
 #[command(version, about = "The react/rust fullstack framework")]
 struct Args {
     #[command(subcommand)]
-    action: Option<Actions>,
+    action: Actions,
 }
 
 pub fn cli() {
     let args = Args::parse();
 
-    match args.action.unwrap() {
+    match args.action {
         Actions::Dev => {
             bundle_axum_source();
             create_client_entry_files().unwrap();
