@@ -1,5 +1,5 @@
 use tuono::cli;
 
 fn main() {
-    cli();
+    cli().unwrap();
 }

@@ -165,7 +165,7 @@ mod {route};
     route_declarations
 }
 
-pub fn bundle_axum_source() {
+pub fn bundle_axum_source() -> io::Result<()> {
     println!("Axum project bundling");
 
     let base_path = std::env::current_dir().unwrap();
@@ -177,15 +177,28 @@ pub fn bundle_axum_source() {
         .replace("// MODULE_IMPORTS\n", &create_modules_declaration(&mods));
 
     create_main_file(&base_path, &bundled_file);
+
+    Ok(())
+}
+
+pub fn check_tuono_folder() -> io::Result<()> {
+    let dev_folder = Path::new(DEV_FOLDER);
+    if !&dev_folder.is_dir() {
+        println!("exists");
+        fs::create_dir(dev_folder)?;
+    }
+
+    Ok(())
 }
 
 pub fn create_client_entry_files() -> io::Result<()> {
     let dev_folder = Path::new(DEV_FOLDER);
+
     let mut server_entry = fs::File::create(&dev_folder.join("server-main.tsx"))?;
     let mut client_entry = fs::File::create(&dev_folder.join("client-main.tsx"))?;
 
-    server_entry.write(SERVER_ENTRY_DATA.as_bytes())?;
-    client_entry.write(CLIENT_ENTRY_DATA.as_bytes())?;
+    server_entry.write(&SERVER_ENTRY_DATA.as_bytes())?;
+    client_entry.write(&CLIENT_ENTRY_DATA.as_bytes())?;
 
     Ok(())
 }
