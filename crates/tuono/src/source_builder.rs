@@ -109,7 +109,6 @@ fn get_route_name<'a>(path: &PathBuf, base_path: &Path) -> String {
 }
 
 fn collect_handlers(base_path: &Path) -> HashMap<String, String> {
-    // <path, name>
     let mut mods_map: HashMap<String, String> = HashMap::new();
 
     let _: Vec<_> = glob(base_path.join("src/routes/**/*.rs").to_str().unwrap())

@@ -1,0 +1,14 @@
+{
+  "name": "tuono",
+  "version": "0.0.1",
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tuono": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.5"
+  }
+}
