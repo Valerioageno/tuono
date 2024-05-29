@@ -26,8 +26,7 @@ pub async fn watch() -> Result<()> {
         program: Program::Exec {
             prog: "node_modules/.bin/tuono-dev-watch".into(),
             args: vec![],
-        }
-        .into(),
+        },
         options: Default::default(),
     }));
 
@@ -37,8 +36,7 @@ pub async fn watch() -> Result<()> {
         program: Program::Exec {
             prog: "cargo".into(),
             args: vec!["run".to_string()],
-        }
-        .into(),
+        },
         options: Default::default(),
     }));
 
@@ -46,8 +44,7 @@ pub async fn watch() -> Result<()> {
         program: Program::Exec {
             prog: "node_modules/.bin/tuono-dev-ssr".into(),
             args: vec![],
-        }
-        .into(),
+        },
         options: Default::default(),
     }));
 
