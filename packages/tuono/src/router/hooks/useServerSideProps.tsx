@@ -45,7 +45,8 @@ export function useServerSideProps(
       ;(async (): Promise<void> => {
         setIsLoading(true)
         try {
-          const res = await fetch(`/__tuono/data/${route.path}`)
+          const path = route.path === '/' ? '' : route.path
+          const res = await fetch(`/__tuono/data/${path}`)
           setData(await res.json())
         } catch (error) {
           // Handle here error

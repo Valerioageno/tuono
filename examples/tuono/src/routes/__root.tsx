@@ -8,7 +8,7 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
   return (
     <>
       <nav>
-        Navbar: <Link>About</Link>
+        Navbar: <Link href="/">Home</Link> | <Link href="/about">About</Link>
       </nav>
       <main>{children}</main>
     </>
