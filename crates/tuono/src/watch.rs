@@ -53,13 +53,17 @@ pub async fn watch() -> Result<()> {
 
     let wx = Watchexec::new(move |mut action| {
         for event in action.events.iter() {
-            for _ in event.paths() {
-                run_server.stop();
-                println!("Reloading server...");
-                build_ssr_bundle.stop();
-                build_ssr_bundle.start();
-                bundle_axum_source();
-                run_server.start();
+            for path in event.paths() {
+                if path.0.to_string_lossy().ends_with(".rs")
+                    || path.0.to_string_lossy().ends_with("sx")
+                {
+                    run_server.stop();
+                    println!("Reloading server...");
+                    build_ssr_bundle.stop();
+                    build_ssr_bundle.start();
+                    bundle_axum_source();
+                    run_server.start();
+                }
             }
         }
 
