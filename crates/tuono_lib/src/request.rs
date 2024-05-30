@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use axum::http::{HeaderMap, Uri};
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Request<'a> {
     uri: &'a Uri,
     headers: &'a HeaderMap,

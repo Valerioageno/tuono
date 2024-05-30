@@ -9,24 +9,24 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
     quote! {
         use axum::response::{Html, IntoResponse};
+        use axum::extract::State;
+        use reqwest::Client;
 
         #item
 
-        pub async fn route(request: axum::extract::Request) -> Html<String> {
+        pub async fn route(State(client): State<Client>, request: axum::extract::Request) -> Html<String> {
            let pathname = &request.uri();
            let headers = &request.headers();
 
            let req = tuono_lib::Request::new(pathname, headers);
 
-           let local_response = #fn_name(&req);
+           let local_response = #fn_name(req.clone(), client).await;
 
-            let res = match local_response{
+            let res = match local_response {
                 tuono_lib::Response::Props(val) => {
 
                     // TODO: remove unwrap
                     let payload = tuono_lib::Payload::new(&req, val).client_payload().unwrap();
-
-                    dbg!(&payload);
 
                     tuono_lib::ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)))
                 },
@@ -40,13 +40,13 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             }
         }
 
-        pub async fn api(request: axum::extract::Request) -> axum::response::Response {
+        pub async fn api(State(client): State<Client>, request: axum::extract::Request) -> axum::response::Response {
             let pathname = &request.uri();
            let headers = &request.headers();
 
            let req = tuono_lib::Request::new(pathname, headers);
 
-           let local_response = #fn_name(&req);
+           let local_response = #fn_name(req.clone(), client).await;
 
             let res = match local_response{
                 tuono_lib::Response::Props(val) => return axum::Json(val).into_response(),

@@ -25,6 +25,7 @@ use axum::response::Html;
 use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
 use tuono_lib::{ssr, Ssr};
+use reqwest::Client;
 
 // MODULE_IMPORTS
 
@@ -32,9 +33,12 @@ use tuono_lib::{ssr, Ssr};
 async fn main() {
     Ssr::create_platform();
 
+    let fetch = Client::new();
+
     let app = Router::new()
         // ROUTE_BUILDER
-        .fallback_service(ServeDir::new("public").fallback(get(catch_all)));
+        .fallback_service(ServeDir::new("public").fallback(get(catch_all)))
+        .with_state(fetch);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
