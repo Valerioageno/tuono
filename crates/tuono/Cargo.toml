@@ -25,4 +25,5 @@ watchexec-signals = "3.0.0"
 tokio = { version = "1", features = ["full"] }
 watchexec-supervisor = "2.0.0"
 glob = "0.3.1"
+regex = "1.10.4"
 

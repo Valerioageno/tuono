@@ -1,5 +1,6 @@
 use glob::glob;
 use glob::GlobError;
+use regex::Regex;
 use std::collections::HashMap;
 use std::fs;
 use std::io;
@@ -11,6 +12,7 @@ mod static_files;
 
 const ROOT_FOLDER: &str = "src/routes";
 const DEV_FOLDER: &str = ".tuono";
+
 pub enum Mode {
     Prod,
     Dev,
@@ -23,8 +25,47 @@ struct Route {
     pub axum_route: String,
 }
 
+fn has_dynamic_path(route: &str) -> bool {
+    let regex = Regex::new(r"\[(.*?)\]").expect("Failed to create the regex");
+    regex.is_match(route)
+}
+
+impl Route {
+    pub fn new(path: &str) -> Self {
+        let route_name = path.replace(".rs", "");
+        // Remove first slash
+        let mut module = route_name.as_str().chars();
+        module.next();
+
+        let axum_route = path.replace("/index.rs", "").replace(".rs", "");
+
+        if axum_route.is_empty() {
+            return Route {
+                module_import: module.as_str().to_string().replace('/', "_"),
+                axum_route: "/".to_string(),
+            };
+        }
+
+        if has_dynamic_path(&route_name) {
+            return Route {
+                module_import: module
+                    .as_str()
+                    .to_string()
+                    .replace('/', "_")
+                    .replace('[', "dyn_")
+                    .replace(']', ""),
+                axum_route: axum_route.replace('[', ":").replace(']', ""),
+            };
+        }
+
+        Route {
+            module_import: module.as_str().to_string().replace('/', "_"),
+            axum_route,
+        }
+    }
+}
+
 struct SourceBuilder {
-    /// Key is the path
     route_map: HashMap<PathBuf, Route>,
     mode: Mode,
     base_path: PathBuf,
@@ -33,6 +74,7 @@ struct SourceBuilder {
 impl SourceBuilder {
     pub fn new(mode: Mode) -> Self {
         let base_path = std::env::current_dir().unwrap();
+
         SourceBuilder {
             route_map: HashMap::new(),
             mode,
@@ -48,48 +90,15 @@ impl SourceBuilder {
 
     fn collect_route(&mut self, path_buf: Result<PathBuf, GlobError>) {
         let entry = path_buf.unwrap();
-
-        let route_name = self.get_route_name(&entry);
-
-        // Remove first slash
-        let mut module = route_name.as_str().chars();
-        module.next();
-
         let base_path_str = self.base_path.to_str().unwrap();
-
         let path = entry
             .to_str()
             .unwrap()
             .replace(&format!("{base_path_str}/src/routes"), "");
 
-        let axum_route = path.clone().replace("/index.rs", "").replace(".rs", "");
-
-        // Is root /
-        if axum_route.is_empty() {
-            let route = Route {
-                module_import: module.as_str().to_string().replace('/', "_"),
-                axum_route: "/".to_string(),
-            };
-
-            self.route_map.insert(PathBuf::from(path), route);
-            return;
-        }
-
-        let route = Route {
-            module_import: module.as_str().to_string().replace('/', "_"),
-            axum_route,
-        };
+        let route = Route::new(&path);
 
         self.route_map.insert(PathBuf::from(path), route);
-    }
-
-    fn get_route_name(&self, path: &Path) -> String {
-        let base_path_str = self.base_path.to_str().unwrap();
-
-        path.to_str()
-            .unwrap()
-            .replace(&format!("{base_path_str}/src/routes"), "")
-            .replace(".rs", "")
     }
 }
 
@@ -190,6 +199,26 @@ mod tests {
     use super::*;
 
     #[test]
+    fn find_dynamic_paths() {
+        let routes = [
+            ("/home/user/Documents/tuono/src/routes/about.rs", false),
+            ("/home/user/Documents/tuono/src/routes/index.rs", false),
+            (
+                "/home/user/Documents/tuono/src/routes/posts/index.rs",
+                false,
+            ),
+            (
+                "/home/user/Documents/tuono/src/routes/posts/[post].rs",
+                true,
+            ),
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| assert_eq!(has_dynamic_path(route.0), route.1));
+    }
+
+    #[test]
     fn collect_routes() {
         let mut source_builder = SourceBuilder::new(Mode::Dev);
         source_builder.base_path = "/home/user/Documents/tuono".into();
@@ -198,6 +227,7 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/about.rs",
             "/home/user/Documents/tuono/src/routes/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/index.rs",
+            "/home/user/Documents/tuono/src/routes/posts/[post].rs",
         ];
 
         routes
@@ -208,6 +238,7 @@ mod tests {
             ("/index.rs", "index"),
             ("/about.rs", "about"),
             ("/posts/index.rs", "posts_index"),
+            ("/posts/[post].rs", "posts_dyn_post"),
         ];
 
         results.into_iter().for_each(|(path, module_import)| {
@@ -232,6 +263,7 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/any-post.rs",
+            "/home/user/Documents/tuono/src/routes/posts/[post].rs",
         ];
 
         routes
@@ -243,6 +275,7 @@ mod tests {
             ("/about.rs", "/about"),
             ("/posts/index.rs", "/posts"),
             ("/posts/any-post.rs", "/posts/any-post"),
+            ("/posts/[post].rs", "/posts/:post"),
         ];
 
         results.into_iter().for_each(|(path, expected_path)| {
