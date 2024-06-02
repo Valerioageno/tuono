@@ -8,7 +8,7 @@
     "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
     "format": "prettier -u --write '**/*'",
     "types": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",
@@ -86,12 +86,16 @@
     "@types/node": "^20.12.7",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "fast-text-encoding": "^1.0.6",
-	"prettier": "^3.2.4",
+    "prettier": "^3.2.4",
     "vite": "^5.2.11",
     "zustand": "4.4.7"
   },
   "devDependencies": {
-    "@types/babel-traverse": "^6.25.10"
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^15.0.7",
+    "@types/babel-traverse": "^6.25.10",
+    "jsdom": "^24.0.0",
+    "vitest": "^1.5.2"
   },
   "sideEffects": false,
   "keywords": [],
