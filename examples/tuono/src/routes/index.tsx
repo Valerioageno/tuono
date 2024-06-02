@@ -1,7 +1,7 @@
 import type { TuonoProps } from 'tuono'
 
 type IndexProps = {
-  description: string
+  subtitle: string
 }
 export default function IndexPage({
   data,
@@ -13,8 +13,29 @@ export default function IndexPage({
 
   return (
     <>
-      <h1>Index Page</h1>
-      <p>{data?.description}</p>
+      <header className="header">
+        <a href="https://crates.io/crates/tuono" target="_blank">
+          Crates
+        </a>
+        <a href="https://www.npmjs.com/package/tuono" target="_blank">
+          Npm
+        </a>
+      </header>
+      <div className="title-wrap">
+        <h1 className="title">
+          TU<span>O</span>NO
+        </h1>
+        <div className="logo">
+          <img src="rust.svg" className="rust" />
+          <img src="react.svg" className="react" />
+        </div>
+      </div>
+      <div className="subtitle-wrap">
+        <p className="subtitle">{data?.subtitle}</p>
+        <a href="https://github.com/Valerioageno/tuono" target="_blank">
+          Github
+        </a>
+      </div>
     </>
   )
 }
