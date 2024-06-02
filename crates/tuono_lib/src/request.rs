@@ -3,10 +3,11 @@ use std::collections::HashMap;
 
 use axum::http::{HeaderMap, Uri};
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub struct Request<'a> {
     uri: &'a Uri,
     headers: &'a HeaderMap,
+    pub params: HashMap<String, String>,
 }
 
 /// Location must match client side interface
@@ -21,8 +22,16 @@ pub struct Location<'a> {
 }
 
 impl<'a> Request<'a> {
-    pub fn new(uri: &'a Uri, headers: &'a HeaderMap) -> Request<'a> {
-        Request { uri, headers }
+    pub fn new(
+        uri: &'a Uri,
+        headers: &'a HeaderMap,
+        params: HashMap<String, String>,
+    ) -> Request<'a> {
+        Request {
+            uri,
+            headers,
+            params,
+        }
     }
 
     pub fn location(&self) -> Location<'a> {

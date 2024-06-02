@@ -9,16 +9,21 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
     quote! {
         use axum::response::{Html, IntoResponse};
-        use axum::extract::State;
+        use std::collections::HashMap;
+        use axum::extract::{State, Path};
         use reqwest::Client;
 
         #item
 
-        pub async fn route(State(client): State<Client>, request: axum::extract::Request) -> Html<String> {
+        pub async fn route(
+            Path(params): Path<HashMap<String, String>>, 
+            State(client): State<Client>, 
+            request: axum::extract::Request
+        ) -> Html<String> {
            let pathname = &request.uri();
            let headers = &request.headers();
 
-           let req = tuono_lib::Request::new(pathname, headers);
+           let req = tuono_lib::Request::new(pathname, headers, params);
 
            let local_response = #fn_name(req.clone(), client).await;
 
@@ -40,11 +45,15 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             }
         }
 
-        pub async fn api(State(client): State<Client>, request: axum::extract::Request) -> axum::response::Response {
+        pub async fn api(
+            Path(params): Path<HashMap<String, String>>, 
+            State(client): State<Client>, 
+            request: axum::extract::Request
+        ) -> axum::response::Response {
             let pathname = &request.uri();
            let headers = &request.headers();
 
-           let req = tuono_lib::Request::new(pathname, headers);
+           let req = tuono_lib::Request::new(pathname, headers, params);
 
            let local_response = #fn_name(req.clone(), client).await;
 

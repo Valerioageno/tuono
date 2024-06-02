@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import type { Route } from '../route'
+import { useRouterStore } from './useRouterStore'
 
 const isServer = typeof document === 'undefined'
 
@@ -20,6 +21,7 @@ export function useServerSideProps(
   serverSideProps: any,
 ): UseServerSidePropsReturn {
   const isFirstRendering = useRef<boolean>(true)
+  const location = useRouterStore((st) => st.location)
   const [isLoading, setIsLoading] = useState<boolean>(
     // Force loading if has handler
     route.options.hasHandler &&
@@ -41,15 +43,14 @@ export function useServerSideProps(
       return
     }
     // After client side routing load again the remote data
-    if (route.options.hasHandler && !data) {
+    if (route.options.hasHandler) {
       ;(async (): Promise<void> => {
         setIsLoading(true)
         try {
-          const path = route.path === '/' ? '' : route.path
-          const res = await fetch(`/__tuono/data/${path}`)
+          const res = await fetch(`/__tuono/data${location.pathname}`)
           setData(await res.json())
         } catch (error) {
-          // Handle here error
+          throw Error('Failed loading Server Side Data', { cause: error })
         } finally {
           setIsLoading(false)
         }
@@ -60,7 +61,7 @@ export function useServerSideProps(
     return (): void => {
       setData(undefined)
     }
-  }, [route.path])
+  }, [location.pathname])
 
   return { isLoading, data }
 }
