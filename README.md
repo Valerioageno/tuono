@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png">
+  <img src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png" width="200px">
 </p>
 <h1 align="center">Tuono<br>The react/rust fullstack framework</h1>
 <p align="center">
