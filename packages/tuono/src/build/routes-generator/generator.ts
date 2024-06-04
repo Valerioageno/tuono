@@ -190,28 +190,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
       removeUnderscores(removeLayoutSegments(node.path)) ?? '',
     )
 
-    const routeCode = fs.readFileSync(node.fullPath, 'utf-8')
-
-    const escapedRoutePath = removeTrailingUnderscores(
-      node.routePath.replaceAll('$', '$$'),
-    )
-
-    let replaced = routeCode
-
-    if (!routeCode) {
-      replaced = [
-        `import { createFileRoute } from '@tanstack/react-router'`,
-        `export const Route = createFileRoute('${escapedRoutePath}')({
-  component: () => <div>Hello ${escapedRoutePath}!</div>
-})`,
-      ].join('\n\n')
-
-      if (replaced !== routeCode) {
-        console.log(`[emoticon] Updating ${node.fullPath}`)
-        await fsp.writeFile(node.fullPath, replaced)
-      }
-    }
-
     if (node.parent) {
       node.parent.children = node.parent.children ?? []
       node.parent.children.push(node)
