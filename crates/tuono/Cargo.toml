@@ -18,12 +18,15 @@ name = "tuono"
 path = "src/lib.rs"
 
 [dependencies]
-clap = { version = "4.5.4", features = ["derive"] }
+clap = { version = "4.5.4", features = ["derive", "cargo"] }
 watchexec = "4.0.0"
 miette = "7.2.0"
 watchexec-signals = "3.0.0"
 tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0.202", features = ["derive"] }
 watchexec-supervisor = "2.0.0"
 glob = "0.3.1"
 regex = "1.10.4"
+reqwest = {version = "0.12.4", features =["blocking", "json"]}
+serde_json = "1.0"
 

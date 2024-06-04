@@ -5,6 +5,7 @@ mod source_builder;
 use source_builder::{bundle_axum_source, create_client_entry_files};
 
 use self::source_builder::check_tuono_folder;
+mod scaffold_project;
 mod watch;
 
 #[derive(Subcommand, Debug)]
@@ -14,7 +15,7 @@ enum Actions {
     /// Build the production assets
     Build,
     /// Scaffold a new project
-    New,
+    New { folder_name: Option<String> },
 }
 
 #[derive(Parser, Debug)]
@@ -45,8 +46,8 @@ pub fn cli() -> std::io::Result<()> {
             let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
             let _ = &vite_build.output()?;
         }
-        Actions::New => {
-            println!("Scaffold new project")
+        Actions::New { folder_name } => {
+            scaffold_project::create_new_project(folder_name);
         }
     }
 
