@@ -70,6 +70,9 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Clone root README.md on tuono package
+        run: cp README.md packages/tuono/README.md
+
       - name: Install dependencies
         run: pnpm install 
 
