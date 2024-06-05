@@ -1,6 +1,6 @@
 [package]
 name = "tuono_lib_macros"
-version = "0.0.10"
+version = "0.0.11"
 edition = "2021"
 description = "The react/rust fullstack framework"
 homepage = "https://github.com/Valerioageno/tuono"
