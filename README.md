@@ -10,6 +10,8 @@
 Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
 Why Tuono? Just a badass name.
 
+> If you want to see how this project actually works check the [tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md) page.
+
 ## Introduction
 
 NodeJs/Deno/Bun are the only tools that make a React app fullstack right? (no) 
