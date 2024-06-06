@@ -120,7 +120,7 @@ fn update_package_json_version(folder_path: &Path) -> io::Result<()> {
     let v = crate_version!();
     let package_json_path = folder_path.join(PathBuf::from("package.json"));
     let package_json = fs::read_to_string(&package_json_path)?;
-    let package_json = package_json.replace("workspace:*", v);
+    let package_json = package_json.replace("link:../../packages/tuono", v);
 
     let mut file = OpenOptions::new()
         .write(true)
