@@ -45,7 +45,7 @@ tuono dev
 
 - [x]  FS routing
 - [x]  Hot Module Reload
-- [x]  CSS/SCSS modules
+- [x]  CSS modules
 - [x]  Rust based server side rendering
 - [x]  Multi thread backend
 - [x]  Development environment
