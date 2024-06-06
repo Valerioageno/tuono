@@ -1,9 +1,3 @@
-# Tuono starter
+# Tuono tutorial
 
-This is the starter tuono project. To download it run in your terminal:
-
-```shell
-$ tuono new [NAME]
-```
-
-
+This project is the outcome of the [tuono tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md)
