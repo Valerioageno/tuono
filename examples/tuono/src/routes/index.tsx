@@ -1,8 +1,9 @@
 import type { TuonoProps } from 'tuono'
 
-type IndexProps = {
+interface IndexProps {
   subtitle: string
 }
+
 export default function IndexPage({
   data,
   isLoading,
@@ -32,7 +33,12 @@ export default function IndexPage({
       </div>
       <div className="subtitle-wrap">
         <p className="subtitle">{data?.subtitle}</p>
-        <a href="https://github.com/Valerioageno/tuono" target="_blank">
+        <a
+          href="https://github.com/Valerioageno/tuono"
+          target="_blank"
+          className="button"
+          type="button"
+        >
           Github
         </a>
       </div>
