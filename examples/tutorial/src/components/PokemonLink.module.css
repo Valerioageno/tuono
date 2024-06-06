@@ -1,0 +1,26 @@
+.link {
+  width: 100%;
+  max-width: 216px;
+  position: relative;
+  background: white;
+  margin-bottom: 10px;
+  border: solid #f0f0f0 1px;
+  text-decoration: none;
+  color: black;
+  padding: 5px 5px 5px 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.2s;
+  align-items: center;
+}
+
+.link:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.link img {
+  width: 70px;
+  background: white;
+  border-radius: 50%;
+}

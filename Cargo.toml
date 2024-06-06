@@ -7,5 +7,6 @@ members = [
 ]
 exclude = [
 		"examples/playground",
-		"examples/tuono"
+		"examples/tuono",
+		"examples/tutorial"
 ]
