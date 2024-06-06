@@ -12,13 +12,10 @@ Why Tuono? Just a badass name.
 
 ## Introduction
 
-NodeJs/Deno/Bun are the only tools that make a React app fullstack right? (TLDR; no) 
-
-Techically the only thing React needs to do on the backend side is to render the HTML and returns it in the response payload and for it just a JS engine is required. 
-Why then we need to bring the entire runtime?
+NodeJs/Deno/Bun are the only tools that make a React app fullstack right? (no) 
 
 Tuono wants to prove that it's possible creating fully fledged react applications without the need to host them on a JS runtime server leveraging the best of the two worlds: 
-super powered server and crazy cool development experience.
+super powered server and amazing development experience.
 
 ## Requirements
 
