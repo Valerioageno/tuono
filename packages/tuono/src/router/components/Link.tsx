@@ -8,7 +8,7 @@ export default function Link(
     e.preventDefault()
     props.onClick?.(e)
     useRouterStore.setState({ location: { pathname: props.href || '' } })
-    window.history.pushState('', '', props.href)
+    history.pushState(props.href, '', props.href)
   }
   return (
     <a {...props} onClick={handleTransition}>
