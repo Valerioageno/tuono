@@ -54,6 +54,7 @@ tuono dev
 - [ ]  Create custom APIs
 - [ ]  Image optimization
 - [ ]  Build optimization
+- [ ]  Server streamed content
 
 > 💡 Any suggestion or improvement is strongly appreciated
 
