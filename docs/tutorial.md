@@ -4,6 +4,8 @@ This tutorial is meant for giving you a sneak peek of the framework and is inten
 
 The first part is about the project setup and the base knowledge needed to work with tuono. The actual tutorial starts at [Tutorial introduction](#tutorial-introduction).
 
+> If you prefer to see directly the final outcome check out the [tutorial source](https://github.com/Valerioageno/tuono/tree/main/examples/tutorial).
+
 ## Installation
 
 The tuono CLI is hosted on [crates.io](https://crates.io/crates/tuono); to download and install it just run on a terminal:
