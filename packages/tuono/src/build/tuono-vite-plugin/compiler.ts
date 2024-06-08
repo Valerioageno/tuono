@@ -100,7 +100,6 @@ export const splitFile = async ({
   compile,
   filename,
 }: SplitFileFnArgs): Promise<CompileOutput> => {
-  console.log('Split file [splitFile fn]', code)
   return compile({
     code,
     filename,
@@ -220,7 +219,6 @@ export const splitFile = async ({
                           ]),
                         )
                       } else {
-                        console.log(splitNode)
                         throw new Error(
                           `Unexpected splitNode type ${splitNode.type}`,
                         )

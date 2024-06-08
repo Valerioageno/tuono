@@ -1,10 +1,10 @@
-import { build, createServer } from 'vite'
+import { build, createServer, InlineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { ViteFsRouter } from './tuono-vite-plugin'
 
-const BASE_CONFIG = {
-  silent: true,
+const BASE_CONFIG: InlineConfig = {
   root: '.tuono',
+  logLevel: 'silent',
   publicDir: '../public',
   cacheDir: 'cache',
   envDir: '../',
@@ -13,7 +13,6 @@ const BASE_CONFIG = {
 
 export function developmentSSRBundle() {
   ;(async () => {
-    console.log('Build SSR')
     await build({
       ...BASE_CONFIG,
       build: {
@@ -23,6 +22,8 @@ export function developmentSSRBundle() {
         emptyOutDir: true,
         rollupOptions: {
           input: './.tuono/server-main.tsx',
+          // Silent all logs
+          onLog() {},
           output: {
             entryFileNames: 'dev-server.js',
             format: 'iife',
@@ -39,7 +40,6 @@ export function developmentSSRBundle() {
 
 export function developmentCSRWatch() {
   ;(async () => {
-    console.log('Watch files')
     const server = await createServer({
       ...BASE_CONFIG,
       server: {

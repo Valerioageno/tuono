@@ -216,8 +216,6 @@ mod {module_name};
 }
 
 pub fn bundle_axum_source() -> io::Result<()> {
-    println!("Axum project bundling");
-
     let base_path = std::env::current_dir().unwrap();
 
     let mut source_builder = SourceBuilder::new(Mode::Dev);

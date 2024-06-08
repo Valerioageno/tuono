@@ -4,64 +4,70 @@ use watchexec_supervisor::command::{Command, Program};
 use miette::{IntoDiagnostic, Result};
 use watchexec::Watchexec;
 use watchexec_signals::Signal;
-use watchexec_supervisor::job::start_job;
+use watchexec_supervisor::job::{start_job, Job};
 
 use crate::source_builder::bundle_axum_source;
 
-// What is the development pipeline?
-//
-// 1. Any file gets updates (rs/js/ts)
-// 2. Client side vite works separately
-// 3. Stop the dev server
-// 4. Build the ssr client bundle
-// 5. Restart the server
-//
-//
-// The current solution is not optimized
-// - We should avoid to bundle static lib (i.e. react) in the main bundle
-
-#[tokio::main]
-pub async fn watch() -> Result<()> {
-    let (watch_client, _) = start_job(Arc::new(Command {
+fn watch_react_src() -> Job {
+    start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "node_modules/.bin/tuono-dev-watch".into(),
             args: vec![],
         },
         options: Default::default(),
-    }));
+    }))
+    .0
+}
 
-    watch_client.start().await;
-
-    let (run_server, _) = start_job(Arc::new(Command {
+fn build_rust_src() -> Job {
+    start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "cargo".into(),
-            args: vec!["run".to_string()],
+            args: vec!["run".to_string(), "-q".to_string()],
         },
         options: Default::default(),
-    }));
+    }))
+    .0
+}
 
-    let (build_ssr_bundle, _) = start_job(Arc::new(Command {
+fn build_react_ssr_src() -> Job {
+    start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "node_modules/.bin/tuono-dev-ssr".into(),
             args: vec![],
         },
         options: Default::default(),
-    }));
+    }))
+    .0
+}
+
+#[tokio::main]
+pub async fn watch() -> Result<()> {
+    println!("Starting development environment...");
+    watch_react_src().start().await;
+
+    let run_server = build_rust_src();
+
+    let build_ssr_bundle = build_react_ssr_src();
 
     build_ssr_bundle.start().await;
+
     run_server.start().await;
+
+    println!("\nDevelopment app ready at http://localhost:3000/");
 
     let wx = Watchexec::new(move |mut action| {
         for event in action.events.iter() {
             for path in event.paths() {
                 if path.0.to_string_lossy().ends_with(".rs")
+                    // Either tsx and jsx
                     || path.0.to_string_lossy().ends_with("sx")
                 {
+                    println!("Reloading...");
                     run_server.stop();
-                    println!("Reloading server...");
                     build_ssr_bundle.stop();
                     build_ssr_bundle.start();
-                    bundle_axum_source();
+                    bundle_axum_source().expect("Failed to bunlde rust source");
                     run_server.start();
                 }
             }

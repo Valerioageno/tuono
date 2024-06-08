@@ -134,12 +134,9 @@ export function hasParentRoute(
 
 export async function routeGenerator(config = defaultConfig): Promise<void> {
   if (!isFirst) {
-    console.log('Generating routes...')
     isFirst = true
   } else if (skipMessage) {
     skipMessage = false
-  } else {
-    console.log('Regenerating routes')
   }
 
   const checkLatest = (): boolean => {
@@ -194,7 +191,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
       node.parent.children = node.parent.children ?? []
       node.parent.children.push(node)
     }
-    console.log('pushed')
     routeNodes.push(node)
   }
 
@@ -349,10 +345,4 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
       routeConfigFileContent,
     )
   }
-
-  console.log(
-    `[emoticon] Processed ${routeNodes.length === 1 ? 'route' : 'routes'} in ${
-      Date.now() - start
-    }ms`,
-  )
 }

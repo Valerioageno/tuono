@@ -9,7 +9,6 @@ import { SPLIT_PREFIX } from './constants'
 import type { Plugin } from 'vite'
 
 const ROUTES_DIRECTORY_PATH = './src/routes'
-const DEBUG = true
 
 let lock = false
 
@@ -20,10 +19,8 @@ export function RouterGenerator(): Plugin {
 
     try {
       // TODO: generator function
-      console.log('Generating [generate fn]')
       await routeGenerator()
     } catch (err) {
-      console.log(err)
     } finally {
       lock = false
     }
@@ -34,7 +31,6 @@ export function RouterGenerator(): Plugin {
 
     if (filePath.startsWith(ROUTES_DIRECTORY_PATH)) {
       // TODO: generator function
-      console.log('Generating [handleFile fn]')
       await generate()
     }
   }
@@ -57,7 +53,6 @@ export function RouterGenerator(): Plugin {
 
 export function RouterCodeSplitter(): Plugin {
   const ROOT: string = process.cwd()
-  console.log('ROOT', ROOT)
 
   return {
     name: 'vite-plugin-tuono-fs-router-code-splitter',
@@ -75,36 +70,14 @@ export function RouterCodeSplitter(): Plugin {
 
       const compile = makeCompile({ root: ROOT })
 
-      if (DEBUG) console.info('Route: ', id)
-
       if (id.includes(SPLIT_PREFIX)) {
-        console.log('Split')
-        if (DEBUG) console.info('Splitting route: ', id)
-
         const compiled = await splitFile({
           code,
           compile,
           filename: id,
         })
 
-        if (DEBUG) {
-          console.info('')
-          console.info('Split Output')
-          console.info('')
-          //console.info(compiled.code)
-          console.info('')
-          console.info('')
-          console.info('')
-          console.info('')
-          console.info('')
-          console.info('')
-          console.info('')
-          console.info('')
-        }
-
         return compiled
-      } else {
-        console.log('Non split')
       }
 
       return null
