@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "src/index.js",
   "packageManager": "pnpm@8.12.0",
