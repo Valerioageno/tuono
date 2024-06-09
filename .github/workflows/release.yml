@@ -25,9 +25,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install 
 
-      - name: Install turbo
-        run: pnpm install turbo --global
-
       - name: Build
         run: pnpm build
 
@@ -75,9 +72,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install 
-
-      - name: Install turbo
-        run: pnpm install turbo --global
 
       - name: Build
         run: pnpm build
