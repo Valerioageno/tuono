@@ -6,7 +6,7 @@ use axum::http::{HeaderMap, Uri};
 #[derive(Debug, Clone)]
 pub struct Request<'a> {
     uri: &'a Uri,
-    headers: &'a HeaderMap,
+    pub headers: &'a HeaderMap,
     pub params: HashMap<String, String>,
 }
 
@@ -38,7 +38,7 @@ impl<'a> Request<'a> {
         Location {
             href: self.uri.to_string(),
             pathname: &self.uri.path(),
-            // TODO: hanler search map
+            // TODO: handler search map
             search: HashMap::new(),
             search_str: &self.uri.query().unwrap_or(""),
             hash: "",
