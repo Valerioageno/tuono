@@ -61,14 +61,14 @@ tuono dev
 ## Folder structure
 
 ```
-| public/ 
-- src/
-  | routes/
-  |	styles/
-| package.json
-| Cargo.toml
-| .gitignore
-| tsconfig.json
+├──  package.json
+├──  public
+├──  src
+│   ├──  routes
+│   └──  styles
+├──  Cargo.toml
+├──  README.md
+└──  tsconfig.json
 ```
 
 ## License

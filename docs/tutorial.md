@@ -38,15 +38,15 @@ Open it with your favourite code editor.
 
 The project will have the following structure:
 
-```bash
-| public/ 
-- src/
-  | routes/
-  |	styles/
-| package.json
-| Cargo.toml
-| .gitignore
-| tsconfig.json
+```
+├──  package.json
+├──  public
+├──  src
+│   ├──  routes
+│   └──  styles
+├──  Cargo.toml
+├──  README.md
+└──  tsconfig.json
 ```
 
 **public/**: put here all the files you want to be public
