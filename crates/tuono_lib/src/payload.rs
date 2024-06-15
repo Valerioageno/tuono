@@ -8,11 +8,11 @@ use crate::Request;
 /// This is the data shared to the client
 pub struct Payload<'a> {
     router: Location<'a>,
-    props: Box<dyn Serialize>,
+    props: &'a dyn Serialize,
 }
 
 impl<'a> Payload<'a> {
-    pub fn new(req: &Request<'a>, props: Box<dyn Serialize>) -> Payload<'a> {
+    pub fn new(req: &Request<'a>, props: &'a dyn Serialize) -> Payload<'a> {
         Payload {
             router: req.location(),
             props,
