@@ -16,51 +16,29 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
         #item
 
         pub async fn route(
-            Path(params): Path<HashMap<String, String>>, 
-            State(client): State<Client>, 
+            Path(params): Path<HashMap<String, String>>,
+            State(client): State<Client>,
             request: axum::extract::Request
-        ) -> Html<String> {
+        ) -> impl IntoResponse {
            let pathname = &request.uri();
            let headers = &request.headers();
 
            let req = tuono_lib::Request::new(pathname, headers, params);
 
-           let local_response = #fn_name(req.clone(), client).await;
-
-            let res = match local_response {
-                tuono_lib::Response::Props(val) => {
-
-                    // TODO: remove unwrap
-                    let payload = tuono_lib::Payload::new(&req, val).client_payload().unwrap();
-
-                    tuono_lib::ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)))
-                },
-                /// TODO: handle here redirection and rewrite
-                _ => Ok("500 Internal server error".to_string())
-            };
-
-            match res {
-                Ok(html) => Html(html),
-                _ => Html("500 internal server error".to_string())
-            }
+           #fn_name(req.clone(), client).await.render_to_string(req)
         }
 
         pub async fn api(
-            Path(params): Path<HashMap<String, String>>, 
-            State(client): State<Client>, 
+            Path(params): Path<HashMap<String, String>>,
+            State(client): State<Client>,
             request: axum::extract::Request
-        ) -> axum::response::Response {
+        ) -> impl IntoResponse{
             let pathname = &request.uri();
            let headers = &request.headers();
 
            let req = tuono_lib::Request::new(pathname, headers, params);
 
-           let local_response = #fn_name(req.clone(), client).await;
-
-            let res = match local_response{
-                tuono_lib::Response::Props(val) => return axum::Json(val).into_response(),
-                _ => return axum::Json("").into_response()
-            };
+           #fn_name(req.clone(), client).await.json()
         }
     }
     .into()

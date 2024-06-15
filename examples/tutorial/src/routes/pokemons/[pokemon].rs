@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use tuono_lib::{Request, Response};
+use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
 
@@ -19,9 +19,9 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
     return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
         Ok(res) => {
             let data = res.json::<Pokemon>().await.unwrap();
-            Response::Props(Box::new(data))
+            Response::Props(Props::new(data))
         }
-        Err(_err) => Response::Props(Box::new(Pokemon {
+        Err(_err) => Response::Props(Props::new(Pokemon {
             name: "Nope".to_string(),
             id: 0,
             weight: 0,

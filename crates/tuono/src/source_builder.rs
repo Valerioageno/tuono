@@ -65,7 +65,7 @@ async fn catch_all(Path(params): Path<HashMap<String, String>>, request: Request
 
 
     // TODO: remove unwrap
-    let payload = tuono_lib::Payload::new(&req, Box::new(""))
+    let payload = tuono_lib::Payload::new(&req, &"")
         .client_payload()
         .unwrap();
 
