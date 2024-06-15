@@ -54,6 +54,8 @@ async fn main() {
         .with_state(fetch);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+
+    println!("\nDevelopment app ready at http://localhost:3000/");
     axum::serve(listener, app).await.unwrap();
 }
 
@@ -240,7 +242,6 @@ pub fn bundle_axum_source() -> io::Result<()> {
 pub fn check_tuono_folder() -> io::Result<()> {
     let dev_folder = Path::new(DEV_FOLDER);
     if !&dev_folder.is_dir() {
-        println!("exists");
         fs::create_dir(dev_folder)?;
     }
 

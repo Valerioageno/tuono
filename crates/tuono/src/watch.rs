@@ -54,7 +54,7 @@ pub async fn watch() -> Result<()> {
 
     run_server.start().await;
 
-    println!("\nDevelopment app ready at http://localhost:3000/");
+    build_ssr_bundle.to_wait().await;
 
     let wx = Watchexec::new(move |mut action| {
         let mut should_reload = false;

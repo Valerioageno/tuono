@@ -15,7 +15,14 @@ enum Actions {
     /// Build the production assets
     Build,
     /// Scaffold a new project
-    New { folder_name: Option<String> },
+    New {
+        /// The folder in which load the project. Default is the current directory.
+        folder_name: Option<String>,
+        /// The template to use to scaffold the project. The template should match one of the tuono
+        /// examples
+        #[arg(short, long)]
+        template: Option<String>,
+    },
 }
 
 #[derive(Parser, Debug)]
@@ -46,8 +53,11 @@ pub fn cli() -> std::io::Result<()> {
             let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
             let _ = &vite_build.output()?;
         }
-        Actions::New { folder_name } => {
-            scaffold_project::create_new_project(folder_name);
+        Actions::New {
+            folder_name,
+            template,
+        } => {
+            scaffold_project::create_new_project(folder_name, template);
         }
     }
 
