@@ -33,7 +33,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             State(client): State<Client>,
             request: axum::extract::Request
         ) -> impl IntoResponse{
-            let pathname = &request.uri();
+           let pathname = &request.uri();
            let headers = &request.headers();
 
            let req = tuono_lib::Request::new(pathname, headers, params);
