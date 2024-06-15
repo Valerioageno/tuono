@@ -22,17 +22,24 @@ impl Props {
             http_code: StatusCode::OK,
         }
     }
+
+    pub fn new_with_status(data: impl Serialize + 'static, http_code: StatusCode) -> Self {
+        Props {
+            data: Box::new(data),
+            http_code,
+        }
+    }
 }
 
 impl Response {
     pub fn render_to_string(&self, req: Request) -> impl IntoResponse {
         match self {
-            Self::Props(Props { data, http_code: _ }) => {
+            Self::Props(Props { data, http_code }) => {
                 let payload = Payload::new(&req, data).client_payload().unwrap();
 
                 match Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload))) {
-                    Ok(html) => Html(html),
-                    Err(_) => Html("500 Internal server error".to_string()),
+                    Ok(html) => (*http_code, Html(html)),
+                    Err(_) => (*http_code, Html("500 Internal server error".to_string())),
                 }
             }
             // TODO: Handle here other enum arms
@@ -42,8 +49,8 @@ impl Response {
 
     pub fn json(&self) -> impl IntoResponse {
         match self {
-            Self::Props(Props { data, http_code: _ }) => Json(data).into_response(),
-            _ => axum::Json("").into_response(),
+            Self::Props(Props { data, http_code }) => (*http_code, Json(data)).into_response(),
+            _ => (StatusCode::INTERNAL_SERVER_ERROR, axum::Json("{}")).into_response(),
         }
     }
 }

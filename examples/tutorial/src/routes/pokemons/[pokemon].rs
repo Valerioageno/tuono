@@ -1,3 +1,4 @@
+use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use tuono_lib::{Props, Request, Response};
 
@@ -21,11 +22,14 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
             let data = res.json::<Pokemon>().await.unwrap();
             Response::Props(Props::new(data))
         }
-        Err(_err) => Response::Props(Props::new(Pokemon {
-            name: "Nope".to_string(),
-            id: 0,
-            weight: 0,
-            height: 0,
-        })),
+        Err(_err) => Response::Props(Props::new_with_status(
+            Pokemon {
+                name: "Nope".to_string(),
+                id: 0,
+                weight: 0,
+                height: 0,
+            },
+            StatusCode::INTERNAL_SERVER_ERROR,
+        )),
     };
 }
