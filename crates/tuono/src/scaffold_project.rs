@@ -38,12 +38,11 @@ fn create_file(path: PathBuf, content: String) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn create_new_project(folder_name: Option<String>) {
+pub fn create_new_project(folder_name: Option<String>, template: Option<String>) {
     let folder = folder_name.unwrap_or(".".to_string());
 
-    if folder != "." {
-        create_dir(&folder).unwrap();
-    }
+    // In case of missing select the tuono example
+    let template = template.unwrap_or("tuono".to_string());
 
     let client = blocking::Client::builder()
         .user_agent("")
@@ -60,21 +59,25 @@ pub fn create_new_project(folder_name: Option<String>) {
     let new_project_files = res
         .tree
         .iter()
-        .filter(|GithubFile { path, .. }| {
-            // TODO: Handle custom example download by CLI argument --template
-            if path.starts_with("examples/tuono/") {
-                return true;
-            }
-            false
-        })
+        .filter(|GithubFile { path, .. }| path.starts_with(&format!("examples/{template}/")))
         .collect::<Vec<&GithubFile>>();
+
+    if new_project_files.is_empty() {
+        println!("Template not found: {template}");
+        return;
+    }
+
+    if folder != "." {
+        create_dir(&folder).unwrap();
+    }
 
     let folder_name = PathBuf::from(&folder);
     let current_dir = env::current_dir().expect("Failed to get current working directory");
 
     let folder_path = current_dir.join(folder_name);
 
-    create_directories(&new_project_files, &folder_path).expect("Failed to create directories");
+    create_directories(&new_project_files, &folder_path, &template)
+        .expect("Failed to create directories");
 
     for GithubFile {
         element_type, path, ..
@@ -88,7 +91,7 @@ pub fn create_new_project(folder_name: Option<String>) {
                 .text()
                 .expect("Failed to parse the repo structure");
 
-            let path = PathBuf::from(&path.replace("examples/tuono/", ""));
+            let path = PathBuf::from(&path.replace(&format!("examples/{template}/"), ""));
 
             let file_path = folder_path.join(&path);
 
@@ -101,13 +104,17 @@ pub fn create_new_project(folder_name: Option<String>) {
     outro(folder);
 }
 
-fn create_directories(new_project_files: &Vec<&GithubFile>, folder_path: &Path) -> io::Result<()> {
+fn create_directories(
+    new_project_files: &[&GithubFile],
+    folder_path: &Path,
+    template: &String,
+) -> io::Result<()> {
     for GithubFile {
         element_type, path, ..
     } in new_project_files.iter()
     {
         if let GithubFileType::Tree = element_type {
-            let path = PathBuf::from(&path.replace("examples/tuono/", ""));
+            let path = PathBuf::from(&path.replace(&format!("examples/{template}/"), ""));
 
             let dir_path = folder_path.join(&path);
             create_dir(&dir_path).unwrap();
