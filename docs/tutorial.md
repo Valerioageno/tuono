@@ -93,7 +93,7 @@ Clear the `index.rs` file and paste:
 ```rust
 // src/routes/index.rs
 use serde::{Deserialize, Serialize};
-use tuono_lib::{Request, Response};
+use tuono_lib::{Props, Request, Response};
 
 const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
 
@@ -110,15 +110,13 @@ struct Pokemon {
 
 #[tuono_lib::handler]
 async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response {
-
     return match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
-            Response::Props(Box::new(data))
+            Response::Props(Props::new(data))
         }
-        Err(_err) => Response::Props(Box::new(Pokemons { results: vec![] })),
+        Err(_err) => Response::Props(Props::new("{}")),
     };
-    
 }
 ```
 
@@ -302,8 +300,9 @@ These two will handle every requests that points to `http://localhost:3000/pokem
 Let’s first work on the server side file. Paste into the new `[pokemon].rs` file the following code:
 
 ```rust
+// src/routes/pokemons/[pokemon].rs
 use serde::{Deserialize, Serialize};
-use tuono_lib::{Request, Response};
+use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
 
@@ -317,22 +316,16 @@ struct Pokemon {
 
 #[tuono_lib::handler]
 async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
-	// The param `pokemon` is defined in the route filename [pokemon].rs
+    // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
-    
+
     return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
         Ok(res) => {
             let data = res.json::<Pokemon>().await.unwrap();
-            Response::Props(Box::new(data))
+            Response::Props(Props::new(data))
         }
-        Err(_err) => Response::Props(Box::new(Pokemon {
-            name: "Nope".to_string(),
-            id: 0,
-            weight: 0,
-            height: 0,
-        })),
+        Err(_err) => Response::Props(Props::new("{}"))
     };
-    
 }
 ```
 
@@ -437,6 +430,92 @@ export default function PokemonView({
   font-weight: 700;
 }
 ```
+
+## Error handling
+
+With the current setup all the routes always return a `200 Success` http status no matter the response type.
+
+In order to return a more meaningful status code to the browser the `Props` struct can be initialized with also the
+`Props::new_with_status()` method.
+
+Let's see how it works!
+
+```diff
+// src/routes/pokemons/[pokemon].rs
+++ use reqwest::StatusCode;
+use serde::{Deserialize, Serialize};
+use tuono_lib::{Props, Request, Response};
+
+const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemon {
+    name: String,
+    id: u16,
+    weight: u16,
+    height: u16,
+}
+
+#[tuono_lib::handler]
+async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
+    // The param `pokemon` is defined in the route filename [pokemon].rs
+    let pokemon = req.params.get("pokemon").unwrap();
+
+    return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
+        Ok(res) => {
+++            if res.status() == StatusCode::NOT_FOUND {
+++                return Response::Props(Props::new_with_status("{}", StatusCode::NOT_FOUND));
+++             }
+
+            let data = res.json::<Pokemon>().await.unwrap();
+            Response::Props(Props::new(data))
+        }
+--        Err(_err) => Response::Props(Props::new(
+++        Err(_err) => Response::Props(Props::new_with_status(
+++            "{}",
+++            StatusCode::INTERNAL_SERVER_ERROR,
+        )),
+    };
+}
+```
+
+```diff
+// src/routes/index.rs
+++ use reqwest::StatusCode;
+use serde::{Deserialize, Serialize};
+use tuono_lib::{Props, Request, Response};
+
+const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemons {
+    results: Vec<Pokemon>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemon {
+    name: String,
+    url: String,
+}
+
+#[tuono_lib::handler]
+async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response {
+    return match fetch.get(ALL_POKEMON).send().await {
+        Ok(res) => {
+            let data = res.json::<Pokemons>().await.unwrap();
+            Response::Props(Props::new(data))
+        }
+--        Err(_err) => Response::Props(Props::new(
+++        Err(_err) => Response::Props(Props::new_with_status(
+++            "{}", // Return empty JSON
+++            StatusCode::INTERNAL_SERVER_ERROR,
+        )),
+    };
+}
+```
+
+If you now try to load a not existing pokemon (`http://localhost:3000/pokemons/tuono-pokemon`) you will 
+correctly receive a 404 status code in the console.
 
 ## Conclusion
 

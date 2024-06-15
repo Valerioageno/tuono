@@ -1,3 +1,4 @@
+// src/routes/pokemons/[pokemon].rs
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 use tuono_lib::{Props, Request, Response};
@@ -22,7 +23,6 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
             if res.status() == StatusCode::NOT_FOUND {
                 return Response::Props(Props::new_with_status("{}", StatusCode::NOT_FOUND));
             }
-
             let data = res.json::<Pokemon>().await.unwrap();
             Response::Props(Props::new(data))
         }

@@ -8,7 +8,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
     let fn_name = item.clone().sig.ident;
 
     quote! {
-        use axum::response::{Html, IntoResponse};
+        use axum::response::IntoResponse;
         use std::collections::HashMap;
         use axum::extract::{State, Path};
         use reqwest::Client;
