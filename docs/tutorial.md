@@ -4,23 +4,22 @@ This tutorial is meant for giving you a sneak peek of the framework and is inten
 
 The first part is about the project setup and the base knowledge needed to work with tuono. The actual tutorial starts at [Tutorial introduction](#tutorial-introduction).
 
-> If you prefer to see directly the final outcome check out the [tutorial source](https://github.com/Valerioageno/tuono/tree/main/examples/tutorial).
+> If you have already installed the tuono CLI you can download the tutorial source with `tuono new tuono-tutorial --template tutorial`
 
 ## Table of Content
 
-* [Tuono tutorial](#tuono-tutorial)
-   * [Installation](#installation)
-   * [Project scaffold](#project-scaffold)
-   * [Start the dev environment](#start-the-dev-environment)
-   * [The “/” route](#the--route)
-   * [Tutorial introduction](#tutorial-introduction)
-   * [Fetch all the pokemons](#fetch-all-the-pokemons)
-   * [Create a stand-alone component](#create-a-stand-alone-component)
-   * [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
-   * [Error handling](#error-handling)
-   * [Conclusion](#conclusion)
+* [CLI Installation](#cli-installation)
+* [Project scaffold](#project-scaffold)
+* [Start the dev environment](#start-the-dev-environment)
+* [The “/” route](#the--route)
+* [Tutorial introduction](#tutorial-introduction)
+* [Fetch all the pokemons](#fetch-all-the-pokemons)
+* [Create a stand-alone component](#create-a-stand-alone-component)
+* [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
+* [Error handling](#error-handling)
+* [Conclusion](#conclusion)
 
-## Installation
+## CLI Installation
 
 The tuono CLI is hosted on [crates.io](https://crates.io/crates/tuono); to download and install it just run on a terminal:
 
@@ -34,9 +33,11 @@ To check that is correctly installed run:
 $ tuono --version
 ```
 
+Run `tuono -h` to see all the available commands.
+
 ## Project scaffold
 
-To setup a new project you just need to run the following command:
+To setup a new fresh project you just need to run the following command:
 
 ```bash
 $ tuono new tuono-tutorial
