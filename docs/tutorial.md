@@ -53,14 +53,14 @@ Open it with your favourite code editor.
 The project will have the following structure:
 
 ```
-├──  package.json
-├──  public
-├──  src
-│   ├──  routes
-│   └──  styles
-├──  Cargo.toml
-├──  README.md
-└──  tsconfig.json
+├── package.json
+├── public
+├── src
+│   ├── routes
+│   └── styles
+├── Cargo.toml
+├── README.md
+└── tsconfig.json
 ```
 
 **public/**: put here all the files you want to be public
