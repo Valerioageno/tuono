@@ -24,7 +24,7 @@ async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response
             Response::Props(Props::new(data))
         }
         Err(_err) => Response::Props(Props::new_with_status(
-            Pokemons { results: vec![] },
+            "{}", // Return empty JSON
             StatusCode::INTERNAL_SERVER_ERROR,
         )),
     };

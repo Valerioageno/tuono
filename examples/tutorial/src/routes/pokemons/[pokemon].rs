@@ -19,16 +19,15 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
 
     return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
         Ok(res) => {
+            if res.status() == StatusCode::NOT_FOUND {
+                return Response::Props(Props::new_with_status("{}", StatusCode::NOT_FOUND));
+            }
+
             let data = res.json::<Pokemon>().await.unwrap();
             Response::Props(Props::new(data))
         }
         Err(_err) => Response::Props(Props::new_with_status(
-            Pokemon {
-                name: "Nope".to_string(),
-                id: 0,
-                weight: 0,
-                height: 0,
-            },
+            "{}",
             StatusCode::INTERNAL_SERVER_ERROR,
         )),
     };
