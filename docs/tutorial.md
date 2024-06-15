@@ -6,6 +6,20 @@ The first part is about the project setup and the base knowledge needed to work 
 
 > If you prefer to see directly the final outcome check out the [tutorial source](https://github.com/Valerioageno/tuono/tree/main/examples/tutorial).
 
+## Table of Content
+
+* [Tuono tutorial](#tuono-tutorial)
+   * [Installation](#installation)
+   * [Project scaffold](#project-scaffold)
+   * [Start the dev environment](#start-the-dev-environment)
+   * [The “/” route](#the--route)
+   * [Tutorial introduction](#tutorial-introduction)
+   * [Fetch all the pokemons](#fetch-all-the-pokemons)
+   * [Create a stand-alone component](#create-a-stand-alone-component)
+   * [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
+   * [Error handling](#error-handling)
+   * [Conclusion](#conclusion)
+
 ## Installation
 
 The tuono CLI is hosted on [crates.io](https://crates.io/crates/tuono); to download and install it just run on a terminal:
