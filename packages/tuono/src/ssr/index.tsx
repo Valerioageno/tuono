@@ -4,7 +4,9 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { RouterProvider } from '../router'
 import { createRouter } from '../router'
 
-export function serverSideRendering(routeTree: any) {
+type RouteTree = any
+
+export function serverSideRendering(routeTree: RouteTree) {
   return function render(payload: string | undefined): string {
     const props = payload ? JSON.parse(payload) : {}
 

@@ -9,16 +9,22 @@ interface UseServerSidePropsReturn {
   isLoading: boolean
 }
 
+declare global {
+  interface Window {
+    __TUONO_SSR_PROPS__: any
+  }
+}
+
 /*
  * Use the props provided by the SSR and dehydrate the
  * props for client side usage.
  *
  * In case is a client fetch the remote data API
  */
-export function useServerSideProps(
+export function useServerSideProps<T>(
   route: Route,
   // User defined props
-  serverSideProps: any,
+  serverSideProps: T,
 ): UseServerSidePropsReturn {
   const isFirstRendering = useRef<boolean>(true)
   const location = useRouterStore((st) => st.location)

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import type { Router } from '../router'
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const routerContext = React.createContext<Router>(null!)
 
 const TUONO_CONTEXT = '__TUONO_CONTEXT__'

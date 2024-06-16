@@ -40,7 +40,6 @@ export class Route {
 
     const isRoot = !this.options?.path && !this.options?.id
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     this.parentRoute = this.options?.getParentRoute?.()
 
     if (isRoot) {
@@ -75,11 +74,10 @@ export class Route {
     const fullPath =
       id === rootRouteId ? '/' : joinPaths([this.parentRoute.fullPath, path])
 
-    this.path = path as TPath
-    this.id = id as TId
-    // this.customId = customId as TCustomId
-    this.fullPath = fullPath as TFullPath
-    this.to = fullPath as TrimPathRight<TFullPath>
+    this.path = path
+    this.id = id
+    this.fullPath = fullPath
+    this.to = fullPath
   }
 
   addChildren(routes: Route[]): Route {
@@ -92,28 +90,8 @@ export class Route {
     this.isRoot = options.isRoot || !options.getParentRoute
     return this
   }
-
-  useRouteContext = () => {}
-
-  useParams = () => {}
 }
 
 export function createRootRoute(options?: RouteOptions): Route {
   return new Route({ ...options, isRoot: true })
-}
-
-export function getRouteApi(id: string): RouteApi {
-  return new RouteApi(id)
-}
-
-class RouteApi {
-  id: string
-
-  constructor(id: string) {
-    this.id = id
-  }
-
-  useParams = () => {}
-
-  useRouteContext = () => {}
 }
