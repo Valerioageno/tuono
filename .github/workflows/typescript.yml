@@ -2,7 +2,14 @@ name: Typescript CI
 
 on:
   push:
+    paths:
+      - .github
+      - packages
   pull_request:
+    paths:
+      - .github
+      - packages
+
 
 jobs:
   build-and-test:
