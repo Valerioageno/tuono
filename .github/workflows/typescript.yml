@@ -1,0 +1,54 @@
+name: Typescript CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:    
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install pnpm
+      run: npm i -g pnpm
+        
+    - name: Install dependencies
+      run: pnpm install
+      
+    - name: Build project
+      run: pnpm build
+
+  fmt-lint-and-types:
+    runs-on: ubuntu-20.04
+
+    steps:    
+    - uses: actions/checkout@v2
+    - name: CI Checkout
+      uses: actions/setup-node@v2
+      with:
+        node-version: 20.x
+        
+    - name: Install pnpm
+      run: npm i -g pnpm
+       
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Check formatting
+      run: pnpm format:check
+      
+    - name: Lint
+      run: pnpm lint
+ 
+    - name: Types
+      run: pnpm types

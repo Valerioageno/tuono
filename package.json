@@ -9,6 +9,8 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "turbo format",
+	"format:check": "turbo format:check",
+	"types": "turbo types",
     "test": "turbo test"
   },
   "keywords": [],

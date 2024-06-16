@@ -3,6 +3,8 @@
   "tasks": {
     "lint": {},
     "format": {},
+	"format:check": {},
+	"types": {},
     "test": {},
     "build": {
       "outputs": [
