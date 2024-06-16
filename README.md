@@ -7,6 +7,7 @@
 </p>
 <div align="center">
     <img src="https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg" />
+    <img src="https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg" />
 </div>
 
 <br>
