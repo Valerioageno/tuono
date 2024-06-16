@@ -3,13 +3,12 @@ name: Rust CI
 on:
   push:
     paths:
-      - .github
-      - crates
+      - '.github/**'
+      - 'crates/**'
   pull_request:
     paths:
-      - .github
-      - crates
-
+      - '.github/**'
+      - 'crates/**'
 
 env: 
   CARGO_TERM_COLOR: always

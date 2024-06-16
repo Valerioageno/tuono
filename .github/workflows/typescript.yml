@@ -3,13 +3,12 @@ name: Typescript CI
 on:
   push:
     paths:
-      - .github
-      - packages
+      - '.github/**'
+      - 'packages/**'
   pull_request:
     paths:
-      - .github
-      - packages
-
+      - '.github/**'
+      - 'packages/**'
 
 jobs:
   build-and-test:
