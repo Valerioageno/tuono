@@ -5,6 +5,12 @@
 <p align="center">
 ⚠️ This project is under heavy development. API might drastically change ⚠️
 </p>
+<div align="center">
+    <img src="https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg" />
+</div>
+
+<br>
+<br>
 
 
 Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
