@@ -16,15 +16,15 @@ export const rootRouteId = '__root__'
 
 export class Route {
   parentRoute!: any
-  id: number
+  id?: string
   fullPath!: string
-  path: string
+  path?: string
   options: any
 
   children?: Route[]
   router: RouterType
   isRoot: boolean
-  originalIndex: number
+  originalIndex?: number
   component: () => JSX.Element
 
   constructor(options: RouteOptions) {
@@ -77,7 +77,6 @@ export class Route {
     this.path = path
     this.id = id
     this.fullPath = fullPath
-    this.to = fullPath
   }
 
   addChildren(routes: Route[]): Route {
@@ -92,6 +91,6 @@ export class Route {
   }
 }
 
-export function createRootRoute(options?: RouteOptions): Route {
+export function createRootRoute(options: RouteOptions): Route {
   return new Route({ ...options, isRoot: true })
 }

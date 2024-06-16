@@ -62,13 +62,13 @@ export function buildProd() {
   ;(async () => {
     await build({
       ...BASE_CONFIG,
-      manifest: true,
       build: {
+        manifest: true,
+        emptyOutDir: true,
         outDir: '../out/client',
-      },
-      emptyOutDir: true,
-      rollupOptions: {
-        input: './.tuono/client-main.tsx',
+        rollupOptions: {
+          input: './.tuono/client-main.tsx',
+        },
       },
     })
 

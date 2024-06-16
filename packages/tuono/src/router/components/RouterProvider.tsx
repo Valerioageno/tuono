@@ -10,6 +10,16 @@ interface RouterContextProviderProps {
   children: ReactNode
 }
 
+interface RouterProviderProps {
+  router: Router
+  serverProps?: ServerProps
+}
+
+interface ServerProps {
+  router: Location
+  props: any
+}
+
 function RouterContextProvider({
   router,
   children,
@@ -21,7 +31,6 @@ function RouterContextProvider({
     ...rest,
     context: {
       ...router.options.context,
-      ...rest.context,
     },
   })
 
@@ -36,16 +45,6 @@ function RouterContextProvider({
       <routerContext.Provider value={router}>{children}</routerContext.Provider>
     </React.Suspense>
   )
-}
-
-interface RouterProviderProps {
-  router: Router
-  serverProps?: ServerProps
-}
-
-interface ServerProps {
-  router: Location
-  props: any
 }
 
 const initRouterStore = (props?: ServerProps): void => {

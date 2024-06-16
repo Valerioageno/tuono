@@ -3,5 +3,6 @@
   "compilerOptions": {
     "jsx": "react"
   },
-  "include": ["src", "tests", "vite.config.ts"]
+  "include": ["src", "tests", "vite.config.ts"],
+  "exclude": ["vite.config.ts"],
 }

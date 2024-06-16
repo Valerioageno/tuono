@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useRouter } from '../hooks/useRouter'
 import { RouteMatch } from './RouteMatch'
 import Link from './Link'
@@ -9,7 +10,7 @@ export default function NotFound(): JSX.Element {
 
   // Check if exists a custom 404 error page
   if (custom404Route) {
-    return <RouteMatch route={custom404Route} />
+    return <RouteMatch route={custom404Route} serverSideProps={{}} />
   }
 
   return (

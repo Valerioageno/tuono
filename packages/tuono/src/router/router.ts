@@ -6,7 +6,7 @@ type RouteTree = any
 interface CreateRouter {
   routeTree: RouteTree
   basePath?: string
-  options: RouteOptions
+  options?: RouteOptions
 }
 
 interface RouteOptions {
@@ -14,9 +14,10 @@ interface RouteOptions {
   hasHandler?: boolean
   routeTree?: RouteTree
 }
+
 export type RouterType = any
 
-export function createRouter(options: CreateRouterArgs): Router {
+export function createRouter(options: CreateRouter): Router {
   return new Router(options)
 }
 
@@ -49,24 +50,10 @@ export class Router {
 
     this.#updateBasePath(newOptions.basePath)
 
-    // NOTE: next iteration
-    this.#historyUpdate()
-
-    // NOTE: next iteration
-    this.#storeUpdate()
-
     if (this.options.routeTree !== this.routeTree) {
       this.routeTree = this.options.routeTree
       this.#buildRouteTree()
     }
-  }
-
-  #historyUpdate = (): void => {
-    // TODO: update history
-  }
-
-  #storeUpdate = (): void => {
-    // TODO: update store
   }
 
   #buildRouteTree = (): void => {
@@ -74,7 +61,7 @@ export class Router {
       childRoutes.forEach((route: Route, i: number) => {
         route.init(i)
 
-        this.routesById[route.id] = route
+        this.routesById[route.id || ''] = route
 
         if (!route.isRoot && route.options.path) {
           const trimmedFullPath = trimPathRight(route.fullPath)

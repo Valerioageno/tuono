@@ -158,7 +158,7 @@ export const eliminateUnreferencedIdentifiers = (
     programPath.scope.crawl()
 
     programPath.traverse({
-      VariableDeclarator(path) {
+      VariableDeclarator(path: any) {
         if (path.node.id.type === 'Identifier') {
           const local = path.get('id') as NodePath<BabelTypes.Identifier>
           if (shouldBeRemoved(local)) {

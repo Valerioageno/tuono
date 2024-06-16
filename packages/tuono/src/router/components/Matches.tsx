@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useRouter } from '../hooks/useRouter'
 import { useRouterStore } from '../hooks/useRouterStore'
 import type { Route } from '../route'
