@@ -26,6 +26,20 @@ NodeJs/Deno/Bun are the only tools that make a React app fullstack right? (no)
 Tuono wants to prove that it's possible creating fully fledged react applications without the need to host them on a JS runtime server leveraging the best of the two worlds: 
 super powered server and amazing development experience.
 
+## Features
+
+- [x]  Typescript
+- [x]  FS routing
+- [x]  Hot Module Reload
+- [x]  CSS modules
+- [x]  Rust based SSR
+- [x]  Multi thread backend
+- [x]  Development environment
+- [ ]  Create custom APIs
+- [ ]  Image optimization
+- [ ]  Build optimization
+- [ ]  Server streamed content
+
 ## Requirements
 
 - rust
@@ -50,20 +64,6 @@ tuono new [NAME]
 ```
 tuono dev
 ```
-## Features
-
-- [x]  FS routing
-- [x]  Hot Module Reload
-- [x]  CSS modules
-- [x]  Rust based server side rendering
-- [x]  Multi thread backend
-- [x]  Development environment
-- [ ]  Create custom APIs
-- [ ]  Image optimization
-- [ ]  Build optimization
-- [ ]  Server streamed content
-
-> 💡 Any suggestion or improvement is strongly appreciated
 
 ## Folder structure
 
@@ -77,6 +77,9 @@ tuono dev
 ├── README.md
 └── tsconfig.json
 ```
+
+## Contributing
+Any help or suggestion will be appreciated.
 
 ## License
 
