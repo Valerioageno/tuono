@@ -90,8 +90,8 @@ All the `index.tsx` files represent the folder root page (i.e. `src/routes/posts
 The file `index.rs` represents the server side capabilities for the index route. On this file you can:
 
 - Passing server side props
+- Changing http status code
 - Redirect/Rewrite to a different route (Available soon)
-- Changing http status code (Available soon)
 
 ## Tutorial introduction
 
