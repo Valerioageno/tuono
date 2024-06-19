@@ -5,9 +5,7 @@
     "format": {},
 	"format:check": {},
 	"types": {},
-    "test": {
-			"persistent": false
-	},
+    "test": {},
     "build": {
       "outputs": [
         "dist/**"
