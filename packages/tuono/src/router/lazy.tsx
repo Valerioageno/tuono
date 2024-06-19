@@ -6,7 +6,7 @@ import * as React from 'react'
  * The function acts exactly like React.lazy function but also renders the component on the server.
  * If you want to just load the component client side use directly the react's lazy function.
  *
- * It works also with React.Suspense
+ * It can be wrapped within a React.Suspense component in order to handle its loading state.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const lazy = (importFn: () => JSX.Element): JSX.Element => {
