@@ -1,8 +1,5 @@
 {
-  "name": "tuono",
-  "version": "0.1.7",
-  "description": "",
-  "main": "src/index.js",
+  "name": "workspace",
   "packageManager": "pnpm@9.1.1",
   "scripts": {
     "dev": "turbo dev",
@@ -13,9 +10,11 @@
     "types": "turbo types",
     "test": "turbo test"
   },
-  "keywords": [],
-  "type": "module",
-  "author": "",
+  "workspaces": [
+    "tuono",
+	"tuono-lazy-fn-vite-plugin"
+  ],
+  "author": "Valerio Ageno",
   "license": "MIT",
   "devDependencies": {
     "@tanstack/config": "^0.7.0",
