@@ -88,6 +88,7 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "fast-text-encoding": "^1.0.6",
     "prettier": "^3.2.4",
+    "tuono-lazy-fn-vite-plugin": "workspace:*",
     "vite": "^5.2.11",
     "zustand": "4.4.7"
   },

@@ -1,8 +1,9 @@
 import type { Plugin } from 'vite'
 import * as babel from '@babel/core'
-import { PluginItem } from '@babel/core'
+import type { PluginItem } from '@babel/core'
 
 import * as t from '@babel/types'
+
 import type {
   Identifier,
   ImportDeclaration,
@@ -18,9 +19,9 @@ const RemoveTuonoLazyImport: PluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
   visitor: {
     ImportSpecifier: (path) => {
-      if ((path.node.imported as Identifier)?.name === 'lazy') {
+      if ((path.node.imported as Identifier).name === 'lazy') {
         if (
-          (path.parentPath.node as ImportDeclaration)?.source.value === 'tuono'
+          (path.parentPath.node as ImportDeclaration).source.value === 'tuono'
         ) {
           path.remove()
         }
@@ -35,9 +36,10 @@ const RemoveTuonoLazyImport: PluginItem = {
 const ImportReactLazy: PluginItem = {
   name: 'import-react-lazy-plugin',
   visitor: {
-    Program: (path) => {
+    Program: (path: any) => {
       let isReactImported = false
-      path.node.body.forEach((val) => {
+
+      path.node.body.forEach((val: any) => {
         if (val.type === 'ImportDeclaration' && val.source.value === 'react') {
           isReactImported = true
           // TODO: Handle also here case of already imported react
@@ -45,6 +47,7 @@ const ImportReactLazy: PluginItem = {
         }
       })
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!isReactImported) {
         const importDeclaration = t.importDeclaration(
           [t.importSpecifier(t.identifier('lazy'), t.identifier('lazy'))],
@@ -65,14 +68,14 @@ const TurnLazyToStaticImport: PluginItem = {
     VariableDeclaration: (path) => {
       path.node.declarations.forEach((el) => {
         const init = el.init as CallExpression
-        if ((init?.callee as Identifier)?.name === 'lazy') {
-          const importName = (el.id as Identifier)?.name
+        if ((init.callee as Identifier).name === 'lazy') {
+          const importName = (el.id as Identifier).name
           const importPath = (
             (
               (init.arguments[0] as ArrowFunctionExpression)
-                ?.body as CallExpression
-            )?.arguments[0] as StringLiteral
-          )?.value
+                .body as CallExpression
+            ).arguments[0] as StringLiteral
+          ).value
 
           if (importName && importPath) {
             const importDeclaration = t.importDeclaration(
@@ -92,7 +95,7 @@ export function LazyLoadingPlugin(): Plugin {
   return {
     name: 'vite-plugin-tuono-lazy-loading',
     enforce: 'pre',
-    transform(code, _id, opts) {
+    transform(code, _id, opts): string | undefined | null {
       if (code.includes('lazy') && code.includes('tuono')) {
         const res = babel.transformSync(code, {
           plugins: [
