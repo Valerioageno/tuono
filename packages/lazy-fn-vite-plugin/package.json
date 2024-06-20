@@ -2,7 +2,6 @@
   "name": "tuono-lazy-fn-vite-plugin",
   "version": "0.1.4",
   "description": "Plugin for the tuono's lazy fn. Tuono is the react/rust fullstack framework",
-  "main": "dist/cjs/index.cjs",
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
@@ -17,6 +16,7 @@
   "license": "MIT",
   "type": "module",
   "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "files": [
     "dist",
