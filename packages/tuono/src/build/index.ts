@@ -1,6 +1,7 @@
 import { build, createServer, InlineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { ViteFsRouter } from './tuono-vite-plugin'
+import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 
 const BASE_CONFIG: InlineConfig = {
   root: '.tuono',
@@ -8,7 +9,7 @@ const BASE_CONFIG: InlineConfig = {
   publicDir: '../public',
   cacheDir: 'cache',
   envDir: '../',
-  plugins: [react(), ViteFsRouter()],
+  plugins: [react(), ViteFsRouter(), LazyLoadingPlugin()],
 }
 
 export function developmentSSRBundle() {

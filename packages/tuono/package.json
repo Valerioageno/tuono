@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "The react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -9,7 +9,7 @@
     "format": "prettier -u --write --ignore-unknown '**/*'",
     "format:check": "prettier --check --ignore-unknown '**/*'",
     "types": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",
@@ -88,6 +88,7 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "fast-text-encoding": "^1.0.6",
     "prettier": "^3.2.4",
+    "tuono-lazy-fn-vite-plugin": "workspace:*",
     "vite": "^5.2.11",
     "zustand": "4.4.7"
   },

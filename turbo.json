@@ -4,7 +4,11 @@
     "lint": {},
     "format": {},
 	"format:check": {},
-	"types": {},
+	"types": {
+	  "dependsOn": [
+		"^build"
+	  ]	
+	},
     "test": {},
     "build": {
       "outputs": [

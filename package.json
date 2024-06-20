@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "main": "src/index.js",
   "packageManager": "pnpm@9.1.1",
@@ -9,8 +9,8 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "turbo format",
-	"format:check": "turbo format:check",
-	"types": "turbo types",
+    "format:check": "turbo format:check",
+    "types": "turbo types",
     "test": "turbo test"
   },
   "keywords": [],
@@ -36,6 +36,6 @@
     "vitest": "^1.5.2"
   },
   "dependencies": {
-    "turbo": "^2.0.3"
+    "turbo": "^2.0.4"
   }
 }

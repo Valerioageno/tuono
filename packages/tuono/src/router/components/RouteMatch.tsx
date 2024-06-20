@@ -1,3 +1,4 @@
+import * as React from 'react'
 import type { Route } from '../route'
 import { useServerSideProps } from '../hooks/useServerSideProps'
 
@@ -19,12 +20,19 @@ export const RouteMatch = ({
   const { data, isLoading } = useServerSideProps(route, serverSideProps)
 
   if (!route.isRoot) {
-    return route.options.getParentRoute().component({
-      children: route.options.component({ data, isLoading }),
-      data,
-      isLoading,
-    })
+    const Root = route.options.getParentRoute()
+    return (
+      <Root.component data={data} isLoading={isLoading}>
+        <React.Suspense>
+          <route.options.component data={data} isLoading={isLoading} />
+        </React.Suspense>
+      </Root.component>
+    )
   }
 
-  return route.options.component({ data, isLoading })
+  return (
+    <React.Suspense>
+      <route.options.component data={data} isLoading={isLoading} />
+    </React.Suspense>
+  )
 }
