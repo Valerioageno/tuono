@@ -2,6 +2,12 @@ import type { Plugin } from 'vite'
 import * as babel from '@babel/core'
 import type { PluginItem } from '@babel/core'
 
+import {
+  TUONO_MAIN_PACKAGE,
+  TUONO_DYNAMIC_FN_ID,
+  REACT_LAZY_FN_ID,
+} from './constants'
+
 import * as t from '@babel/types'
 
 import type {
@@ -13,15 +19,16 @@ import type {
 } from '@babel/types'
 
 /**
- * This plugin just removes the `lazy` imported function from any tuono import
+ * This plugin just removes the `dynamic` imported function from any tuono import
  */
 const RemoveTuonoLazyImport: PluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
   visitor: {
     ImportSpecifier: (path) => {
-      if ((path.node.imported as Identifier).name === 'lazy') {
+      if ((path.node.imported as Identifier).name === TUONO_DYNAMIC_FN_ID) {
         if (
-          (path.parentPath.node as ImportDeclaration).source.value === 'tuono'
+          (path.parentPath.node as ImportDeclaration).source.value ===
+          TUONO_MAIN_PACKAGE
         ) {
           path.remove()
         }
@@ -31,11 +38,13 @@ const RemoveTuonoLazyImport: PluginItem = {
 }
 
 /**
- * Import { lazy } from 'react'
+ * This plugin adds: "Import { lazy } from 'react'"
+ * and translate dynamic call into a React.lazy call
  */
 const ImportReactLazy: PluginItem = {
   name: 'import-react-lazy-plugin',
   visitor: {
+    // Add the import statement
     Program: (path: any) => {
       let isReactImported = false
 
@@ -50,10 +59,21 @@ const ImportReactLazy: PluginItem = {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!isReactImported) {
         const importDeclaration = t.importDeclaration(
-          [t.importSpecifier(t.identifier('lazy'), t.identifier('lazy'))],
+          [
+            t.importSpecifier(
+              t.identifier(REACT_LAZY_FN_ID),
+              t.identifier(REACT_LAZY_FN_ID),
+            ),
+          ],
           t.stringLiteral('react'),
         )
         path.unshiftContainer('body', importDeclaration)
+      }
+    },
+    // Update lazy function name from `dynamic` to `lazy`
+    CallExpression: (path: any) => {
+      if (path.node.callee?.name === TUONO_DYNAMIC_FN_ID) {
+        path.node.callee.name = REACT_LAZY_FN_ID
       }
     },
   },
@@ -62,13 +82,13 @@ const ImportReactLazy: PluginItem = {
 /**
  * For the server side we need to statically import the lazy loaded components
  */
-const TurnLazyToStaticImport: PluginItem = {
-  name: 'turn-lazy-to-static-import-plugin',
+const TurnLazyIntoStaticImport: PluginItem = {
+  name: 'turn-lazy-into-static-import-plugin',
   visitor: {
     VariableDeclaration: (path) => {
       path.node.declarations.forEach((el) => {
         const init = el.init as CallExpression
-        if ((init.callee as Identifier).name === 'lazy') {
+        if ((init.callee as Identifier).name === TUONO_DYNAMIC_FN_ID) {
           const importName = (el.id as Identifier).name
           const importPath = (
             (
@@ -96,14 +116,17 @@ export function LazyLoadingPlugin(): Plugin {
     name: 'vite-plugin-tuono-lazy-loading',
     enforce: 'pre',
     transform(code, _id, opts): string | undefined | null {
-      if (code.includes('lazy') && code.includes('tuono')) {
+      if (
+        code.includes(TUONO_DYNAMIC_FN_ID) &&
+        code.includes(TUONO_MAIN_PACKAGE)
+      ) {
         const res = babel.transformSync(code, {
           plugins: [
             ['@babel/plugin-syntax-jsx', {}],
             ['@babel/plugin-syntax-typescript', { isTSX: true }],
             [RemoveTuonoLazyImport],
             [!opts?.ssr ? ImportReactLazy : []],
-            [opts?.ssr ? TurnLazyToStaticImport : []],
+            [opts?.ssr ? TurnLazyIntoStaticImport : []],
           ],
           sourceMaps: true,
         })

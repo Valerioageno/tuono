@@ -2,10 +2,10 @@ import { it, expect, describe } from 'vitest'
 import { LazyLoadingPlugin } from '../src'
 
 const SOURCE_CODE = `
-import { createRoute, lazy } from 'tuono'
+import { createRoute, dynamic } from 'tuono'
 
-const IndexImport = lazy(() => import('./../src/routes/index'))
-const PokemonspokemonImport = lazy(
+const IndexImport = dynamic(() => import('./../src/routes/index'))
+const PokemonspokemonImport = dynamic(
   () => import('./../src/routes/pokemons/[pokemon]'),
 )
 `
