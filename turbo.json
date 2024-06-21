@@ -10,6 +10,7 @@
 	  ]	
 	},
     "test": {},
+    "test:watch": {},
     "build": {
       "outputs": [
         "dist/**"

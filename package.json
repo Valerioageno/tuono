@@ -8,7 +8,8 @@
     "format": "turbo format",
     "format:check": "turbo format:check",
     "types": "turbo types",
-    "test": "turbo test"
+    "test": "turbo test",
+	"test:watch": "turbo test:watch"
   },
   "workspaces": [
     "tuono",
