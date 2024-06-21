@@ -104,7 +104,7 @@
     "vitest": "^1.5.2"
   },
   "sideEffects": false,
-  "keywords": [],
+  "keywords": ["react", "typescript", "fullstack", "framework", "rust"],
   "author": "Valerio Ageno",
   "license": "MIT"
 }
