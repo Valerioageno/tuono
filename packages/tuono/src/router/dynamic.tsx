@@ -9,7 +9,7 @@ import * as React from 'react'
  * It can be wrapped within a React.Suspense component in order to handle its loading state.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const lazy = (importFn: () => JSX.Element): JSX.Element => {
+export const dynamic = (importFn: () => JSX.Element): JSX.Element => {
   /**
    *
    * This function is just a placeholder. The real work is done by the bundler.
@@ -21,8 +21,8 @@ export const lazy = (importFn: () => JSX.Element): JSX.Element => {
    * Example:
    *
    * // User code
-   * import { lazy } from 'tuono'
-   * const MyComponent = lazy(() => import('./my-component'))
+   * import { dynamic } from 'tuono'
+   * const MyComponent = dynamic(() => import('./my-component'))
    *
    * // Client side generated code
    * import { lazy } from 'react'
@@ -31,6 +31,7 @@ export const lazy = (importFn: () => JSX.Element): JSX.Element => {
    * // Server side generated code
    * import MyComponent from './my-component'
    *
+   * Check the `lazy-fn-vite-plugin` package for more
    */
   return <></>
 }
