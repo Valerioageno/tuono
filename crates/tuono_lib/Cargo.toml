@@ -18,7 +18,7 @@ name = "tuono_lib"
 path = "src/lib.rs"
 
 [dependencies]
-ssr_rs = "0.5.2"
+ssr_rs = "0.5.4"
 axum = "0.7.5"
 serde = { version = "1.0.202", features = ["derive"] }
 erased-serde = "0.4.5"
