@@ -4,7 +4,7 @@ import {
   createRouter,
   Link,
   RouterProvider,
-  lazy,
+  dynamic,
 } from './router'
 
 export type { TuonoProps } from './types'
@@ -15,5 +15,5 @@ export {
   createRouter,
   Link,
   RouterProvider,
-  lazy,
+  dynamic,
 }

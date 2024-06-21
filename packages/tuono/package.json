@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "The react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -9,6 +9,7 @@
     "format": "prettier -u --write --ignore-unknown '**/*'",
     "format:check": "prettier --check --ignore-unknown '**/*'",
     "types": "tsc --noEmit",
+    "test:watch": "vitest",
     "test": "vitest run"
   },
   "type": "module",
