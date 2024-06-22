@@ -6,7 +6,19 @@ import { createRouter } from '../router'
 
 type RouteTree = any
 
-export function serverSideRendering(routeTree: RouteTree) {
+type Mode = 'dev' | 'prod'
+
+const VITE_DEV_AND_HMR = `<script type="module">
+import RefreshRuntime from 'http://localhost:3001/@react-refresh'
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true
+</script>
+<script type="module" src="http://localhost:3001/@vite/client"></script>
+<script type="module" src="http://localhost:3001/client-main.tsx"></script>`
+
+export function serverSideRendering(routeTree: RouteTree, mode: Mode) {
   return function render(payload: string | undefined): string {
     const props = payload ? JSON.parse(payload) : {}
 
@@ -15,16 +27,6 @@ export function serverSideRendering(routeTree: RouteTree) {
     const app = renderToString(
       <RouterProvider router={router} serverProps={props} />,
     )
-
-    const developmentScript = `<script type="module">
-				import RefreshRuntime from 'http://localhost:3001/@react-refresh'
-				RefreshRuntime.injectIntoGlobalHook(window)
-				window.$RefreshReg$ = () => {}
-				window.$RefreshSig$ = () => (type) => type
-				window.__vite_plugin_react_preamble_installed__ = true
-		</script>
-      <script type="module" src="http://localhost:3001/@vite/client"></script>
-      <script type="module" src="http://localhost:3001/client-main.tsx"></script>`
 
     return `<!doctype html>
   <html>
@@ -42,7 +44,7 @@ export function serverSideRendering(routeTree: RouteTree) {
           }}
         />,
       )}
-      ${developmentScript}
+      ${mode === 'dev' ? VITE_DEV_AND_HMR : ''}
     </body>
   </html>
   `
