@@ -5,7 +5,7 @@
 # How to contribute to Tuono
 
 ## Contributions 
-Any feature contribution and suggestions is strongly appreciated.
+Any feature contribution or suggestion is strongly appreciated.
 Since the current project size there isn't yet a defined way to start a discussion. Consider to [open a new issue](https://github.com/Valerioageno/tuono/issues/new)
 or to reach me using my email address [valerioageno@yahoo.it](mailto:valerioageno@ahoo.it). I'm also available on twitter (X) DMs @valerioageno.
 
