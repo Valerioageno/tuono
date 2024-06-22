@@ -78,7 +78,6 @@ pub async fn watch() -> Result<()> {
             bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
             run_server.start();
             println!("Ready!");
-            should_reload = false;
         }
 
         // if Ctrl-C is received, quit
