@@ -5,8 +5,7 @@ import { RouterProvider } from '../router'
 import { createRouter } from '../router'
 
 type RouteTree = any
-
-type Mode = 'dev' | 'prod'
+type Mode = 'Dev' | 'Prod'
 
 const VITE_DEV_AND_HMR = `<script type="module">
 import RefreshRuntime from 'http://localhost:3001/@react-refresh'
@@ -18,10 +17,11 @@ window.__vite_plugin_react_preamble_installed__ = true
 <script type="module" src="http://localhost:3001/@vite/client"></script>
 <script type="module" src="http://localhost:3001/client-main.tsx"></script>`
 
-export function serverSideRendering(routeTree: RouteTree, mode: Mode) {
+export function serverSideRendering(routeTree: RouteTree) {
   return function render(payload: string | undefined): string {
     const props = payload ? JSON.parse(payload) : {}
 
+    const mode = props.mode as Mode
     const router = createRouter({ routeTree }) // Render the app
 
     const app = renderToString(
@@ -44,7 +44,7 @@ export function serverSideRendering(routeTree: RouteTree, mode: Mode) {
           }}
         />,
       )}
-      ${mode === 'dev' ? VITE_DEV_AND_HMR : ''}
+      ${mode === 'Dev' ? VITE_DEV_AND_HMR : ''}
     </body>
   </html>
   `

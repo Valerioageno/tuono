@@ -1,6 +1,7 @@
 use once_cell::sync::OnceCell;
+use serde::Serialize;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Serialize)]
 pub enum Mode {
     Dev,
     Prod,
