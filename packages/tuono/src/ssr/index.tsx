@@ -17,11 +17,27 @@ window.__vite_plugin_react_preamble_installed__ = true
 <script type="module" src="http://localhost:3001/@vite/client"></script>
 <script type="module" src="http://localhost:3001/client-main.tsx"></script>`
 
+function generateCssLinks(cssBundles: string[], mode: Mode): string {
+  if (mode === 'Dev') return ''
+  return cssBundles.reduce((acc, value) => {
+    return acc + `<link rel="stylesheet" type="text/css" href="${value}" />\n`
+  }, '')
+}
+
+function generateJsScripts(jsBundles: string[], mode: Mode): string {
+  if (mode === 'Dev') return ''
+  return jsBundles.reduce((acc, value) => {
+    return acc + `<script src="${value}"></script>\n`
+  }, '')
+}
+
 export function serverSideRendering(routeTree: RouteTree) {
   return function render(payload: string | undefined): string {
     const props = payload ? JSON.parse(payload) : {}
 
     const mode = props.mode as Mode
+    const jsBundles = props.jsBundles as string[]
+    const cssBundles = props.cssBundles as string[]
     const router = createRouter({ routeTree }) // Render the app
 
     const app = renderToString(
@@ -34,6 +50,7 @@ export function serverSideRendering(routeTree: RouteTree) {
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Playground</title>
+	  ${generateCssLinks(cssBundles, mode)}
     </head>
     <body>
       <div id="__tuono">${app}</div>
@@ -44,6 +61,7 @@ export function serverSideRendering(routeTree: RouteTree) {
           }}
         />,
       )}
+	  ${generateJsScripts(jsBundles, mode)}
       ${mode === 'Dev' ? VITE_DEV_AND_HMR : ''}
     </body>
   </html>

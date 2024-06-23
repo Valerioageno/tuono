@@ -52,7 +52,7 @@ use axum::response::Html;
 use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
 use std::collections::HashMap;
-use tuono_lib::{ssr, Ssr, Mode, GLOBAL_MODE};
+use tuono_lib::{ssr, Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
@@ -66,6 +66,10 @@ async fn main() {
     let fetch = Client::new();
 
     GLOBAL_MODE.set(MODE).unwrap();
+
+    if MODE == Mode::Prod {
+        load_manifest()
+    }
 
     let app = Router::new()
         // ROUTE_BUILDER

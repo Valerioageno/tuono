@@ -1,3 +1,4 @@
+pub mod manifest;
 mod mode;
 mod payload;
 mod request;
