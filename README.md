@@ -30,8 +30,8 @@ React is still React - it is just superpowered.
 **Rust is an hard language then writing server side code is hard as well right? (no again)**
 
 Tuono provides a collection of utilities to handle the server side code seamlessly with the React code.
-Each server side route is managed with a separate file alongside the React route (the client/server 
-logic matching is handled by Tuono itself).
+Each server side route is managed with a separate file alongside the React route. The routing is handled
+by Tuono based on the files defined within the `./src/routes` directory.
 
 ## Features
 
@@ -39,18 +39,18 @@ logic matching is handled by Tuono itself).
 - 🌐  Routing
 - 🔥  Hot Module Reload
 - 🍭  CSS modules
-- 📨  Server Side Rendering
-- 🌐  Multi thread backend
-- Create custom APIs*
+- 🧬  Server Side Rendering
+- 🧵  Multi thread backend
+- ⚙️   Build optimizations
+- Custom APIs*
 - Image optimization*
-- Build optimization*
 - Server streamed content*
 
 > *Development in progress
 
 ## Getting started
 
-As already mentioned above I strongly suggest to take a look to the
+As already mentioned above I strongly suggest you to take a look at the
 [tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md).
 
 Tuono is basically a CLI that provides all the commands to handle the fullstack project. 
@@ -64,7 +64,10 @@ To create a new project run `tuono new [NAME]` (optionally you can pass the `--t
 
 Then to run the local development environment run inside the project folder `tuono dev`
 
-> 💡 The `tuono build` command is not ready yet - I'm working on it right now.
+Finally when the project will be ready to be deployed just run `tuono build` to create the final React assets
+and to set the server project to the `production` mode.
+
+Now to execute it just run `cargo run --release`.
 
 ## Requirements
 
@@ -87,7 +90,7 @@ Then to run the local development environment run inside the project folder `tuo
 ```
 
 ## Contributing
-Any help or suggestion will be appreciated.
+Any help or suggestion will be appreciated and encouraged.
 
 ## License
 
