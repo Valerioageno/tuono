@@ -12,6 +12,14 @@ interface MatchesProps {
 
 const DYNAMIC_PATH_REGEX = /\[(.*?)\]/
 
+/*
+ * This function is also implemented on server side to match the bundle
+ * file to load at the first rendering.
+ *
+ * File: crates/tuono_lib/src/payload.rs
+ *
+ * Optimizations should occour on both
+ */
 export function getRouteByPathname(pathname: string): Route | undefined {
   const { routesById } = useRouter()
 

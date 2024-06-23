@@ -4,7 +4,8 @@ use std::process::Command;
 mod source_builder;
 use source_builder::{bundle_axum_source, create_client_entry_files};
 
-use crate::source_builder::check_tuono_folder;
+use crate::source_builder::{check_tuono_folder, Mode};
+
 mod scaffold_project;
 mod watch;
 
@@ -32,9 +33,9 @@ struct Args {
     action: Actions,
 }
 
-fn init_tuono_folder() -> std::io::Result<()> {
+fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
     check_tuono_folder()?;
-    bundle_axum_source()?;
+    bundle_axum_source(mode)?;
     create_client_entry_files()?;
 
     Ok(())
@@ -45,11 +46,11 @@ pub fn cli() -> std::io::Result<()> {
 
     match args.action {
         Actions::Dev => {
-            init_tuono_folder()?;
+            init_tuono_folder(Mode::Dev)?;
             watch::watch().unwrap();
         }
         Actions::Build => {
-            init_tuono_folder()?;
+            init_tuono_folder(Mode::Prod)?;
             let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
             let _ = &vite_build.output()?;
         }

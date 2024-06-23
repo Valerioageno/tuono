@@ -77,7 +77,7 @@ export function buildProd() {
       ...BASE_CONFIG,
       build: {
         ssr: true,
-        minify: false,
+        minify: true,
         outDir: '../out/server',
         emptyOutDir: true,
         rollupOptions: {

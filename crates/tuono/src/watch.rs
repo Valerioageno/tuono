@@ -6,7 +6,7 @@ use watchexec::Watchexec;
 use watchexec_signals::Signal;
 use watchexec_supervisor::job::{start_job, Job};
 
-use crate::source_builder::bundle_axum_source;
+use crate::source_builder::{bundle_axum_source, Mode};
 
 fn watch_react_src() -> Job {
     start_job(Arc::new(Command {
@@ -75,10 +75,9 @@ pub async fn watch() -> Result<()> {
             run_server.stop();
             build_ssr_bundle.stop();
             build_ssr_bundle.start();
-            bundle_axum_source().expect("Failed to bunlde rust source");
+            bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
             run_server.start();
             println!("Ready!");
-            should_reload = false;
         }
 
         // if Ctrl-C is received, quit
