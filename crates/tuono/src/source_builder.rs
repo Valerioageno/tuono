@@ -69,7 +69,10 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
-        .fallback_service(ServeDir::new("public").fallback(get(catch_all)))
+        .fallback_service(
+            ServeDir::new("public"))
+        .fallback_service(ServeDir::new("out/client")
+            .fallback(get(catch_all)))
         .with_state(fetch);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
