@@ -13,6 +13,12 @@ pub struct Location {
     hash: String,
 }
 
+impl Location {
+    pub fn pathname(&self) -> &String {
+        &self.pathname
+    }
+}
+
 impl<'a> From<&'a Uri> for Location {
     fn from(uri: &Uri) -> Self {
         Location {

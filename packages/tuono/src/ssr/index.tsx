@@ -20,14 +20,14 @@ window.__vite_plugin_react_preamble_installed__ = true
 function generateCssLinks(cssBundles: string[], mode: Mode): string {
   if (mode === 'Dev') return ''
   return cssBundles.reduce((acc, value) => {
-    return acc + `<link rel="stylesheet" type="text/css" href="${value}" />\n`
+    return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />\n`
   }, '')
 }
 
 function generateJsScripts(jsBundles: string[], mode: Mode): string {
   if (mode === 'Dev') return ''
   return jsBundles.reduce((acc, value) => {
-    return acc + `<script src="${value}"></script>\n`
+    return acc + `<script type="module" src="/${value}"></script>\n`
   }, '')
 }
 

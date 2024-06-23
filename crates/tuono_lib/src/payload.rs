@@ -1,9 +1,14 @@
 use crate::{manifest::MANIFEST, Mode, GLOBAL_MODE};
 use erased_serde::Serialize;
+use regex::Regex;
 use serde::Serialize as SerdeSerialize;
 
-use crate::request::Location;
-use crate::Request;
+use crate::request::{Location, Request};
+
+fn has_dynamic_path(route: &str) -> bool {
+    let regex = Regex::new(r"\[(.*?)\]").expect("Failed to create the regex");
+    regex.is_match(route)
+}
 
 #[derive(SerdeSerialize)]
 /// This is the payload sent to the client for hydration
@@ -14,7 +19,7 @@ pub struct Payload<'a> {
     #[serde(rename(serialize = "jsBundles"))]
     js_bundles: Option<Vec<&'a String>>,
     #[serde(rename(serialize = "cssBundles"))]
-    css_bundles: Option<&'a Vec<String>>,
+    css_bundles: Option<Vec<&'a String>>,
 }
 
 impl<'a> Payload<'a> {
@@ -35,6 +40,13 @@ impl<'a> Payload<'a> {
         serde_json::to_string(&self)
     }
 
+    /// This method adds the route specific bundles to the server
+    /// side rendered HTML.
+    ///
+    /// The same matching algorithm is implemented on the client side in
+    /// this file (packages/tuono/src/router/components/Matches.ts).
+    ///
+    /// Optimizations should occour on both.
     fn add_bundle_sources(&mut self) {
         // Manifest should always be loaded. The load happen before starting
         // the server.
@@ -43,11 +55,73 @@ impl<'a> Payload<'a> {
         // The main bundle should always exist.
         // The extension should be tsx even with JS only projects.
         let main_bundle = manifest
-            .get("client-main.tsx")
-            .expect("Failed to get client-main.tsx");
+            .get("client-main")
+            .expect("Failed to get client-main bundle");
 
-        self.js_bundles = Some(vec![&main_bundle.file]);
-        self.css_bundles = Some(&main_bundle.css);
+        let mut js_bundles_sources = vec![&main_bundle.file];
+        let mut css_bundles_sources = main_bundle.css.iter().collect::<Vec<&String>>();
+
+        let pathname = &self.router.pathname();
+
+        let bundle_data = manifest.get(*pathname);
+
+        if let Some(data) = bundle_data {
+            js_bundles_sources.push(&data.file);
+
+            data.css
+                .iter()
+                .for_each(|source| css_bundles_sources.push(source))
+        } else {
+            let dynamic_routes = manifest
+                .keys()
+                .filter(|path| has_dynamic_path(path))
+                .collect::<Vec<&String>>();
+
+            if !dynamic_routes.is_empty() {
+                let path_segments = pathname
+                    .split('/')
+                    .filter(|path| !path.is_empty())
+                    .collect::<Vec<&str>>();
+
+                for dyn_route in dynamic_routes.iter() {
+                    let dyn_route_segments = dyn_route
+                        .split('/')
+                        .filter(|path| !path.is_empty())
+                        .collect::<Vec<&str>>();
+
+                    let mut route_segments_collector: Vec<&str> = vec![];
+
+                    for i in 0..dyn_route_segments.len() {
+                        if path_segments.len() == i {
+                            break;
+                        }
+                        if dyn_route_segments[i] == path_segments[i]
+                            || has_dynamic_path(dyn_route_segments[i])
+                        {
+                            route_segments_collector.push(dyn_route_segments[i])
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if route_segments_collector.len() == path_segments.len() {
+                        let manifest_key = route_segments_collector.join("/");
+
+                        let route_data = manifest.get(&format!("/{manifest_key}"));
+                        if let Some(data) = route_data {
+                            js_bundles_sources.push(&data.file);
+                            data.css
+                                .iter()
+                                .for_each(|source| css_bundles_sources.push(source))
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        self.js_bundles = Some(js_bundles_sources);
+        self.css_bundles = Some(css_bundles_sources);
     }
 }
 
@@ -60,17 +134,61 @@ mod tests {
 
     use crate::manifest::BundleInfo;
 
-    fn prepare_payload(mode: Mode) -> Payload<'static> {
+    fn prepare_payload(uri: Option<&str>, mode: Mode) -> Payload<'static> {
         let mut manifest_mock = HashMap::new();
         manifest_mock.insert(
-            "client-main.tsx".to_string(),
+            "client-main".to_string(),
             BundleInfo {
                 file: "assets/bundled-file.js".to_string(),
                 css: vec!["assets/bundled-file.css".to_string()],
             },
         );
+        manifest_mock.insert(
+            "/".to_string(),
+            BundleInfo {
+                file: "assets/index.js".to_string(),
+
+                css: vec!["assets/index.css".to_string()],
+            },
+        );
+        manifest_mock.insert(
+            "/posts/[post]".to_string(),
+            BundleInfo {
+                file: "assets/posts/[post].js".to_string(),
+
+                css: vec!["assets/posts/[post].css".to_string()],
+            },
+        );
+        manifest_mock.insert(
+            "/posts/[post]/[comment]".to_string(),
+            BundleInfo {
+                file: "assets/posts/[post]/[comment].js".to_string(),
+
+                css: vec!["assets/posts/[post]/[comment].css".to_string()],
+            },
+        );
+        manifest_mock.insert(
+            "/posts/custom-post".to_string(),
+            BundleInfo {
+                file: "assets/custom-post.js".to_string(),
+
+                css: vec!["assets/custom-post.css".to_string()],
+            },
+        );
+        manifest_mock.insert(
+            "/about".to_string(),
+            BundleInfo {
+                file: "assets/about.js".to_string(),
+
+                css: vec!["assets/about.css".to_string()],
+            },
+        );
         MANIFEST.get_or_init(|| manifest_mock);
-        let location = Location::from(&"http://localhost:3000".parse::<Uri>().unwrap());
+        let location = Location::from(
+            &uri.unwrap_or("http://localhost:3000/")
+                .parse::<Uri>()
+                .unwrap(),
+        );
 
         Payload {
             router: location,
@@ -83,24 +201,93 @@ mod tests {
 
     #[test]
     fn should_load_the_bundles_on_mode_prod() {
-        let mut payload = prepare_payload(Mode::Prod);
+        let mut payload = prepare_payload(None, Mode::Prod);
 
         let _ = payload.client_payload();
         assert_eq!(
             payload.js_bundles,
-            Some(vec![&"assets/bundled-file.js".to_string()])
+            Some(vec![
+                &"assets/bundled-file.js".to_string(),
+                &"assets/index.js".to_string()
+            ])
         );
         assert_eq!(
             payload.css_bundles,
-            Some(&vec!["assets/bundled-file.css".to_string()])
+            Some(vec![
+                &"assets/bundled-file.css".to_string(),
+                &"assets/index.css".to_string()
+            ])
         );
     }
 
     #[test]
     fn should_not_load_the_bundles_on_mode_dev() {
-        let mut payload = prepare_payload(Mode::Dev);
+        let mut payload = prepare_payload(None, Mode::Dev);
         let _ = payload.client_payload();
         assert!(payload.js_bundles.is_none());
         assert!(payload.css_bundles.is_none());
+    }
+
+    #[test]
+    fn should_load_the_correct_single_dyn_path_bundles() {
+        let mut payload = prepare_payload(Some("http://localhost:3000/posts/a-post"), Mode::Prod);
+        let _ = payload.client_payload();
+        assert_eq!(
+            payload.js_bundles,
+            Some(vec![
+                &"assets/bundled-file.js".to_string(),
+                &"assets/posts/[post].js".to_string()
+            ])
+        );
+        assert_eq!(
+            payload.css_bundles,
+            Some(vec![
+                &"assets/bundled-file.css".to_string(),
+                &"assets/posts/[post].css".to_string()
+            ])
+        );
+    }
+
+    #[test]
+    fn should_load_the_correct_nested_dyn_path_bundles() {
+        let mut payload = prepare_payload(
+            Some("http://localhost:3000/posts/a-post/a-comment"),
+            Mode::Prod,
+        );
+        let _ = payload.client_payload();
+        assert_eq!(
+            payload.js_bundles,
+            Some(vec![
+                &"assets/bundled-file.js".to_string(),
+                &"assets/posts/[post]/[comment].js".to_string()
+            ])
+        );
+        assert_eq!(
+            payload.css_bundles,
+            Some(vec![
+                &"assets/bundled-file.css".to_string(),
+                &"assets/posts/[post]/[comment].css".to_string()
+            ])
+        );
+    }
+
+    #[test]
+    fn should_load_the_defined_path_bundles() {
+        let mut payload = prepare_payload(Some("http://localhost:3000/about"), Mode::Prod);
+        let _ = payload.client_payload();
+        assert_eq!(
+            payload.js_bundles,
+            Some(vec![
+                &"assets/bundled-file.js".to_string(),
+                &"assets/about.js".to_string()
+            ])
+        );
+        assert_eq!(
+            payload.css_bundles,
+            Some(vec![
+                &"assets/bundled-file.css".to_string(),
+                &"assets/about.css".to_string()
+            ])
+        );
     }
 }
