@@ -4,7 +4,13 @@ This tutorial is meant for giving you a sneak peek of the framework and is inten
 
 The first part is about the project setup and the base knowledge needed to work with tuono. The actual tutorial starts at [Tutorial introduction](#tutorial-introduction).
 
-> If you have already installed the tuono CLI you can download the tutorial source with `tuono new tuono-tutorial --template tutorial`
+> I'd love to hear your thoughts about the framework and the tutorial - feel free to reach me 
+at [valerioageno@yahoo.it](mailto:valerioageno@yahoo.it) or in Twitter (X) DMs 
+[@valerioageno](https://twitter.com/valerioageno
+
+This tutorial is **not meant** for people that don't know React - in that case I suggest you to first read the [React doc](https://react.dev/);
+
+Typescript and Rust knowledge is not a requirement though!
 
 ## Table of Content
 
@@ -17,6 +23,7 @@ The first part is about the project setup and the base knowledge needed to work 
 * [Create a stand-alone component](#create-a-stand-alone-component)
 * [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
 * [Error handling](#error-handling)
+* [Building for production](#building-for-production)
 * [Conclusion](#conclusion)
 
 ## CLI Installation
@@ -98,6 +105,9 @@ The file `index.rs` represents the server side capabilities for the index route.
 Now that we have some knowledge about the project structure let’s start the real tutorial. 
 
 The goal is to use the [PokeAPI](https://pokeapi.co/docs/v2) to list all the pokemons of the first generation (the best one btw) and then reserve a dynamic page for each one separately.
+
+> If you have already installed the tuono CLI and you prefer read the code instead of writing it yourself 
+you can download the tutorial source with `tuono new tuono-tutorial --template tutorial`
 
 ## Fetch all the pokemons
 
@@ -532,9 +542,33 @@ async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response
 If you now try to load a not existing pokemon (`http://localhost:3000/pokemons/tuono-pokemon`) you will 
 correctly receive a 404 status code in the console.
 
+## Building for production
+
+The source now is ready to be released. Both server and client have been managed in a unoptimized way
+to easy the development experience. To build the project to the production state just run:
+
+```shell
+$ tuono build
+```
+
+This command just created the final assets within the `out` directory. To run then the prodiction server
+run:
+
+```shell
+$ cargo run --release
+```
+
+Check again [`http://localhost:3000/`](http://localhost:3000/) - This environment now has all the
+optimizations ready to unleash the power of a rust server that seamessly renders a React application!🚀
+
+> Note: The `out` directory is not standalone. You can't rely just on it to run the production server.
+
 ## Conclusion
 
 That’s it! You just created a multi thread full stack application with rust and react. 
 
-The project is still under heavy development and the script for the production build (`tuono build`) is not ready yet but 
+The project is still under heavy development and many features are not ready yet but 
 I hope you got the taste of what is like working with rust and react in the same stack.
+
+As I mentioned in the introduction I'd love to hear what you thought about the framework and the tutorial - feel free to reach me 
+at [valerioageno@yahoo.it](mailto:valerioageno@yahoo.it) or in Twitter (X) DMs [@valerioageno](https://twitter.com/valerioageno).
