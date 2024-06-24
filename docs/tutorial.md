@@ -5,8 +5,8 @@ This tutorial is meant for giving you a sneak peek of the framework and is inten
 The first part is about the project setup and the base knowledge needed to work with tuono. The actual tutorial starts at [Tutorial introduction](#tutorial-introduction).
 
 > I'd love to hear your thoughts about the framework and the tutorial - feel free to reach me 
-at [valerioageno@yahoo.it](mailto:valerioageno@yahoo.it) or in Twitter (X) DMs 
-[@valerioageno](https://twitter.com/valerioageno
+at [valerioageno@yahoo.it](mailto:valerioageno@yahoo.it) or on Twitter (X) DMs 
+[@valerioageno](https://twitter.com/valerioageno)
 
 This tutorial is **not meant** for people that don't know React - in that case I suggest you to first read the [React doc](https://react.dev/);
 
