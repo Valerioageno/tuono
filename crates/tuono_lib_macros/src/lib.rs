@@ -7,5 +7,3 @@ mod handler;
 pub fn handler(args: TokenStream, item: TokenStream) -> TokenStream {
     handler::handler_core(args, item)
 }
-
-
