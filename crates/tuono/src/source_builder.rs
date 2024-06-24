@@ -81,7 +81,11 @@ async fn main() {
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
-    println!("\nDevelopment app ready at http://localhost:3000/");
+    if MODE == Mode::Dev {
+        println!("\nDevelopment app ready at http://localhost:3000/");
+    } else {
+        println!("\nProduction app ready at http://localhost:3000/");
+    }
     axum::serve(listener, app).await.unwrap();
 }
 
