@@ -283,7 +283,7 @@ Create alongside the `PokemonLink.tsx` component the CSS module `PokemonLink.mod
 }
 ```
 
-> 💡 SASS is supported out of the box. Just install the processor in the devDependencies `pnpm i -D sass` and run again `tuono dev`
+> 💡 SASS is supported out of the box. Just install the processor in the devDependencies `npm i -D sass` and run again `tuono dev`
 
 Then import the styles into the `PokemonLink` component as following:
 
