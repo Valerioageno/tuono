@@ -165,7 +165,7 @@ fn outro(folder_name: String) {
     }
 
     println!("\nInstall the dependencies:");
-    println!("pnpm install");
+    println!("npm install");
 
     println!("\nRun the local environment:");
     println!("tuono dev");
