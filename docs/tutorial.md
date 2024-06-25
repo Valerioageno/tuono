@@ -53,7 +53,7 @@ $ tuono new tuono-tutorial
 Get into the project folder and install the dependencies with:
 
 ```bash
-$ pnpm install
+$ npm install
 ```
 
 Open it with your favourite code editor.
