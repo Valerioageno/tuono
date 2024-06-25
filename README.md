@@ -74,7 +74,9 @@ Now to execute it just run `cargo run --release`.
 - rust
 - cargo
 - node
-- pnpm (other package managers support will be added soon)
+- npm/pnpm/yarn*
+
+> yarn [pnp](https://yarnpkg.com/features/pnp) is not supported yet
 
 ## Folder structure
 
