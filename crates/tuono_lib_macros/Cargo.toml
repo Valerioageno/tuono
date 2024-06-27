@@ -6,7 +6,7 @@ description = "The react/rust fullstack framework"
 repository = "https://github.com/Valerioageno/tuono"
 readme = "../../README.md"
 license-file = "../../LICENSE.md"
-categories = ["web-programming", "reactjs", "typescript", "framework", "fullstack"]
+categories = ["web-programming"]
 include = [
 		"src/*.rs",
 		"Cargo.toml"
