@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import type { Route } from '../route'
 import { useRouterStore } from './useRouterStore'
+import { fromUrlToParsedLocation } from '../utils/from-url-to-parsed-location'
 
 const isServer = typeof document === 'undefined'
 
@@ -15,6 +16,19 @@ declare global {
   }
 }
 
+interface TuonoApi {
+  data?: any
+  info: {
+    redirect_destination?: string
+  }
+}
+
+const fetchClientSideData = async (): Promise<TuonoApi> => {
+  const res = await fetch(`/__tuono/data${location.pathname}`)
+  const data: TuonoApi = await res.json()
+  return data
+}
+
 /*
  * Use the props provided by the SSR and dehydrate the
  * props for client side usage.
@@ -27,7 +41,10 @@ export function useServerSideProps<T>(
   serverSideProps: T,
 ): UseServerSidePropsReturn {
   const isFirstRendering = useRef<boolean>(true)
-  const location = useRouterStore((st) => st.location)
+  const [location, updateLocation] = useRouterStore((st) => [
+    st.location,
+    st.updateLocation,
+  ])
   const [isLoading, setIsLoading] = useState<boolean>(
     // Force loading if has handler
     route.options.hasHandler &&
@@ -53,8 +70,22 @@ export function useServerSideProps<T>(
       ;(async (): Promise<void> => {
         setIsLoading(true)
         try {
-          const res = await fetch(`/__tuono/data${location.pathname}`)
-          setData(await res.json())
+          const response = await fetchClientSideData()
+          if (response.info.redirect_destination) {
+            const parsedLocation = fromUrlToParsedLocation(
+              response.info.redirect_destination,
+            )
+
+            history.pushState(
+              parsedLocation.pathname,
+              '',
+              parsedLocation.pathname,
+            )
+
+            updateLocation(parsedLocation)
+            return
+          }
+          setData(response.data)
         } catch (error) {
           throw Error('Failed loading Server Side Data', { cause: error })
         } finally {

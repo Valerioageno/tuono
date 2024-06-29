@@ -15,6 +15,41 @@ pub enum Response {
     Props(Props),
 }
 
+#[derive(serde::Serialize)]
+struct JsonResponseInfo {
+    redirect_destination: Option<String>,
+}
+
+impl JsonResponseInfo {
+    fn new(redirect_destination: Option<String>) -> JsonResponseInfo {
+        JsonResponseInfo {
+            redirect_destination,
+        }
+    }
+}
+
+#[derive(serde::Serialize)]
+struct JsonResponse<'a> {
+    data: Option<&'a dyn Serialize>,
+    info: JsonResponseInfo,
+}
+
+impl<'a> JsonResponse<'a> {
+    fn new(props: &'a dyn Serialize) -> Self {
+        JsonResponse {
+            data: Some(props),
+            info: JsonResponseInfo::new(None),
+        }
+    }
+
+    fn new_redirect(destination: String) -> Self {
+        JsonResponse {
+            data: None,
+            info: JsonResponseInfo::new(Some(destination)),
+        }
+    }
+}
+
 impl Props {
     pub fn new(data: impl Serialize + 'static) -> Self {
         Props {
@@ -50,8 +85,14 @@ impl Response {
 
     pub fn json(&self) -> impl IntoResponse {
         match self {
-            Self::Props(Props { data, http_code }) => (*http_code, Json(data)).into_response(),
-            _ => (StatusCode::INTERNAL_SERVER_ERROR, axum::Json("{}")).into_response(),
+            Self::Props(Props { data, http_code }) => {
+                (*http_code, Json(JsonResponse::new(data))).into_response()
+            }
+            Self::Redirect(destination) => (
+                StatusCode::PERMANENT_REDIRECT,
+                Json(JsonResponse::new_redirect(destination.to_string())),
+            )
+                .into_response(),
         }
     }
 }
