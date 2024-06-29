@@ -1,5 +1,6 @@
 import type { ParsedLocation } from '../hooks/useRouterStore'
 
+// TODO: improve the whole react/rust URL parsing logic
 export function fromUrlToParsedLocation(href: string): ParsedLocation {
   /*
    * This function works on both server and client.
