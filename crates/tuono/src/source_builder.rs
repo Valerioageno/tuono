@@ -49,7 +49,7 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 
 use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
-use tuono_lib::{Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
+use tuono_lib::{Ssr, Mode, GLOBAL_MODE, manifest::load_manifest, server::Server};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
@@ -68,19 +68,12 @@ async fn main() {
         load_manifest()
     }
 
-    let app = Router::new()
+    let router = Router::new()
         // ROUTE_BUILDER
         .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(tuono_lib::catch_all::catch_all)))
         .with_state(fetch);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-
-    if MODE == Mode::Dev {
-        println!("\nDevelopment app ready at http://localhost:3000/");
-    } else {
-        println!("\nProduction app ready at http://localhost:3000/");
-    }
-    axum::serve(listener, app).await.unwrap();
+    Server::init(router).start().await
 }
 "##;
 
