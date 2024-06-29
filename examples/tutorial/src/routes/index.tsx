@@ -37,6 +37,7 @@ export default function IndexPage({
         </div>
       </div>
       <ul style={{ flexWrap: 'wrap', display: 'flex', gap: 10 }}>
+        <PokemonLink pokemon={{ name: 'GOAT' }} id={0} />
         {data.results.map((pokemon, i) => {
           return <PokemonLink pokemon={pokemon} id={i + 1} key={i} />
         })}

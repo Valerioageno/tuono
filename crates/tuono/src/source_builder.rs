@@ -153,7 +153,7 @@ impl Route {
         }
 
         Route {
-            module_import: module.as_str().to_string().replace('/', "_"),
+            module_import: module.as_str().to_string().replace('/', "_").to_lowercase(),
             axum_route,
         }
     }
@@ -329,6 +329,7 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/[post].rs",
+            "/home/user/Documents/tuono/src/routes/posts/UPPERCASE.rs",
         ];
 
         routes
@@ -340,6 +341,7 @@ mod tests {
             ("/about.rs", "about"),
             ("/posts/index.rs", "posts_index"),
             ("/posts/[post].rs", "posts_dyn_post"),
+            ("/posts/UPPERCASE.rs", "posts_uppercase"),
         ];
 
         results.into_iter().for_each(|(path, module_import)| {

@@ -23,6 +23,7 @@ Typescript and Rust knowledge is not a requirement though!
 * [Create a stand-alone component](#create-a-stand-alone-component)
 * [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
 * [Error handling](#error-handling)
+* [Handle redirections](#handle-redirections)
 * [Building for production](#building-for-production)
 * [Conclusion](#conclusion)
 
@@ -98,7 +99,7 @@ The file `index.rs` represents the server side capabilities for the index route.
 
 - Passing server side props
 - Changing http status code
-- Redirect/Rewrite to a different route (Available soon)
+- Redirecting to a different route
 
 ## Tutorial introduction
 
@@ -541,6 +542,41 @@ async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response
 
 If you now try to load a not existing pokemon (`http://localhost:3000/pokemons/tuono-pokemon`) you will 
 correctly receive a 404 status code in the console.
+
+## Handle redirections
+
+What if there is a pokemon among all of them that should be considered the GOAT? What
+we are going to do right now is creating a new route `/pokemons/GOAT` that points to the best
+pokemon of the first generation.
+
+First let's create a new route by just creating an new file `/pokemons/GOAT.rs` and pasting the following code:
+
+```rs
+// src/routes/pokemons/GOAT.rs
+use tuono_lib::{Request, Response};
+
+#[tuono_lib::handler]
+async fn redirect_to_goat(_: Request<'_>, _: reqwest::Client) -> Response {
+    // Of course the GOAT is mewtwo - feel free to select your favourite 😉
+    Response::Redirect("/pokemons/mewtwo".to_string()) 
+}
+```
+
+Now let's create the button in the home page to actually point to it!
+
+```diff
+// src/routes/index.tsx
+
+<ul style={{ flexWrap: 'wrap', display: 'flex', gap: 10 }}>
+++      <PokemonLink pokemon={{ name: 'GOAT' }} id={0} />
+        {data.results.map((pokemon, i) => {
+          return <PokemonLink pokemon={pokemon} id={i + 1} key={i} />
+        })}
+</ul>
+```
+
+Now at [http://localhost:3000/](http:/localhost:3000/) you will find a new link at the beginning of the list.
+Click on it and see the application automatically redirecting you to your favourite pokemon's route!
 
 ## Building for production
 
