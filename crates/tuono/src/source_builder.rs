@@ -47,12 +47,9 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use axum::extract::{Path, Request};
-use axum::response::Html;
 use axum::{routing::get, Router};
 use tower_http::services::ServeDir;
-use std::collections::HashMap;
-use tuono_lib::{ssr, Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
+use tuono_lib::{Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
@@ -73,7 +70,7 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
-        .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(catch_all)))
+        .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(tuono_lib::catch_all::catch_all)))
         .with_state(fetch);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
@@ -84,26 +81,6 @@ async fn main() {
         println!("\nProduction app ready at http://localhost:3000/");
     }
     axum::serve(listener, app).await.unwrap();
-}
-
-async fn catch_all(Path(params): Path<HashMap<String, String>>, request: Request) -> Html<String> {
-    let pathname = &request.uri();
-    let headers = &request.headers();
-
-    let req = tuono_lib::Request::new(pathname, headers, params);
-
-
-    // TODO: remove unwrap
-    let payload = tuono_lib::Payload::new(&req, &"")
-        .client_payload()
-        .unwrap();
-
-    let result = ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
-
-    match result {
-        Ok(html) => Html(html),
-        _ => Html("500 internal server error".to_string()),
-    }
 }
 "##;
 

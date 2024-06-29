@@ -4,6 +4,7 @@ mod payload;
 mod request;
 mod response;
 
+pub mod catch_all;
 pub mod ssr;
 
 pub use mode::{Mode, GLOBAL_MODE};
