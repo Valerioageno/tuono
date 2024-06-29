@@ -7,17 +7,17 @@ import { createRouter } from '../router'
 type RouteTree = any
 type Mode = 'Dev' | 'Prod'
 
-const VITE_PORT = 3001
+const TUONO_DEV_SERVER_PORT = 3000
 
 const VITE_DEV_AND_HMR = `<script type="module">
-import RefreshRuntime from 'http://localhost:${VITE_PORT}/vite-server/@react-refresh'
+import RefreshRuntime from 'http://localhost:${TUONO_DEV_SERVER_PORT}/vite-server/@react-refresh'
 RefreshRuntime.injectIntoGlobalHook(window)
 window.$RefreshReg$ = () => {}
 window.$RefreshSig$ = () => (type) => type
 window.__vite_plugin_react_preamble_installed__ = true
 </script>
-<script type="module" src="http://localhost:${VITE_PORT}/vite-server/@vite/client"></script>
-<script type="module" src="http://localhost:${VITE_PORT}/vite-server/client-main.tsx"></script>`
+<script type="module" src="http://localhost:${TUONO_DEV_SERVER_PORT}/vite-server/@vite/client"></script>
+<script type="module" src="http://localhost:${TUONO_DEV_SERVER_PORT}/vite-server/client-main.tsx"></script>`
 
 function generateCssLinks(cssBundles: string[], mode: Mode): string {
   if (mode === 'Dev') return ''

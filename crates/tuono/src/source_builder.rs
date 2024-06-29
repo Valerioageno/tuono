@@ -47,9 +47,11 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use axum::extract::{Path, Request};
-use axum::response::Html;
+use axum::extract::{Path, Request, State};
+use axum::response::{Html, IntoResponse, Response};
+use axum::body::Body;
 use axum::{routing::get, Router};
+use axum::http::{HeaderName, HeaderValue};
 use tower_http::services::ServeDir;
 use std::collections::HashMap;
 use tuono_lib::{ssr, Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
@@ -73,6 +75,7 @@ async fn main() {
 
     let app = Router::new()
         // ROUTE_BUILDER
+        .route("/vite-server/*path", get(reverse_proxy))
         .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(catch_all)))
         .with_state(fetch);
 
@@ -103,6 +106,26 @@ async fn catch_all(Path(params): Path<HashMap<String, String>>, request: Request
     match result {
         Ok(html) => Html(html),
         _ => Html("500 internal server error".to_string()),
+    }
+}
+
+pub async fn reverse_proxy(State(client): State<Client>, Path(path): Path<String>) -> impl IntoResponse {
+    match client.get(format!("http://localhost:3001/vite-server/{path}")).send().await {
+        Ok(res) => {
+            let mut response_builder = Response::builder().status(res.status().as_u16());
+            
+            {
+                let headers = response_builder.headers_mut().unwrap();
+                res.headers().into_iter().for_each(|(name, value)| {
+                    let name = HeaderName::from_bytes(name.as_ref()).unwrap();
+                    let value = HeaderValue::from_bytes(value.as_ref()).unwrap();
+                    headers.insert(name, value);
+                });
+            }
+
+            response_builder.body(Body::from_stream(res.bytes_stream())).unwrap()
+        },
+        Err(_) => todo!()
     }
 }
 "##;
