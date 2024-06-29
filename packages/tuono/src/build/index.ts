@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 import { ViteFsRouter } from './tuono-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 
+const VITE_PORT = 3001
+
 const BASE_CONFIG: InlineConfig = {
   root: '.tuono',
   logLevel: 'silent',
@@ -43,8 +45,10 @@ export function developmentCSRWatch() {
   ;(async () => {
     const server = await createServer({
       ...BASE_CONFIG,
+      // Entry point for dev server proxy
+      base: '/vite-server/',
       server: {
-        port: 3001,
+        port: VITE_PORT,
         strictPort: true,
       },
       build: {
