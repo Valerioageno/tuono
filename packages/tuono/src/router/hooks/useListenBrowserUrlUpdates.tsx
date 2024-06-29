@@ -1,4 +1,4 @@
-import { useRouterStore } from './useRouterStore.tsx'
+import { useRouterStore } from './useRouterStore'
 import { useEffect } from 'react'
 
 /*

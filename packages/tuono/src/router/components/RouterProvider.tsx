@@ -1,6 +1,6 @@
 import { getRouterContext } from './RouterContext'
 import { Matches } from './Matches'
-import { useListenBrowserUrlUpdates } from '../hooks/useListenBrowserUrlUpdates.tsx'
+import { useListenBrowserUrlUpdates } from '../hooks/useListenBrowserUrlUpdates'
 import React, { type ReactNode } from 'react'
 import { initRouterStore } from '../hooks/useRouterStore'
 import type { ServerProps } from '../types'
