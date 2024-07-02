@@ -5,6 +5,8 @@ use axum::routing::{get, Router};
 use ssr_rs::Ssr;
 use tower_http::services::ServeDir;
 
+use crate::catch_all::catch_all;
+
 const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
 
@@ -44,7 +46,7 @@ impl Server {
         let router = self
             .router
             .to_owned()
-            .fallback_service(ServeDir::new(public_dir).fallback(get(crate::catch_all::catch_all)));
+            .fallback_service(ServeDir::new(public_dir).fallback(get(catch_all)));
 
         axum::serve(listener, router).await.unwrap();
     }

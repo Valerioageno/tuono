@@ -1,4 +1,5 @@
-use crate::{manifest::MANIFEST, Mode, GLOBAL_MODE};
+use crate::manifest::MANIFEST;
+use crate::mode::{Mode, GLOBAL_MODE};
 use erased_serde::Serialize;
 use regex::Regex;
 use serde::Serialize as SerdeSerialize;
