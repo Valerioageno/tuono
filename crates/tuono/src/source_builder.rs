@@ -47,7 +47,7 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use tuono_lib::{Mode, server::Server, Router, get};
+use tuono_lib::{tokio, Mode, server::Server, axum::Router, axum::routing::get};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;

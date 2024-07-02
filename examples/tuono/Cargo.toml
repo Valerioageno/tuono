@@ -8,11 +8,5 @@ name = "tuono"
 path = ".tuono/main.rs"
 
 [dependencies]
-axum = {version = "0.7.5", features = ["json"]}
-tokio = { version = "1.37.0", features = ["full"] }
-tower-http = {version = "0.5.2", features = ["fs"]}
-serde = { version = "1.0.202", features = ["derive"] }
 tuono_lib = { path = "../../crates/tuono_lib/"}
-serde_json = "1.0"
-reqwest = {version = "0.12.4", features = ["json"]}
 
