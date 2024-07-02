@@ -8,6 +8,9 @@ pub mod catch_all;
 pub mod server;
 pub mod ssr;
 
+pub use axum::routing::get;
+pub use axum::Router;
+
 pub use mode::{Mode, GLOBAL_MODE};
 pub use payload::Payload;
 pub use request::Request;

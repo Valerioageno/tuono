@@ -47,9 +47,7 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use axum::{routing::get, Router};
-use tower_http::services::ServeDir;
-use tuono_lib::{Ssr, Mode, GLOBAL_MODE, manifest::load_manifest, server::Server};
+use tuono_lib::{Mode, server::Server, Router, get};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
@@ -58,22 +56,13 @@ const MODE: Mode = /*MODE*/;
 
 #[tokio::main]
 async fn main() {
-    Ssr::create_platform();
-
     let fetch = Client::new();
-
-    GLOBAL_MODE.set(MODE).unwrap();
-
-    if MODE == Mode::Prod {
-        load_manifest()
-    }
 
     let router = Router::new()
         // ROUTE_BUILDER
-        .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(tuono_lib::catch_all::catch_all)))
         .with_state(fetch);
 
-    Server::init(router).start().await
+    Server::init(router, MODE).start().await
 }
 "##;
 
