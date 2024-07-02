@@ -1,4 +1,4 @@
-use crate::{Mode, GLOBAL_MODE};
+use crate::mode::{Mode, GLOBAL_MODE};
 use lazy_static::lazy_static;
 use ssr_rs::Ssr;
 use std::cell::RefCell;

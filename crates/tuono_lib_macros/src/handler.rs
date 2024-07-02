@@ -8,9 +8,9 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
     let fn_name = item.clone().sig.ident;
 
     quote! {
-        use axum::response::IntoResponse;
+        use tuono_lib::axum::response::IntoResponse;
         use std::collections::HashMap;
-        use axum::extract::{State, Path};
+        use tuono_lib::axum::extract::{State, Path};
         use reqwest::Client;
 
         #item
@@ -18,7 +18,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
         pub async fn route(
             Path(params): Path<HashMap<String, String>>,
             State(client): State<Client>,
-            request: axum::extract::Request
+            request: tuono_lib::axum::extract::Request
         ) -> impl IntoResponse {
            let pathname = &request.uri();
            let headers = &request.headers();
@@ -31,7 +31,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
         pub async fn api(
             Path(params): Path<HashMap<String, String>>,
             State(client): State<Client>,
-            request: axum::extract::Request
+            request: tuono_lib::axum::extract::Request
         ) -> impl IntoResponse{
            let pathname = &request.uri();
            let headers = &request.headers();

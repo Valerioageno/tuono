@@ -47,12 +47,7 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use axum::extract::{Path, Request};
-use axum::response::Html;
-use axum::{routing::get, Router};
-use tower_http::services::ServeDir;
-use std::collections::HashMap;
-use tuono_lib::{ssr, Ssr, Mode, GLOBAL_MODE, manifest::load_manifest};
+use tuono_lib::{tokio, Mode, Server, axum::Router, axum::routing::get};
 use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
@@ -61,56 +56,18 @@ const MODE: Mode = /*MODE*/;
 
 #[tokio::main]
 async fn main() {
-    Ssr::create_platform();
-
     let fetch = Client::new();
 
-    GLOBAL_MODE.set(MODE).unwrap();
-
-    if MODE == Mode::Prod {
-        load_manifest()
-    }
-
-    let app = Router::new()
+    let router = Router::new()
         // ROUTE_BUILDER
-        .fallback_service(ServeDir::new("/*public_dir*/").fallback(get(catch_all)))
         .with_state(fetch);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-
-    if MODE == Mode::Dev {
-        println!("\nDevelopment app ready at http://localhost:3000/");
-    } else {
-        println!("\nProduction app ready at http://localhost:3000/");
-    }
-    axum::serve(listener, app).await.unwrap();
-}
-
-async fn catch_all(Path(params): Path<HashMap<String, String>>, request: Request) -> Html<String> {
-    let pathname = &request.uri();
-    let headers = &request.headers();
-
-    let req = tuono_lib::Request::new(pathname, headers, params);
-
-
-    // TODO: remove unwrap
-    let payload = tuono_lib::Payload::new(&req, &"")
-        .client_payload()
-        .unwrap();
-
-    let result = ssr::Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
-
-    match result {
-        Ok(html) => Html(html),
-        _ => Html("500 internal server error".to_string()),
-    }
+    Server::init(router, MODE).start().await
 }
 "##;
 
 const ROOT_FOLDER: &str = "src/routes";
 const DEV_FOLDER: &str = ".tuono";
-const DEV_PUBLIC_DIR: &str = "public";
-const PROD_PUBLIC_DIR: &str = "out/client";
 
 #[derive(Debug, PartialEq, Eq)]
 struct Route {
@@ -254,12 +211,6 @@ pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
 }
 
 fn generate_axum_source(source_builder: &SourceBuilder, mode: Mode) -> String {
-    let public_dir = if mode == Mode::Prod {
-        PROD_PUBLIC_DIR
-    } else {
-        DEV_PUBLIC_DIR
-    };
-
     AXUM_ENTRY_POINT
         .replace(
             "// ROUTE_BUILDER\n",
@@ -269,7 +220,6 @@ fn generate_axum_source(source_builder: &SourceBuilder, mode: Mode) -> String {
             "// MODULE_IMPORTS\n",
             &create_modules_declaration(&source_builder.route_map),
         )
-        .replace("/*public_dir*/", public_dir)
         .replace("/*MODE*/", mode.as_str())
 }
 
@@ -411,21 +361,5 @@ mod tests {
         let prod = Mode::Prod.as_str();
         assert_eq!(dev, "Mode::Dev");
         assert_eq!(prod, "Mode::Prod");
-    }
-
-    #[test]
-    fn should_replace_the_correct_public_folder_dev() {
-        let source_builder = SourceBuilder::new();
-        let source = generate_axum_source(&source_builder, Mode::Dev);
-
-        assert!(source.contains(r#"ServeDir::new("public")"#))
-    }
-
-    #[test]
-    fn should_replace_the_correct_public_folder_prod() {
-        let source_builder = SourceBuilder::new();
-        let source = generate_axum_source(&source_builder, Mode::Prod);
-
-        assert!(source.contains(r#"ServeDir::new("out/client")"#))
     }
 }
