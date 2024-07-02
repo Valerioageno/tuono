@@ -68,8 +68,6 @@ async fn main() {
 
 const ROOT_FOLDER: &str = "src/routes";
 const DEV_FOLDER: &str = ".tuono";
-const DEV_PUBLIC_DIR: &str = "public";
-const PROD_PUBLIC_DIR: &str = "out/client";
 
 #[derive(Debug, PartialEq, Eq)]
 struct Route {
@@ -213,12 +211,6 @@ pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
 }
 
 fn generate_axum_source(source_builder: &SourceBuilder, mode: Mode) -> String {
-    let public_dir = if mode == Mode::Prod {
-        PROD_PUBLIC_DIR
-    } else {
-        DEV_PUBLIC_DIR
-    };
-
     AXUM_ENTRY_POINT
         .replace(
             "// ROUTE_BUILDER\n",
@@ -228,7 +220,6 @@ fn generate_axum_source(source_builder: &SourceBuilder, mode: Mode) -> String {
             "// MODULE_IMPORTS\n",
             &create_modules_declaration(&source_builder.route_map),
         )
-        .replace("/*public_dir*/", public_dir)
         .replace("/*MODE*/", mode.as_str())
 }
 
@@ -370,21 +361,5 @@ mod tests {
         let prod = Mode::Prod.as_str();
         assert_eq!(dev, "Mode::Dev");
         assert_eq!(prod, "Mode::Prod");
-    }
-
-    #[test]
-    fn should_replace_the_correct_public_folder_dev() {
-        let source_builder = SourceBuilder::new();
-        let source = generate_axum_source(&source_builder, Mode::Dev);
-
-        assert!(source.contains(r#"ServeDir::new("public")"#))
-    }
-
-    #[test]
-    fn should_replace_the_correct_public_folder_prod() {
-        let source_builder = SourceBuilder::new();
-        let source = generate_axum_source(&source_builder, Mode::Prod);
-
-        assert!(source.contains(r#"ServeDir::new("out/client")"#))
     }
 }
