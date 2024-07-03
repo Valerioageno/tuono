@@ -48,7 +48,6 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // Do not manually change it
 
 use tuono_lib::{tokio, Mode, Server, axum::Router, axum::routing::get};
-use reqwest::Client;
 
 const MODE: Mode = /*MODE*/;
 
@@ -56,11 +55,9 @@ const MODE: Mode = /*MODE*/;
 
 #[tokio::main]
 async fn main() {
-    let fetch = Client::new();
-
     let router = Router::new()
         // ROUTE_BUILDER
-        .with_state(fetch);
+        ;
 
     Server::init(router, MODE).start().await
 }
