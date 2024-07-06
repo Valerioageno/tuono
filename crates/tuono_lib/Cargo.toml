@@ -19,7 +19,7 @@ path = "src/lib.rs"
 
 [dependencies]
 ssr_rs = "0.5.5"
-axum = {version = "0.7.5", features = ["json"]}
+axum = {version = "0.7.5", features = ["json", "ws"]}
 tokio = { version = "1.37.0", features = ["full"] }
 serde = { version = "1.0.202", features = ["derive"] }
 erased-serde = "0.4.5"
@@ -32,3 +32,4 @@ either = "1.13.0"
 tower-http = {version = "0.5.2", features = ["fs"]}
 
 tuono_lib_macros = {path = "../tuono_lib_macros", version = "0.3.1"}
+tungstenite = "0.23.0"

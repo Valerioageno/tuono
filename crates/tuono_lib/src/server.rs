@@ -5,7 +5,7 @@ use axum::routing::{get, Router};
 use ssr_rs::Ssr;
 use tower_http::services::ServeDir;
 
-use crate::internal_handlers::{catch_all, vite_reverse_proxy};
+use crate::internal_handlers::{catch_all, vite_reverse_proxy, vite_websocket_proxy};
 
 const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
@@ -49,6 +49,7 @@ impl Server {
             .router
             .to_owned()
             .route("/vite-server/*path", get(vite_reverse_proxy))
+            .route("/ws", get(vite_websocket_proxy))
             .fallback_service(ServeDir::new(public_dir).fallback(get(catch_all)))
             .with_state(fetch);
 
