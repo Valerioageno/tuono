@@ -35,24 +35,28 @@ impl Server {
 
         if self.mode == Mode::Dev {
             println!("\nDevelopment app ready at http://localhost:3000/");
+            let router = self
+                .router
+                .to_owned()
+                .route("/vite-server/", get(vite_websocket_proxy))
+                .route("/vite-server/*path", get(vite_reverse_proxy))
+                .fallback_service(ServeDir::new(DEV_PUBLIC_DIR).fallback(get(catch_all)))
+                .with_state(fetch);
+
+            axum::serve(listener, router)
+                .await
+                .expect("Failed to serve development server");
         } else {
             println!("\nProduction app ready at http://localhost:3000/");
+            let router = self
+                .router
+                .to_owned()
+                .fallback_service(ServeDir::new(PROD_PUBLIC_DIR).fallback(get(catch_all)))
+                .with_state(fetch);
+
+            axum::serve(listener, router)
+                .await
+                .expect("Failed to serve production server");
         }
-
-        let public_dir = if self.mode == Mode::Dev {
-            DEV_PUBLIC_DIR
-        } else {
-            PROD_PUBLIC_DIR
-        };
-
-        let router = self
-            .router
-            .to_owned()
-            .route("/vite-server/", get(vite_websocket_proxy))
-            .route("/vite-server/*path", get(vite_reverse_proxy))
-            .fallback_service(ServeDir::new(public_dir).fallback(get(catch_all)))
-            .with_state(fetch);
-
-        axum::serve(listener, router).await.unwrap();
     }
 }
