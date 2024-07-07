@@ -1,4 +1,4 @@
-mod internal_handlers;
+mod catch_all;
 mod manifest;
 mod mode;
 mod payload;
@@ -6,6 +6,8 @@ mod request;
 mod response;
 mod server;
 mod ssr;
+mod vite_reverse_proxy;
+mod vite_websocket_proxy;
 
 pub use mode::Mode;
 pub use payload::Payload;

@@ -5,7 +5,10 @@ use axum::routing::{get, Router};
 use ssr_rs::Ssr;
 use tower_http::services::ServeDir;
 
-use crate::internal_handlers::{catch_all, vite_reverse_proxy, vite_websocket_proxy};
+use crate::{
+    catch_all::catch_all, vite_reverse_proxy::vite_reverse_proxy,
+    vite_websocket_proxy::vite_websocket_proxy,
+};
 
 const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
