@@ -48,8 +48,8 @@ impl Server {
         let router = self
             .router
             .to_owned()
+            .route("/vite-server/", get(vite_websocket_proxy))
             .route("/vite-server/*path", get(vite_reverse_proxy))
-            .route("/ws", get(vite_websocket_proxy))
             .fallback_service(ServeDir::new(public_dir).fallback(get(catch_all)))
             .with_state(fetch);
 

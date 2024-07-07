@@ -32,4 +32,8 @@ either = "1.13.0"
 tower-http = {version = "0.5.2", features = ["fs"]}
 
 tuono_lib_macros = {path = "../tuono_lib_macros", version = "0.3.1"}
+# Match the same version used by axum
+tokio-tungstenite = "0.21.0"
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 tungstenite = "0.23.0"
+

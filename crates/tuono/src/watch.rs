@@ -72,11 +72,11 @@ pub async fn watch() -> Result<()> {
 
         if should_reload {
             println!("Reloading...");
-            run_server.stop();
+            //run_server.stop();
             build_ssr_bundle.stop();
             build_ssr_bundle.start();
             bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
-            run_server.start();
+            //run_server.start();
             println!("Ready!");
         }
 
