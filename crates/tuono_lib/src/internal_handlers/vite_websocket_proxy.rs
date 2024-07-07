@@ -40,6 +40,7 @@ async fn handle_socket(mut tuono_socket: WebSocket) {
         }
         Err(e) => {
             eprintln!("Failed to connect to vite's WebSocket. Error: {e}");
+            // As fallback vite automatically connect to port 3001.
             return;
         }
     };
@@ -57,7 +58,10 @@ async fn handle_socket(mut tuono_socket: WebSocket) {
                     ws::Message::Pong(payload) => Message::Pong(payload),
                     ws::Message::Ping(payload) => Message::Ping(payload),
                     ws::Message::Binary(payload) => Message::Binary(payload),
-                    _ => todo!(),
+                    _ => {
+                        eprintln!("Unexpected message from the browser to vite WebSocket: {msg:?}");
+                        Message::Text("Unhandled".to_string())
+                    }
                 };
 
                 vite_sender
@@ -82,7 +86,10 @@ async fn handle_socket(mut tuono_socket: WebSocket) {
                 Message::Ping(payload) => ws::Message::Ping(payload),
                 Message::Pong(payload) => ws::Message::Pong(payload),
                 Message::Binary(payload) => ws::Message::Binary(payload),
-                _ => todo!(),
+                _ => {
+                    eprintln!("Unexpected message from the vite WebSocket to the browser: {msg:?}");
+                    ws::Message::Text("Unhandled".to_string())
+                }
             };
 
             tuono_sender
