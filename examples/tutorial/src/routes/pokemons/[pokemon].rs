@@ -1,6 +1,6 @@
 // src/routes/pokemons/[pokemon].rs
-use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
+use tuono_lib::reqwest::{Client, StatusCode};
 use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
@@ -14,11 +14,11 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
+async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 
-    return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
+    match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
         Ok(res) => {
             if res.status() == StatusCode::NOT_FOUND {
                 return Response::Props(Props::new_with_status("{}", StatusCode::NOT_FOUND));
@@ -30,5 +30,5 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
             "{}",
             StatusCode::INTERNAL_SERVER_ERROR,
         )),
-    };
+    }
 }

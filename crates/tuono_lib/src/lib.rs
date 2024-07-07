@@ -1,4 +1,4 @@
-mod catch_all;
+mod internal_handlers;
 mod manifest;
 mod mode;
 mod payload;
@@ -16,4 +16,5 @@ pub use tuono_lib_macros::handler;
 
 // Re-exports
 pub use axum;
+pub use reqwest;
 pub use tokio;

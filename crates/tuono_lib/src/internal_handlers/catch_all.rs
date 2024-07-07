@@ -15,7 +15,7 @@ pub async fn catch_all(
     // TODO: remove unwrap
     let payload = Payload::new(&req, &"").client_payload().unwrap();
 
-    let result = Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload)));
+    let result = Js::render_to_string(Some(&payload));
 
     match result {
         Ok(html) => Html(html),

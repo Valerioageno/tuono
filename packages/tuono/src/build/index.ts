@@ -12,6 +12,8 @@ const BASE_CONFIG: InlineConfig = {
   plugins: [react(), ViteFsRouter(), LazyLoadingPlugin()],
 }
 
+const VITE_PORT = 3001
+
 export function developmentSSRBundle() {
   ;(async () => {
     await build({
@@ -43,8 +45,10 @@ export function developmentCSRWatch() {
   ;(async () => {
     const server = await createServer({
       ...BASE_CONFIG,
+      // Entry point for the development vite proxy
+      base: '/vite-server/',
       server: {
-        port: 3001,
+        port: VITE_PORT,
         strictPort: true,
       },
       build: {

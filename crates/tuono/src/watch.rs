@@ -57,27 +57,32 @@ pub async fn watch() -> Result<()> {
     build_ssr_bundle.to_wait().await;
 
     let wx = Watchexec::new(move |mut action| {
-        let mut should_reload = false;
+        let mut should_reload_ssr_bundle = false;
+        let mut should_reload_rust_server = false;
 
         for event in action.events.iter() {
             for path in event.paths() {
-                if path.0.to_string_lossy().ends_with(".rs")
-                    // Either tsx and jsx
-                    || path.0.to_string_lossy().ends_with("sx")
-                {
-                    should_reload = true
+                if path.0.to_string_lossy().ends_with(".rs") {
+                    should_reload_rust_server = true
+                }
+
+                // Either tsx and jsx
+                if path.0.to_string_lossy().ends_with("sx") {
+                    should_reload_ssr_bundle = true
                 }
             }
         }
 
-        if should_reload {
+        if should_reload_rust_server {
             println!("Reloading...");
             run_server.stop();
-            build_ssr_bundle.stop();
-            build_ssr_bundle.start();
             bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
             run_server.start();
-            println!("Ready!");
+        }
+
+        if should_reload_ssr_bundle {
+            build_ssr_bundle.stop();
+            build_ssr_bundle.start();
         }
 
         // if Ctrl-C is received, quit
