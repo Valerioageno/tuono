@@ -2,7 +2,7 @@ use axum::extract::ws::{self, WebSocket, WebSocketUpgrade};
 use axum::response::IntoResponse;
 use futures_util::{SinkExt, StreamExt};
 use tokio_tungstenite::connect_async;
-use tokio_tungstenite::tungstenite::Message;
+use tokio_tungstenite::tungstenite::{Error, Message};
 use tungstenite::client::IntoClientRequest;
 use tungstenite::ClientRequestBuilder;
 
@@ -58,10 +58,9 @@ async fn handle_socket(mut tuono_socket: WebSocket) {
                     ws::Message::Pong(payload) => Message::Pong(payload),
                     ws::Message::Ping(payload) => Message::Ping(payload),
                     ws::Message::Binary(payload) => Message::Binary(payload),
-                    _ => {
-                        eprintln!("Unexpected message from the browser to vite WebSocket: {msg:?}");
-                        Message::Text("Unhandled".to_string())
-                    }
+                    // Hard to match axum and tungstenite close payload.
+                    // Not a priority
+                    ws::Message::Close(_) => Message::Close(None),
                 };
 
                 vite_sender
@@ -86,16 +85,20 @@ async fn handle_socket(mut tuono_socket: WebSocket) {
                 Message::Ping(payload) => ws::Message::Ping(payload),
                 Message::Pong(payload) => ws::Message::Pong(payload),
                 Message::Binary(payload) => ws::Message::Binary(payload),
+                // Hard to match axum and tungstenite close payload.
+                // Not a priority
+                Message::Close(_) => ws::Message::Close(None),
                 _ => {
                     eprintln!("Unexpected message from the vite WebSocket to the browser: {msg:?}");
                     ws::Message::Text("Unhandled".to_string())
                 }
             };
 
-            tuono_sender
-                .send(msg_to_browser)
-                .await
-                .expect("Failed to send back message to browser");
+            if let Err(err) = tuono_sender.send(msg_to_browser).await {
+                if err.to_string() != Error::AlreadyClosed.to_string() {
+                    eprintln!("Failed to send back message from vite to browser: {err}")
+                }
+            }
         }
     });
 }
