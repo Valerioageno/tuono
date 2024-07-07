@@ -72,7 +72,7 @@ impl Response {
             Self::Props(Props { data, http_code }) => {
                 let payload = Payload::new(&req, data).client_payload().unwrap();
 
-                match Js::SSR.with(|ssr| ssr.borrow_mut().render_to_string(Some(&payload))) {
+                match Js::render_to_string(Some(&payload)) {
                     Ok(html) => (*http_code, Html(html)).into_response(),
                     Err(_) => {
                         (*http_code, Html("500 Internal server error".to_string())).into_response()
