@@ -8,5 +8,5 @@ Check [tuono](https://github.com/Valerioageno/tuono) for more.
 
 ## Credits
 
-This plugin is strongly inspired by the [@tanstack/router](https://tanstack.com/router/latest) 
+This plugin is strongly inspired by the [@tanstack/router](https://tanstack.com/router/latest)
 route generator plugin.
