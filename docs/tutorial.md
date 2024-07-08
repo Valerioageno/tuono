@@ -119,6 +119,7 @@ Clear the `index.rs` file and paste:
 ```rust
 // src/routes/index.rs
 use serde::{Deserialize, Serialize};
+use tuono_lib::reqwest::Client;
 use tuono_lib::{Props, Request, Response};
 
 const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
@@ -135,7 +136,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response {
+async fn get_all_pokemons(_req: Request<'_>, fetch: Client) -> Response {
     return match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
@@ -328,6 +329,7 @@ Let’s first work on the server side file. Paste into the new `[pokemon].rs` fi
 ```rust
 // src/routes/pokemons/[pokemon].rs
 use serde::{Deserialize, Serialize};
+use tuono_lib::reqwest::Client;
 use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
@@ -341,7 +343,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
+async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 
@@ -468,8 +470,9 @@ Let's see how it works!
 
 ```diff
 // src/routes/pokemons/[pokemon].rs
-++ use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
+-- use tuono_lib::reqwest::Client;
+++ use tuono_lib::reqwest::{Client, StatusCode};
 use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
@@ -483,7 +486,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
+async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 
@@ -507,8 +510,9 @@ async fn get_pokemon(req: Request<'_>, fetch: reqwest::Client) -> Response {
 
 ```diff
 // src/routes/index.rs
-++ use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
+-- use tuono_lib::reqwest::Client;
+++ use tuono_lib::reqwest::{Client, StatusCode};
 use tuono_lib::{Props, Request, Response};
 
 const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
@@ -525,7 +529,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_all_pokemons(_req: Request<'_>, fetch: reqwest::Client) -> Response {
+async fn get_all_pokemons(_req: Request<'_>, fetch: Client) -> Response {
     return match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
@@ -553,10 +557,10 @@ First let's create a new route by just creating an new file `/pokemons/GOAT.rs` 
 
 ```rs
 // src/routes/pokemons/GOAT.rs
-use tuono_lib::{Request, Response};
+use tuono_lib::{reqwest::Client, Request, Response};
 
 #[tuono_lib::handler]
-async fn redirect_to_goat(_: Request<'_>, _: reqwest::Client) -> Response {
+async fn redirect_to_goat(_: Request<'_>, _: Client) -> Response {
     // Of course the GOAT is mewtwo - feel free to select your favourite 😉
     Response::Redirect("/pokemons/mewtwo".to_string()) 
 }
