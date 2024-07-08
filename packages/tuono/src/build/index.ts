@@ -1,6 +1,6 @@
 import { build, createServer, InlineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { ViteFsRouter } from 'tuono-fs-router-vite-plugin'
+import ViteFsRouter from 'tuono-fs-router-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 
 const BASE_CONFIG: InlineConfig = {

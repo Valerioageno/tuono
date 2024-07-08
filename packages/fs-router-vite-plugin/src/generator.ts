@@ -1,4 +1,3 @@
-import * as fs from 'fs'
 import * as fsp from 'fs/promises'
 import path from 'path'
 
@@ -16,12 +15,9 @@ import {
 } from './utils'
 
 import type { Config, RouteNode, RouteSubNode } from './types'
+import { ROUTES_FOLDER, ROOT_PATH_ID, GENERATED_ROUTE_TREE } from './constants'
 
 import { format } from 'prettier'
-
-const ROUTES_FOLDER = './src/routes/'
-const ROOT_PATH_ID = '__root'
-const GENERATED_ROUTE_TREE = './.tuono/routeTree.gen.ts'
 
 let latestTask = 0
 
