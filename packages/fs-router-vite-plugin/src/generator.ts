@@ -14,7 +14,7 @@ import {
   removeLayoutSegments,
 } from './utils'
 
-import type { Config, RouteNode, RouteSubNode } from './types'
+import type { Config, RouteNode } from './types'
 import { ROUTES_FOLDER, ROOT_PATH_ID, GENERATED_ROUTE_TREE } from './constants'
 
 import { format } from 'prettier'
@@ -164,8 +164,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
     (d): string => d.routePath,
   ]).filter((d) => ![`/${ROOT_PATH_ID}`].includes(d.routePath || ''))
 
-  const routePiecesByPath: Record<string, RouteSubNode> = {}
-
   // Loop over the flat list of routeNodes and
   // build up a tree based on the routeNodes' routePath
   const routeNodes: RouteNode[] = []
@@ -195,10 +193,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
   function buildRouteConfig(nodes: RouteNode[], depth = 1): string {
     const children = nodes.map((node) => {
       if (node.isLayout) {
-        return
-      }
-
-      if (node.isLayout && !node.children?.length) {
         return
       }
 
