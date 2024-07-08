@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "The react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -88,7 +88,7 @@
     "@types/node": "^20.12.7",
     "@vitejs/plugin-react-swc": "^3.7.0",
     "fast-text-encoding": "^1.0.6",
-    "prettier": "^3.2.4",
+    "tuono-fs-router-vite-plugin": "workspace:*",
     "tuono-lazy-fn-vite-plugin": "workspace:*",
     "vite": "^5.2.11",
     "zustand": "4.4.7"
@@ -100,6 +100,7 @@
     "@types/babel__traverse": "^7.20.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "prettier": "^3.2.4",
     "jsdom": "^24.0.0",
     "vitest": "^1.5.2"
   },

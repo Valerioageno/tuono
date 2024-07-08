@@ -11,17 +11,6 @@ export interface RouteNode {
   variableName?: string
 }
 
-/**
- * @deprecated
- */
-export interface RouteSubNode {
-  component?: RouteNode
-  errorComponent?: RouteNode
-  pendingComponent?: RouteNode
-  loader?: RouteNode
-  lazy?: RouteNode
-}
-
 export interface Config {
   folderName: string
   generatedRouteTree: string

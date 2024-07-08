@@ -13,7 +13,8 @@
   },
   "workspaces": [
     "tuono",
-	"tuono-lazy-fn-vite-plugin"
+	"tuono-lazy-fn-vite-plugin",
+	"tuono-fs-router-vite-plugin"
   ],
   "author": "Valerio Ageno",
   "license": "MIT",
