@@ -1,9 +1,9 @@
 [package]
 name = "tuono_lib_macros"
-version = "0.4.2"
+version = "0.4.3"
 edition = "2021"
 description = "The react/rust fullstack framework"
-keywords = [ "react", "typescript", "fullstack", "web", "server-side-rendering"]
+keywords = [ "react", "typescript", "fullstack", "web", "ssr"]
 repository = "https://github.com/Valerioageno/tuono"
 readme = "../../README.md"
 license-file = "../../LICENSE.md"
