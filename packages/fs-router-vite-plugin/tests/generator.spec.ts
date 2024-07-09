@@ -35,8 +35,6 @@ describe('generator works', async () => {
         getRouteTreeFileText(folderName),
       ])
 
-      console.log(generatedRouteTree)
-
       expect(generatedRouteTree).equal(expectedRouteTree)
     },
   )
