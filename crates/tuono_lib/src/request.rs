@@ -19,8 +19,8 @@ impl Location {
     }
 }
 
-impl<'a> From<&'a Uri> for Location {
-    fn from(uri: &Uri) -> Self {
+impl From<Uri> for Location {
+    fn from(uri: Uri) -> Self {
         Location {
             href: uri.to_string(),
             pathname: uri.path().to_string(),
@@ -33,18 +33,14 @@ impl<'a> From<&'a Uri> for Location {
 }
 
 #[derive(Debug, Clone)]
-pub struct Request<'a> {
-    uri: &'a Uri,
-    pub headers: &'a HeaderMap,
+pub struct Request {
+    uri: Uri,
+    pub headers: HeaderMap,
     pub params: HashMap<String, String>,
 }
 
-impl<'a> Request<'a> {
-    pub fn new(
-        uri: &'a Uri,
-        headers: &'a HeaderMap,
-        params: HashMap<String, String>,
-    ) -> Request<'a> {
+impl Request {
+    pub fn new(uri: Uri, headers: HeaderMap, params: HashMap<String, String>) -> Request {
         Request {
             uri,
             headers,
@@ -53,6 +49,6 @@ impl<'a> Request<'a> {
     }
 
     pub fn location(&self) -> Location {
-        Location::from(self.uri)
+        Location::from(self.uri.to_owned())
     }
 }

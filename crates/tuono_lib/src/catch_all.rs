@@ -7,10 +7,10 @@ pub async fn catch_all(
     Path(params): Path<HashMap<String, String>>,
     request: Request,
 ) -> Html<String> {
-    let pathname = &request.uri();
-    let headers = &request.headers();
+    let pathname = request.uri();
+    let headers = request.headers();
 
-    let req = crate::Request::new(pathname, headers, params);
+    let req = crate::Request::new(pathname.to_owned(), headers.to_owned(), params);
 
     // TODO: remove unwrap
     let payload = Payload::new(&req, &"").client_payload().unwrap();

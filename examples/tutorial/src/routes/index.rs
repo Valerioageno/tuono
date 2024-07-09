@@ -17,7 +17,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_all_pokemons(_req: Request<'_>, fetch: Client) -> Response {
+async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
     match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
