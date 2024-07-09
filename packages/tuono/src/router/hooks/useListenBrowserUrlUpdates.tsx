@@ -1,7 +1,7 @@
 import { useRouterStore } from './useRouterStore'
 import { useEffect } from 'react'
 
-/*
+/**
  * This hook is meant to handle just browser related location updates
  * like the back and forward buttons.
  */

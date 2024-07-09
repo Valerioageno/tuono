@@ -26,6 +26,8 @@ interface RouterState {
 export const initRouterStore = (props?: ServerProps): void => {
   const updateLocation = useRouterStore((st) => st.updateLocation)
 
+  // Init the store in the server in order to correctly
+  // SSR the components that depend on the router.
   if (typeof window === 'undefined') {
     updateLocation({
       pathname: props?.router.pathname || '',
@@ -35,6 +37,8 @@ export const initRouterStore = (props?: ServerProps): void => {
     })
   }
 
+  // Update the store on the client side before the first
+  // rendering
   useLayoutEffect(() => {
     const { pathname, hash, href, search } = window.location
     updateLocation({

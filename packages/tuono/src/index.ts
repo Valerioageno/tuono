@@ -5,6 +5,7 @@ import {
   Link,
   RouterProvider,
   dynamic,
+  useRouter,
 } from './router'
 
 export type { TuonoProps } from './types'
@@ -16,4 +17,5 @@ export {
   Link,
   RouterProvider,
   dynamic,
+  useRouter,
 }
