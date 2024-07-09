@@ -24,7 +24,7 @@ pub struct Payload<'a> {
 }
 
 impl<'a> Payload<'a> {
-    pub fn new(req: &Request, props: &'a dyn Serialize) -> Payload<'a> {
+    pub fn new(req: &'a Request, props: &'a dyn Serialize) -> Payload<'a> {
         Payload {
             router: req.location(),
             props,
@@ -135,7 +135,7 @@ mod tests {
 
     use crate::manifest::BundleInfo;
 
-    fn prepare_payload(uri: Option<&str>, mode: Mode) -> Payload<'static> {
+    fn prepare_payload<'a>(uri: Option<&'a str>, mode: Mode) -> Payload<'a> {
         let mut manifest_mock = HashMap::new();
         manifest_mock.insert(
             "client-main".to_string(),
@@ -185,11 +185,13 @@ mod tests {
             },
         );
         MANIFEST.get_or_init(|| manifest_mock);
-        let location = Location::from(
-            uri.unwrap_or("http://localhost:3000/")
-                .parse::<Uri>()
-                .unwrap(),
-        );
+
+        let uri = uri
+            .unwrap_or("http://localhost:3000/")
+            .parse::<Uri>()
+            .unwrap();
+
+        let location = Location::from(uri);
 
         Payload {
             router: location,

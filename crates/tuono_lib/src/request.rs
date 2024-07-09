@@ -8,9 +8,7 @@ use axum::http::{HeaderMap, Uri};
 pub struct Location {
     href: String,
     pathname: String,
-    search: HashMap<String, String>,
     search_str: String,
-    hash: String,
 }
 
 impl Location {
@@ -24,10 +22,7 @@ impl From<Uri> for Location {
         Location {
             href: uri.to_string(),
             pathname: uri.path().to_string(),
-            // TODO: handler search map
-            search: HashMap::new(),
             search_str: uri.query().unwrap_or("").to_string(),
-            hash: "".to_string(),
         }
     }
 }
