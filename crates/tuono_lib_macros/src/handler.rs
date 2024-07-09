@@ -19,10 +19,10 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             State(client): State<tuono_lib::reqwest::Client>,
             request: tuono_lib::axum::extract::Request
         ) -> impl IntoResponse {
-           let pathname = &request.uri();
-           let headers = &request.headers();
+           let pathname = request.uri();
+           let headers = request.headers();
 
-           let req = tuono_lib::Request::new(pathname, headers, params);
+           let req = tuono_lib::Request::new(pathname.to_owned(), headers.to_owned(), params);
 
            #fn_name(req.clone(), client).await.render_to_string(req)
         }
@@ -32,10 +32,10 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             State(client): State<tuono_lib::reqwest::Client>,
             request: tuono_lib::axum::extract::Request
         ) -> impl IntoResponse{
-           let pathname = &request.uri();
-           let headers = &request.headers();
+           let pathname = request.uri();
+           let headers = request.headers();
 
-           let req = tuono_lib::Request::new(pathname, headers, params);
+           let req = tuono_lib::Request::new(pathname.to_owned(), headers.to_owned(), params);
 
            #fn_name(req.clone(), client).await.json()
         }

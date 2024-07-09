@@ -136,7 +136,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_all_pokemons(_req: Request<'_>, fetch: Client) -> Response {
+async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
     return match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
@@ -343,7 +343,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
+async fn get_pokemon(req: Request, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 
@@ -486,7 +486,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
+async fn get_pokemon(req: Request, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 
@@ -529,7 +529,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_all_pokemons(_req: Request<'_>, fetch: Client) -> Response {
+async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
     return match fetch.get(ALL_POKEMON).send().await {
         Ok(res) => {
             let data = res.json::<Pokemons>().await.unwrap();
@@ -560,7 +560,7 @@ First let's create a new route by just creating an new file `/pokemons/GOAT.rs` 
 use tuono_lib::{reqwest::Client, Request, Response};
 
 #[tuono_lib::handler]
-async fn redirect_to_goat(_: Request<'_>, _: Client) -> Response {
+async fn redirect_to_goat(_: Request, _: Client) -> Response {
     // Of course the GOAT is mewtwo - feel free to select your favourite 😉
     Response::Redirect("/pokemons/mewtwo".to_string()) 
 }

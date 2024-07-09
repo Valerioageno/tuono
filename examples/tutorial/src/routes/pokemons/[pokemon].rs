@@ -14,7 +14,7 @@ struct Pokemon {
 }
 
 #[tuono_lib::handler]
-async fn get_pokemon(req: Request<'_>, fetch: Client) -> Response {
+async fn get_pokemon(req: Request, fetch: Client) -> Response {
     // The param `pokemon` is defined in the route filename [pokemon].rs
     let pokemon = req.params.get("pokemon").unwrap();
 

@@ -24,7 +24,7 @@ pub struct Payload<'a> {
 }
 
 impl<'a> Payload<'a> {
-    pub fn new(req: &Request<'a>, props: &'a dyn Serialize) -> Payload<'a> {
+    pub fn new(req: &Request, props: &'a dyn Serialize) -> Payload<'a> {
         Payload {
             router: req.location(),
             props,
@@ -186,7 +186,7 @@ mod tests {
         );
         MANIFEST.get_or_init(|| manifest_mock);
         let location = Location::from(
-            &uri.unwrap_or("http://localhost:3000/")
+            uri.unwrap_or("http://localhost:3000/")
                 .parse::<Uri>()
                 .unwrap(),
         );
