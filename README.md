@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">Tuono<br>The react/rust fullstack framework</h1>
 <p align="center">
-⚠️ This project is under heavy development. API might drastically change ⚠️
+⚠️ This project is under heavy development ⚠️
 </p>
 <div align="center">
     <img src="https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg" />
