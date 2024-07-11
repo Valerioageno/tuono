@@ -8,9 +8,9 @@ use axum::http::{HeaderMap, Uri};
 pub struct Location {
     href: String,
     pathname: String,
-    search: HashMap<String, String>,
+    #[serde(rename(serialize = "searchStr"))]
     search_str: String,
-    hash: String,
+    search: HashMap<String, String>,
 }
 
 impl Location {
@@ -21,13 +21,13 @@ impl Location {
 
 impl From<Uri> for Location {
     fn from(uri: Uri) -> Self {
+        let query = uri.query().unwrap_or("");
         Location {
+            // TODO: build correct href
             href: uri.to_string(),
             pathname: uri.path().to_string(),
-            // TODO: handler search map
-            search: HashMap::new(),
-            search_str: uri.query().unwrap_or("").to_string(),
-            hash: "".to_string(),
+            search_str: query.to_string(),
+            search: serde_urlencoded::from_str(query).unwrap_or(HashMap::new()),
         }
     }
 }

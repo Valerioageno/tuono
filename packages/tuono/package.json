@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "The react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -100,8 +100,8 @@
     "@types/babel__traverse": "^7.20.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "prettier": "^3.2.4",
     "jsdom": "^24.0.0",
+    "prettier": "^3.2.4",
     "vitest": "^1.5.2"
   },
   "sideEffects": false,

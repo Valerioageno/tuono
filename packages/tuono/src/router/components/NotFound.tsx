@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { useRouter } from '../hooks/useRouter'
 import { RouteMatch } from './RouteMatch'
 import Link from './Link'
+import { useInternalRouter } from '../hooks/useInternalRouter'
 
 export default function NotFound(): JSX.Element {
-  const router = useRouter()
+  const router = useInternalRouter()
 
   const custom404Route = router.routesById['/404']
 

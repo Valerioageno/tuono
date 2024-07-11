@@ -8,8 +8,8 @@ describe('Test getRouteByPathname fn', () => {
   })
 
   test('match routes by ids', () => {
-    vi.mock('../hooks/useRouter.tsx', () => ({
-      useRouter: (): { routesById: Record<string, any> } => {
+    vi.mock('../hooks/useInternalRouter.tsx', () => ({
+      useInternalRouter: (): { routesById: Record<string, any> } => {
         return {
           routesById: {
             '/': { id: '/' },

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useRouter } from '../hooks/useRouter'
+import { useInternalRouter } from '../hooks/useInternalRouter'
 import { useRouterStore } from '../hooks/useRouterStore'
 import type { Route } from '../route'
 import { RouteMatch } from './RouteMatch'
@@ -21,7 +21,7 @@ const DYNAMIC_PATH_REGEX = /\[(.*?)\]/
  * Optimizations should occour on both
  */
 export function getRouteByPathname(pathname: string): Route | undefined {
-  const { routesById } = useRouter()
+  const { routesById } = useInternalRouter()
 
   if (routesById[pathname]) return routesById[pathname]
 
