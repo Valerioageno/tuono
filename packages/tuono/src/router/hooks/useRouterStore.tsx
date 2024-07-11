@@ -6,7 +6,7 @@ import type { ServerProps } from '../types'
 export interface ParsedLocation {
   href: string
   pathname: string
-  search?: URLSearchParams
+  search: Record<string, string>
   searchStr: string
   hash: string
 }
@@ -32,8 +32,9 @@ export const initRouterStore = (props?: ServerProps): void => {
     updateLocation({
       pathname: props?.router.pathname || '',
       hash: '',
-      href: '',
-      searchStr: '',
+      href: props?.router.href || '',
+      searchStr: props?.router.searchStr || '',
+      search: {},
     })
   }
 
@@ -46,7 +47,7 @@ export const initRouterStore = (props?: ServerProps): void => {
       hash,
       href,
       searchStr: search,
-      search: new URLSearchParams(search),
+      search: Object.fromEntries(new URLSearchParams(search)),
     })
   }, [])
 }
@@ -58,7 +59,7 @@ export const useRouterStore = create<RouterState>()((set) => ({
   location: {
     href: '',
     pathname: '',
-    search: undefined,
+    search: {},
     searchStr: '',
     hash: '',
   },

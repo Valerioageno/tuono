@@ -1,8 +1,7 @@
 import 'fast-text-encoding' // Mandatory for React18
 import * as React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
-import { RouterProvider } from '../router'
-import { createRouter } from '../router'
+import { RouterProvider, createRouter } from '../router'
 
 type RouteTree = any
 type Mode = 'Dev' | 'Prod'

@@ -15,7 +15,7 @@ export const useListenBrowserUrlUpdates = (): void => {
       hash,
       href,
       searchStr: search,
-      search: new URLSearchParams(search),
+      search: Object.fromEntries(new URLSearchParams(search)),
     })
   }
   useEffect(() => {

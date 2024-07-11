@@ -4,6 +4,10 @@ export interface Segment {
 }
 
 export interface ServerProps {
-  router: Location
+  router: {
+    href: string
+    pathname: string
+    searchStr: string
+  }
   props: any
 }
