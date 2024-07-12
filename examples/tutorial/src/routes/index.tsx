@@ -1,5 +1,5 @@
 // src/routes/index.tsx
-import type { TuonoProps } from 'tuono'
+import { Head, type TuonoProps } from 'tuono'
 import PokemonLink from '../components/PokemonLink'
 
 interface Pokemon {
@@ -19,6 +19,9 @@ export default function IndexPage({
 
   return (
     <>
+      <Head>
+        <title>Tuono tutorial</title>
+      </Head>
       <header className="header">
         <a href="https://crates.io/crates/tuono" target="_blank">
           Crates
