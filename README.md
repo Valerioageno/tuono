@@ -53,19 +53,21 @@ by Tuono based on the files defined within the `./src/routes` directory.
 As already mentioned above I strongly suggest you to take a look at the
 [tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md).
 
-Tuono is basically a CLI that provides all the commands to handle the fullstack project. 
-To download it you need [cargo](https://doc.rust-lang.org/cargo/) which is the [rust](https://www.rust-lang.org/)
+Tuono is the CLI that provides all the needed commands to handle the fullstack project. 
+To download it is required [cargo](https://doc.rust-lang.org/cargo/) which is the [rust](https://www.rust-lang.org/)
 package manager.
 
-To download and install it you just need to run `cargo install tuono`.
+Then run `cargo install tuono`.
 
-To create a new project run `tuono new [NAME]` (optionally you can pass the `--template` flag - check the 
+To list all the available commands run `tuono -h`
+
+To create a new project run `tuono new [NAME]` (optionally you can pass the `--template` (or `-t`) flag - check the 
 [examples](https://github.com/Valerioageno/tuono/tree/main/examples) folder).
 
 Then to run the local development environment run inside the project folder `tuono dev`
 
 Finally when the project will be ready to be deployed just run `tuono build` to create the final React assets
-and to set the server project to the `production` mode.
+and to set the server project in the `production` mode.
 
 Now to execute it just run `cargo run --release`.
 
