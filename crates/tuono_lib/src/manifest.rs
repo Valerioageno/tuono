@@ -7,10 +7,15 @@ use std::path::PathBuf;
 
 const VITE_MANIFEST_PATH: &str = "./out/client/.vite/manifest.json";
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct BundleInfo {
     pub file: String,
+    #[serde(default = "default_css_vector")]
     pub css: Vec<String>,
+}
+
+fn default_css_vector() -> Vec<String> {
+    Vec::with_capacity(0)
 }
 
 /// Manifest is the mapping between the vite output bundled files
@@ -44,6 +49,73 @@ fn remap_manifest_keys(manifest: HashMap<String, BundleInfo>) -> HashMap<String,
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn correctly_parse_the_manifest_json() {
+        let manifest_example = r#"{
+  "../src/routes/index.tsx": {
+    "file": "assets/index.js",
+    "name": "index",
+    "src": "../src/routes/index.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "client-main.tsx"
+    ],
+    "css": [
+      "assets/index.css"
+    ]
+  },
+  "meta-tags-lib": {
+    "file": "assets/meta-lib.js",
+    "name": "meta-tags-lib",
+    "imports": [
+      "client-main.tsx"
+    ]
+  },
+  "client-main.tsx": {
+    "file": "assets/client-main.js",
+    "name": "client-main",
+    "src": "client-main.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "../src/routes/index.tsx",
+      "../src/routes/pokemons/[pokemon].tsx"
+    ],
+    "css": [
+      "assets/client-main.css"
+    ]
+  }
+}"#;
+
+        let parsed_manifest =
+            serde_json::from_str::<HashMap<String, BundleInfo>>(manifest_example).unwrap();
+
+        let mut result = HashMap::new();
+        result.insert(
+            "../src/routes/index.tsx".to_string(),
+            BundleInfo {
+                file: "assets/index.js".to_string(),
+                css: vec!["assets/index.css".to_string()],
+            },
+        );
+        result.insert(
+            "client-main.tsx".to_string(),
+            BundleInfo {
+                file: "assets/client-main.js".to_string(),
+                css: vec!["assets/client-main.css".to_string()],
+            },
+        );
+
+        result.insert(
+            "meta-tags-lib".to_string(),
+            BundleInfo {
+                file: "assets/meta-lib.js".to_string(),
+                css: Vec::new(),
+            },
+        );
+
+        assert_eq!(parsed_manifest, result);
+    }
 
     #[test]
     fn should_correctly_remap_the_manifest() {
