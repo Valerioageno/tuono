@@ -23,6 +23,7 @@ Typescript and Rust knowledge is not a requirement though!
 * [Create a stand-alone component](#create-a-stand-alone-component)
 * [Create the /pokemons/[pokemon] route](#create-the-pokemonspokemon-route)
 * [Error handling](#error-handling)
+* [Seo and meta tags](#seo-and-meta-tags)
 * [Handle redirections](#handle-redirections)
 * [Building for production](#building-for-production)
 * [Conclusion](#conclusion)
@@ -546,6 +547,88 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 
 If you now try to load a not existing pokemon (`http://localhost:3000/pokemons/tuono-pokemon`) you will 
 correctly receive a 404 status code in the console.
+
+## Seo and meta tags
+
+The website now works and the http errors are meaningful but we should also take care to be meaningful
+for the web crawlers. The best way to do it is to enrich the meta tags like the `<title>` and the
+`<description>`.
+
+To do so `tuono` exposes also the `<Head />` component useful exactly for handling this scenario. Let's update the `/` and the
+`/pokemons/[pokemon]` routes with this.
+
+```diff
+// src/routes/index.tsx
+import type { TuonoProps } from "tuono";
+++ import { Head } from "tuono"
+
+interface Pokemon {
+  name: string
+}
+
+interface IndexProps {
+  results: Pokemon[]
+}
+
+export default function IndexPage({
+  data,
+}: TuonoProps<IndexProps>): JSX.Element {
+  if (!data?.results) {
+    return <></>;
+  }
+
+  return (
+    <>
+++    <Head>
+++      <title>Tuono tutorial</title>
+++    </Head>
+      <header className="header">
+        <a href="https://crates.io/crates/tuono" target="_blank">
+          Crates
+        </a>
+        <a href="https://www.npmjs.com/package/tuono" target="_blank">
+          Npm
+        </a>
+      </header>
+      <div className="title-wrap">
+        <h1 className="title">
+          TU<span>O</span>NO
+        </h1>
+        <div className="logo">
+          <img src="rust.svg" className="rust" />
+          <img src="react.svg" className="react" />
+        </div>
+      </div>
+      <ul style={{ flexWrap: "wrap", display: "flex", gap: 10 }}>
+        {data.results.map((pokemon) => {
+          return pokemon.name;
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+```diff
+// src/routes/pokemons/[pokemon].tsx
+-- import { TuonoProps } from "tuono";
+++ import { TuonoProps, Head } from "tuono";
+import PokemonView from "../../components/PokemonView";
+
+export default function Pokemon({ data }: TuonoProps): JSX.Element {
+--  return <PokemonView pokemon={data} />;
+++  return (
+++        <>
+++            <Head>
+++                <title>Pokemon: ${data?.name}</title>
+++            </Head>
+++            <PokemonView pokemon={data} />
+++        </>
+++    )
+}
+```
+
+The `Head` component takes as children any valid HTML meta tag.
 
 ## Handle redirections
 

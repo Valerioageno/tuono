@@ -1,4 +1,4 @@
-import type { TuonoProps } from 'tuono'
+import { Head, type TuonoProps } from 'tuono'
 import PokemonView from '../../components/PokemonView'
 
 interface Pokemon {
@@ -11,5 +11,12 @@ interface Pokemon {
 export default function PokemonPage({
   data,
 }: TuonoProps<Pokemon>): JSX.Element {
-  return <PokemonView pokemon={data} />
+  return (
+    <>
+      <Head>
+        <title>Pokemon: {data?.name}</title>
+      </Head>
+      <PokemonView pokemon={data} />
+    </>
+  )
 }

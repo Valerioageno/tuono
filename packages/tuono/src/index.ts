@@ -1,3 +1,4 @@
+import Head from 'react-meta-tags'
 import {
   createRoute,
   createRootRoute,
@@ -18,4 +19,5 @@ export {
   RouterProvider,
   dynamic,
   useRouter,
+  Head,
 }

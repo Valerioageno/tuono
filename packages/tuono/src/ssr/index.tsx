@@ -1,6 +1,8 @@
 import 'fast-text-encoding' // Mandatory for React18
 import * as React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
+import MetaTagsServer from 'react-meta-tags/server'
+import { MetaTagsContext } from 'react-meta-tags'
 import { RouterProvider, createRouter } from '../router'
 
 type RouteTree = any
@@ -42,16 +44,22 @@ export function serverSideRendering(routeTree: RouteTree) {
     const cssBundles = props.cssBundles as string[]
     const router = createRouter({ routeTree }) // Render the app
 
+    const metaTagsInstance = MetaTagsServer()
+
     const app = renderToString(
-      <RouterProvider router={router} serverProps={props} />,
+      <MetaTagsContext extract={metaTagsInstance.extract}>
+        <RouterProvider router={router} serverProps={props} />
+      </MetaTagsContext>,
     )
+
+    const metaTags = metaTagsInstance.renderToString()
 
     return `<!doctype html>
   <html>
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Playground</title>
+	  ${metaTags}
 	  ${generateCssLinks(cssBundles, mode)}
     </head>
     <body>
