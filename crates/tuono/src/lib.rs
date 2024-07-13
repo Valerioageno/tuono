@@ -7,6 +7,7 @@ use source_builder::{bundle_axum_source, create_client_entry_files};
 use crate::source_builder::{check_tuono_folder, Mode};
 
 mod scaffold_project;
+mod ssg;
 mod watch;
 
 #[derive(Subcommand, Debug)]
@@ -14,7 +15,11 @@ enum Actions {
     /// Start the development environment
     Dev,
     /// Build the production assets
-    Build,
+    Build {
+        #[arg(short, long = "static")]
+        /// Statically generate the website HTML
+        ssg: bool,
+    },
     /// Scaffold a new project
     New {
         /// The folder in which load the project. Default is the current directory.
@@ -49,10 +54,15 @@ pub fn cli() -> std::io::Result<()> {
             init_tuono_folder(Mode::Dev)?;
             watch::watch().unwrap();
         }
-        Actions::Build => {
+        Actions::Build { ssg } => {
             init_tuono_folder(Mode::Prod)?;
             let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
             let _ = &vite_build.output()?;
+
+            if ssg {
+                println!("SSG: generation started");
+                ssg::SSG::new();
+            }
         }
         Actions::New {
             folder_name,
