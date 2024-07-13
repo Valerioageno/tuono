@@ -9,6 +9,8 @@ const VITE_MANIFEST_PATH: &str = "./out/client/.vite/manifest.json";
 
 #[derive(Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct BundleInfo {
+    /// TODO: Add also the import field and load the dynamic
+    /// values in the payload bundles.
     pub file: String,
     #[serde(default = "default_css_vector")]
     pub css: Vec<String>,
