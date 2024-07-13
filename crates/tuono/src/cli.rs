@@ -1,11 +1,10 @@
 use clap::{Parser, Subcommand};
 use std::process::Command;
 
+use crate::app::App;
+use crate::mode::Mode;
 use crate::scaffold_project;
-use crate::source_builder::{
-    bundle_axum_source, check_tuono_folder, create_client_entry_files, Mode,
-};
-use crate::ssg::SSG;
+use crate::source_builder::{bundle_axum_source, check_tuono_folder, create_client_entry_files};
 use crate::watch;
 
 #[derive(Subcommand, Debug)]
@@ -59,7 +58,7 @@ pub fn app() -> std::io::Result<()> {
 
             if ssg {
                 println!("SSG: generation started");
-                SSG::new();
+                App::new();
             }
         }
         Actions::New {

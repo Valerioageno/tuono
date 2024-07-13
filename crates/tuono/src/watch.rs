@@ -6,7 +6,8 @@ use watchexec::Watchexec;
 use watchexec_signals::Signal;
 use watchexec_supervisor::job::{start_job, Job};
 
-use crate::source_builder::{bundle_axum_source, Mode};
+use crate::mode::Mode;
+use crate::source_builder::bundle_axum_source;
 
 fn watch_react_src() -> Job {
     start_job(Arc::new(Command {
