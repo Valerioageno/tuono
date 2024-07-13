@@ -3,13 +3,13 @@
   "packageManager": "pnpm@9.1.1",
   "scripts": {
     "dev": "turbo dev --filter tuono",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "format": "turbo format",
-    "format:check": "turbo format:check",
-    "types": "turbo types",
-    "test": "turbo test",
-	"test:watch": "turbo test:watch"
+    "build": "turbo build --filter tuono",
+    "lint": "turbo lint --filter tuono",
+    "format": "turbo format --filter tuono",
+    "format:check": "turbo format:check --filter tuono",
+    "types": "turbo types --filter tuono",
+    "test": "turbo test --filter tuono",
+	"test:watch": "turbo test:watch --filter tuono"
   },
   "workspaces": [
     "tuono",
