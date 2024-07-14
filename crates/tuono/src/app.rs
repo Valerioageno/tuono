@@ -1,9 +1,9 @@
 use glob::glob;
 use glob::GlobError;
-use std::collections::HashMap;
+use std::collections::{hash_map::Entry, HashMap};
 use std::path::PathBuf;
 
-use crate::route::Route;
+use crate::route::{FileType, Route};
 
 const IGNORE_EXTENSIONS: [&str; 3] = ["css", "scss", "sass"];
 const IGNORE_FILES: [&str; 1] = ["__root"];
@@ -28,21 +28,24 @@ impl App {
         glob(self.base_path.join("src/routes/**/*.*").to_str().unwrap())
             .expect("Failed to read glob pattern")
             .for_each(|entry| {
-                let file_extension = entry.as_ref().unwrap().extension().unwrap();
-
-                if IGNORE_EXTENSIONS.iter().any(|val| val == &file_extension) {
-                    return;
+                if self.should_collect_route(&entry) {
+                    self.collect_route(entry)
                 }
-
-                if IGNORE_FILES
-                    .iter()
-                    .any(|val| val == &entry.as_ref().unwrap().file_stem().unwrap())
-                {
-                    return;
-                }
-
-                self.collect_route(entry)
             })
+    }
+
+    fn should_collect_route(&self, entry: &Result<PathBuf, GlobError>) -> bool {
+        let file_extension = entry.as_ref().unwrap().extension().unwrap();
+        let file_name = entry.as_ref().unwrap().file_stem().unwrap();
+
+        if IGNORE_EXTENSIONS.iter().any(|val| val == &file_extension) {
+            return false;
+        }
+
+        if IGNORE_FILES.iter().any(|val| val == &file_name) {
+            return false;
+        }
+        true
     }
 
     fn collect_route(&mut self, path_buf: Result<PathBuf, GlobError>) {
@@ -51,12 +54,23 @@ impl App {
         let path = entry
             .to_str()
             .unwrap()
-            .replace(&format!("{base_path_str}/src/routes"), "");
+            .replace(&format!("{base_path_str}/src/routes"), "")
+            .replace(".rs", "")
+            .replace(".tsx", "");
 
-        if path.ends_with(".rs") {
-            let route = Route::new(&path);
-
-            self.route_map.insert(path, route);
+        if entry.extension().unwrap() == "rs" {
+            if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
+                let route = Route::new(&path, FileType::Rust);
+                route_map.insert(route);
+            } else {
+                let route = self.route_map.get_mut(&path).unwrap();
+                route.has_server_handler = true;
+            }
+            return;
+        }
+        if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
+            let route = Route::new(&path, FileType::Javascript);
+            route_map.insert(route);
         }
     }
 }
@@ -68,8 +82,8 @@ mod tests {
 
     #[test]
     fn should_collect_routes() {
-        let mut source_builder = App::new();
-        source_builder.base_path = "/home/user/Documents/tuono".into();
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
 
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.rs",
@@ -81,19 +95,19 @@ mod tests {
 
         routes
             .into_iter()
-            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+            .for_each(|route| app.collect_route(Ok(PathBuf::from(route))));
 
         let results = [
-            ("/index.rs", "index"),
-            ("/about.rs", "about"),
-            ("/posts/index.rs", "posts_index"),
-            ("/posts/[post].rs", "posts_dyn_post"),
-            ("/posts/UPPERCASE.rs", "posts_uppercase"),
+            ("/index", "index"),
+            ("/about", "about"),
+            ("/posts/index", "posts_index"),
+            ("/posts/[post]", "posts_dyn_post"),
+            ("/posts/UPPERCASE", "posts_uppercase"),
         ];
 
         results.into_iter().for_each(|(path, module_import)| {
             assert_eq!(
-                source_builder.route_map.get(path).unwrap().module_import,
+                app.route_map.get(path).unwrap().module_import,
                 String::from(module_import)
             )
         })
@@ -101,8 +115,8 @@ mod tests {
 
     #[test]
     fn should_create_multi_level_axum_paths() {
-        let mut source_builder = App::new();
-        source_builder.base_path = "/home/user/Documents/tuono".into();
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
 
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.rs",
@@ -114,19 +128,19 @@ mod tests {
 
         routes
             .into_iter()
-            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+            .for_each(|route| app.collect_route(Ok(PathBuf::from(route))));
 
         let results = [
-            ("/index.rs", "/"),
-            ("/about.rs", "/about"),
-            ("/posts/index.rs", "/posts"),
-            ("/posts/any-post.rs", "/posts/any-post"),
-            ("/posts/[post].rs", "/posts/:post"),
+            ("/index", "/"),
+            ("/about", "/about"),
+            ("/posts/index", "/posts"),
+            ("/posts/any-post", "/posts/any-post"),
+            ("/posts/[post]", "/posts/:post"),
         ];
 
         results.into_iter().for_each(|(path, expected_path)| {
             assert_eq!(
-                source_builder.route_map.get(path).unwrap().axum_route,
+                app.route_map.get(path).unwrap().axum_route,
                 String::from(expected_path)
             )
         })
@@ -134,8 +148,8 @@ mod tests {
 
     #[test]
     fn should_ignore_whitelisted_extensions() {
-        let mut source_builder = App::new();
-        source_builder.base_path = "/home/user/Documents/tuono".into();
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
 
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.css",
@@ -143,27 +157,58 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/posts/index.sass",
         ];
 
-        routes
-            .into_iter()
-            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+        routes.into_iter().for_each(|route| {
+            if app.should_collect_route(&Ok(PathBuf::from(route))) {
+                app.collect_route(Ok(PathBuf::from(route)))
+            }
+        });
 
-        assert!(source_builder.route_map.is_empty())
+        assert!(app.route_map.is_empty())
     }
 
     #[test]
     fn should_ignore_whitelisted_files() {
-        let mut source_builder = App::new();
-        source_builder.base_path = "/home/user/Documents/tuono".into();
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
 
         let routes = [
             "/home/user/Documents/tuono/src/routes/__root.tsx",
             "/home/user/Documents/tuono/src/routes/posts/__root.tsx",
         ];
 
+        routes.into_iter().for_each(|route| {
+            if app.should_collect_route(&Ok(PathBuf::from(route))) {
+                app.collect_route(Ok(PathBuf::from(route)))
+            }
+        });
+
+        assert!(app.route_map.is_empty())
+    }
+
+    #[test]
+    fn should_correctly_parse_routes_with_server_handler() {
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/about.rs",
+            "/home/user/Documents/tuono/src/routes/about.tsx",
+            "/home/user/Documents/tuono/src/routes/index.tsx",
+        ];
+
         routes
             .into_iter()
-            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+            .for_each(|route| app.collect_route(Ok(PathBuf::from(route))));
 
-        assert!(source_builder.route_map.is_empty())
+        let results = [("/about", true), ("/index", false)];
+
+        results
+            .into_iter()
+            .for_each(|(path, expected_has_server_handler)| {
+                assert_eq!(
+                    app.route_map.get(path).unwrap().has_server_handler,
+                    expected_has_server_handler
+                )
+            })
     }
 }

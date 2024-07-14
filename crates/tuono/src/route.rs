@@ -5,8 +5,15 @@ fn has_dynamic_path(route: &str) -> bool {
     regex.is_match(route)
 }
 
+#[derive(PartialEq)]
+pub enum FileType {
+    Javascript,
+    Rust,
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub struct Route {
+    pub has_server_handler: bool,
     // Path for importing the module
     pub module_import: String,
     // path for the the axum router
@@ -14,23 +21,25 @@ pub struct Route {
 }
 
 impl Route {
-    pub fn new(path: &str) -> Self {
-        let route_name = path.replace(".rs", "");
+    pub fn new(path: &str, file_type: FileType) -> Self {
+        dbg!(path);
         // Remove first slash
-        let mut module = route_name.as_str().chars();
+        let mut module = path.chars();
         module.next();
 
-        let axum_route = path.replace("/index.rs", "").replace(".rs", "");
+        let axum_route = path.replace("/index", "");
 
         if axum_route.is_empty() {
             return Route {
+                has_server_handler: file_type == FileType::Rust,
                 module_import: module.as_str().to_string().replace('/', "_"),
                 axum_route: "/".to_string(),
             };
         }
 
-        if has_dynamic_path(&route_name) {
+        if has_dynamic_path(path) {
             return Route {
+                has_server_handler: file_type == FileType::Rust,
                 module_import: module
                     .as_str()
                     .to_string()
@@ -42,6 +51,7 @@ impl Route {
         }
 
         Route {
+            has_server_handler: file_type == FileType::Rust,
             module_import: module.as_str().to_string().replace('/', "_").to_lowercase(),
             axum_route,
         }

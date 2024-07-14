@@ -65,16 +65,19 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
 
     for (_, route) in routes.iter() {
         let Route {
+            has_server_handler,
             axum_route,
             module_import,
         } = &route;
 
-        route_declarations.push_str(&format!(
-            r#".route("{axum_route}", get({module_import}::route))"#
-        ));
-        route_declarations.push_str(&format!(
-            r#".route("/__tuono/data{axum_route}", get({module_import}::api))"#
-        ));
+        if *has_server_handler {
+            route_declarations.push_str(&format!(
+                r#".route("{axum_route}", get({module_import}::route))"#
+            ));
+            route_declarations.push_str(&format!(
+                r#".route("/__tuono/data{axum_route}", get({module_import}::api))"#
+            ));
+        }
     }
 
     route_declarations
@@ -84,12 +87,14 @@ fn create_modules_declaration(routes: &HashMap<String, Route>) -> String {
     let mut route_declarations = String::from("// MODULE_IMPORTS\n");
 
     for (path, route) in routes.iter() {
-        let module_name = &route.module_import;
-        route_declarations.push_str(&format!(
-            r#"#[path="../{ROOT_FOLDER}{path}"]
-mod {module_name};
-"#
-        ))
+        if route.has_server_handler {
+            let module_name = &route.module_import;
+            route_declarations.push_str(&format!(
+                r#"#[path="../{ROOT_FOLDER}{path}.rs"]
+                    mod {module_name};
+                    "#
+            ))
+        }
     }
 
     route_declarations
@@ -102,6 +107,7 @@ pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
 
     source_builder.collect_routes();
 
+    dbg!(&source_builder);
     let bundled_file = generate_axum_source(&source_builder, mode);
 
     create_main_file(&base_path, &bundled_file);
