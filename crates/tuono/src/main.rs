@@ -1,5 +1,5 @@
-use tuono::cli;
+use tuono::cli::app;
 
 fn main() {
-    cli().unwrap();
+    app().expect("Failed to start the CLI")
 }
