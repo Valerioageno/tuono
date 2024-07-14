@@ -3,7 +3,7 @@ use glob::GlobError;
 use std::collections::{hash_map::Entry, HashMap};
 use std::path::PathBuf;
 
-use crate::route::{FileType, Route};
+use crate::route::Route;
 
 const IGNORE_EXTENSIONS: [&str; 3] = ["css", "scss", "sass"];
 const IGNORE_FILES: [&str; 1] = ["__root"];
@@ -60,16 +60,17 @@ impl App {
 
         if entry.extension().unwrap() == "rs" {
             if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
-                let route = Route::new(&path, FileType::Rust);
+                let mut route = Route::new(path);
+                route.update_axum_info();
                 route_map.insert(route);
             } else {
                 let route = self.route_map.get_mut(&path).unwrap();
-                route.has_server_handler = true;
+                route.update_axum_info();
             }
             return;
         }
         if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
-            let route = Route::new(&path, FileType::Javascript);
+            let route = Route::new(path);
             route_map.insert(route);
         }
     }
@@ -107,7 +108,13 @@ mod tests {
 
         results.into_iter().for_each(|(path, module_import)| {
             assert_eq!(
-                app.route_map.get(path).unwrap().module_import,
+                app.route_map
+                    .get(path)
+                    .unwrap()
+                    .axum_info
+                    .as_ref()
+                    .unwrap()
+                    .module_import,
                 String::from(module_import)
             )
         })
@@ -140,7 +147,13 @@ mod tests {
 
         results.into_iter().for_each(|(path, expected_path)| {
             assert_eq!(
-                app.route_map.get(path).unwrap().axum_route,
+                app.route_map
+                    .get(path)
+                    .unwrap()
+                    .axum_info
+                    .as_ref()
+                    .unwrap()
+                    .axum_route,
                 String::from(expected_path)
             )
         })
@@ -205,10 +218,11 @@ mod tests {
         results
             .into_iter()
             .for_each(|(path, expected_has_server_handler)| {
-                assert_eq!(
-                    app.route_map.get(path).unwrap().has_server_handler,
-                    expected_has_server_handler
-                )
+                if expected_has_server_handler {
+                    assert!(app.route_map.get(path).unwrap().axum_info.is_some())
+                } else {
+                    assert!(app.route_map.get(path).unwrap().axum_info.is_none())
+                }
             })
     }
 }
