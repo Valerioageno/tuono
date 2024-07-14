@@ -7,8 +7,9 @@ fn has_dynamic_path(route: &str) -> bool {
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Route {
-    /// Every module import is the path with a _ instead of /
+    // Path for importing the module
     pub module_import: String,
+    // path for the the axum router
     pub axum_route: String,
 }
 

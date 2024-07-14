@@ -5,8 +5,12 @@ use std::path::PathBuf;
 
 use crate::route::Route;
 
+const IGNORE_EXTENSIONS: [&str; 3] = ["css", "scss", "sass"];
+const IGNORE_FILES: [&str; 1] = ["__root"];
+
+#[derive(Debug)]
 pub struct App {
-    pub route_map: HashMap<PathBuf, Route>,
+    pub route_map: HashMap<String, Route>,
     pub base_path: PathBuf,
 }
 
@@ -21,9 +25,24 @@ impl App {
     }
 
     pub fn collect_routes(&mut self) {
-        glob(self.base_path.join("src/routes/**/*.rs").to_str().unwrap())
-            .unwrap()
-            .for_each(|entry| self.collect_route(entry))
+        glob(self.base_path.join("src/routes/**/*.*").to_str().unwrap())
+            .expect("Failed to read glob pattern")
+            .for_each(|entry| {
+                let file_extension = entry.as_ref().unwrap().extension().unwrap();
+
+                if IGNORE_EXTENSIONS.iter().any(|val| val == &file_extension) {
+                    return;
+                }
+
+                if IGNORE_FILES
+                    .iter()
+                    .any(|val| val == &entry.as_ref().unwrap().file_stem().unwrap())
+                {
+                    return;
+                }
+
+                self.collect_route(entry)
+            })
     }
 
     fn collect_route(&mut self, path_buf: Result<PathBuf, GlobError>) {
@@ -34,9 +53,11 @@ impl App {
             .unwrap()
             .replace(&format!("{base_path_str}/src/routes"), "");
 
-        let route = Route::new(&path);
+        if path.ends_with(".rs") {
+            let route = Route::new(&path);
 
-        self.route_map.insert(PathBuf::from(path), route);
+            self.route_map.insert(path, route);
+        }
     }
 }
 
@@ -72,11 +93,7 @@ mod tests {
 
         results.into_iter().for_each(|(path, module_import)| {
             assert_eq!(
-                source_builder
-                    .route_map
-                    .get(&PathBuf::from(path))
-                    .unwrap()
-                    .module_import,
+                source_builder.route_map.get(path).unwrap().module_import,
                 String::from(module_import)
             )
         })
@@ -109,13 +126,44 @@ mod tests {
 
         results.into_iter().for_each(|(path, expected_path)| {
             assert_eq!(
-                source_builder
-                    .route_map
-                    .get(&PathBuf::from(path))
-                    .unwrap()
-                    .axum_route,
+                source_builder.route_map.get(path).unwrap().axum_route,
                 String::from(expected_path)
             )
         })
+    }
+
+    #[test]
+    fn should_ignore_whitelisted_extensions() {
+        let mut source_builder = App::new();
+        source_builder.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/about.css",
+            "/home/user/Documents/tuono/src/routes/index.scss",
+            "/home/user/Documents/tuono/src/routes/posts/index.sass",
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+
+        assert!(source_builder.route_map.is_empty())
+    }
+
+    #[test]
+    fn should_ignore_whitelisted_files() {
+        let mut source_builder = App::new();
+        source_builder.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/__root.tsx",
+            "/home/user/Documents/tuono/src/routes/posts/__root.tsx",
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| source_builder.collect_route(Ok(PathBuf::from(route))));
+
+        assert!(source_builder.route_map.is_empty())
     }
 }

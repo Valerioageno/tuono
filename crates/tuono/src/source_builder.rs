@@ -3,7 +3,6 @@ use std::fs;
 use std::io;
 use std::io::prelude::*;
 use std::path::Path;
-use std::path::PathBuf;
 
 use crate::app::App;
 use crate::mode::Mode;
@@ -61,7 +60,7 @@ fn create_main_file(base_path: &Path, bundled_file: &String) {
         .expect("write failed");
 }
 
-fn create_routes_declaration(routes: &HashMap<PathBuf, Route>) -> String {
+fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
     let mut route_declarations = String::from("// ROUTE_BUILDER\n");
 
     for (_, route) in routes.iter() {
@@ -81,14 +80,13 @@ fn create_routes_declaration(routes: &HashMap<PathBuf, Route>) -> String {
     route_declarations
 }
 
-fn create_modules_declaration(routes: &HashMap<PathBuf, Route>) -> String {
+fn create_modules_declaration(routes: &HashMap<String, Route>) -> String {
     let mut route_declarations = String::from("// MODULE_IMPORTS\n");
 
     for (path, route) in routes.iter() {
         let module_name = &route.module_import;
-        let path_str = path.to_str().unwrap();
         route_declarations.push_str(&format!(
-            r#"#[path="../{ROOT_FOLDER}{path_str}"]
+            r#"#[path="../{ROOT_FOLDER}{path}"]
 mod {module_name};
 "#
         ))
