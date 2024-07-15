@@ -1,3 +1,11 @@
+## Context
+
+<!--
+Explain the context and why you're making that change. What is the problem
+you're trying to solve? If a new feature is being added, describe the intended
+use case that feature fulfills.
+-->
+
 ## Description
 
 <!--
@@ -7,19 +15,4 @@ the requirements below.
 Bug fixes and new features should include tests.
 
 Contributors guide: https://github.com/Valerioageno/tuono/blob/main/CONTRIBUTING.md
--->
-
-## Context
-
-<!--
-Explain the context and why you're making that change. What is the problem
-you're trying to solve? If a new feature is being added, describe the intended
-use case that feature fulfills.
--->
-
-## Solution
-
-<!--
-Summarize the solution and provide any necessary context needed to understand
-the code change.
 -->
