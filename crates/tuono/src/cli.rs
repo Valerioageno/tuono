@@ -1,5 +1,4 @@
 use clap::{Parser, Subcommand};
-use std::process::Command;
 
 use crate::app::App;
 use crate::mode::Mode;
@@ -53,14 +52,16 @@ pub fn app() -> std::io::Result<()> {
         }
         Actions::Build { ssg } => {
             init_tuono_folder(Mode::Prod)?;
-            let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
-            let _ = &vite_build.output()?;
+            let app = App::new();
+            app.build_react_prod();
 
             if ssg {
                 println!("SSG: generation started");
-                let app = App::new();
-                dbg!(app);
-            }
+                let mut rust_server = app.run_rust_server();
+                let _ = rust_server.wait();
+            };
+
+            println!("Build successfully finished");
         }
         Actions::New {
             folder_name,

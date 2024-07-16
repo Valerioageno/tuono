@@ -2,6 +2,9 @@ use glob::glob;
 use glob::GlobError;
 use std::collections::{hash_map::Entry, HashMap};
 use std::path::PathBuf;
+use std::process::Child;
+use std::process::Command;
+use std::process::Stdio;
 
 use crate::route::Route;
 
@@ -77,6 +80,26 @@ impl App {
             let route = Route::new(path);
             route_map.insert(route);
         }
+    }
+
+    pub fn has_dynamic_routes(&self) -> bool {
+        self.route_map.iter().any(|(_, route)| route.is_dynamic)
+    }
+
+    pub fn build_react_prod(&self) {
+        Command::new("./node_modules/.bin/tuono-build-prod")
+            .output()
+            .expect("Failed to build the react source");
+    }
+
+    pub fn run_rust_server(&self) -> Child {
+        Command::new("cargo")
+            .arg("run")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .expect("Failed to run the rust server")
     }
 }
 
@@ -228,5 +251,50 @@ mod tests {
                     assert!(app.route_map.get(path).unwrap().axum_info.is_none())
                 }
             })
+    }
+
+    #[test]
+    fn has_dynamic_routes_works() {
+        let mut app = App::new();
+        app.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/index.rs",
+            "/home/user/Documents/tuono/src/routes/posts/[post].rs",
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| app.collect_route(Ok(PathBuf::from(route))));
+
+        assert!(app.has_dynamic_routes());
+
+        let mut app2 = App::new();
+        app2.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/[post].rs",
+            "/home/user/Documents/tuono/src/routes/posts/[post].rs",
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| app2.collect_route(Ok(PathBuf::from(route))));
+
+        assert!(app2.has_dynamic_routes());
+
+        let mut app3 = App::new();
+        app3.base_path = "/home/user/Documents/tuono".into();
+
+        let routes = [
+            "/home/user/Documents/tuono/src/routes/index.rs",
+            "/home/user/Documents/tuono/src/routes/posts/index.rs",
+        ];
+
+        routes
+            .into_iter()
+            .for_each(|route| app3.collect_route(Ok(PathBuf::from(route))));
+
+        assert!(!app3.has_dynamic_routes())
     }
 }
