@@ -58,8 +58,7 @@ pub fn app() -> std::io::Result<()> {
 
             if ssg {
                 println!("SSG: generation started");
-                let mut app = App::new();
-                app.collect_routes();
+                let app = App::new();
                 dbg!(app);
             }
         }

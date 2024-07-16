@@ -18,13 +18,17 @@ impl App {
     pub fn new() -> Self {
         let base_path = std::env::current_dir().unwrap();
 
-        App {
+        let mut app = App {
             route_map: HashMap::new(),
             base_path,
-        }
+        };
+
+        app.collect_routes();
+
+        app
     }
 
-    pub fn collect_routes(&mut self) {
+    fn collect_routes(&mut self) {
         glob(self.base_path.join("src/routes/**/*.*").to_str().unwrap())
             .expect("Failed to read glob pattern")
             .for_each(|entry| {

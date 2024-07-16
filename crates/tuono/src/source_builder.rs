@@ -106,12 +106,9 @@ fn create_modules_declaration(routes: &HashMap<String, Route>) -> String {
 pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
     let base_path = std::env::current_dir().unwrap();
 
-    let mut source_builder = App::new();
+    let app = App::new();
 
-    source_builder.collect_routes();
-
-    dbg!(&source_builder);
-    let bundled_file = generate_axum_source(&source_builder, mode);
+    let bundled_file = generate_axum_source(&app, mode);
 
     create_main_file(&base_path, &bundled_file);
 
