@@ -53,6 +53,13 @@ pub fn app() -> std::io::Result<()> {
         Actions::Build { ssg } => {
             init_tuono_folder(Mode::Prod)?;
             let app = App::new();
+
+            if ssg && app.has_dynamic_routes() {
+                // TODO: allow dynamic routes static generation
+                println!("Cannot statically build dynamic routes");
+                return Ok(());
+            }
+
             app.build_react_prod();
 
             if ssg {
