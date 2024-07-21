@@ -2,6 +2,7 @@ import { build, createServer, InlineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import ViteFsRouter from 'tuono-fs-router-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
+import mdx from '@mdx-js/rollup'
 
 const BASE_CONFIG: InlineConfig = {
   root: '.tuono',
@@ -9,7 +10,12 @@ const BASE_CONFIG: InlineConfig = {
   publicDir: '../public',
   cacheDir: 'cache',
   envDir: '../',
-  plugins: [react(), ViteFsRouter(), LazyLoadingPlugin()],
+  plugins: [
+    { enforce: 'pre', ...mdx() },
+    react(),
+    ViteFsRouter(),
+    LazyLoadingPlugin(),
+  ],
 }
 
 const VITE_PORT = 3001
