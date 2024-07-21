@@ -1,5 +1,9 @@
+use fs_extra::dir::{copy, CopyOptions};
+use std::path::PathBuf;
+use std::thread::sleep;
+use std::time::Duration;
+
 use clap::{Parser, Subcommand};
-use std::process::Command;
 
 use crate::app::App;
 use crate::mode::Mode;
@@ -53,15 +57,62 @@ pub fn app() -> std::io::Result<()> {
         }
         Actions::Build { ssg } => {
             init_tuono_folder(Mode::Prod)?;
-            let mut vite_build = Command::new("./node_modules/.bin/tuono-build-prod");
-            let _ = &vite_build.output()?;
+            let app = App::new();
+
+            if ssg && app.has_dynamic_routes() {
+                // TODO: allow dynamic routes static generation
+                println!("Cannot statically build dynamic routes");
+                return Ok(());
+            }
+
+            app.build_react_prod();
 
             if ssg {
                 println!("SSG: generation started");
-                let mut app = App::new();
-                app.collect_routes();
-                dbg!(app);
-            }
+
+                let static_dir = PathBuf::from("out/static");
+
+                if static_dir.is_dir() {
+                    std::fs::remove_dir_all(&static_dir)
+                        .expect("Failed to clear the out/static folder");
+                }
+
+                std::fs::create_dir(&static_dir).expect("Failed to create static output dir");
+
+                copy(
+                    "./out/client",
+                    static_dir,
+                    &CopyOptions::new().overwrite(true).content_only(true),
+                )
+                .expect("Failed to clone assets into static output folder");
+
+                let mut rust_server = app.run_rust_server();
+
+                let reqwest = reqwest::blocking::Client::builder()
+                    .user_agent("")
+                    .build()
+                    .expect("Failed to build reqwest client");
+
+                // Wait for server
+                let mut is_server_ready = false;
+
+                while !is_server_ready {
+                    if reqwest.get("http://localhost:3000").send().is_ok() {
+                        is_server_ready = true
+                    }
+                    // TODO: add maximum tries
+                    sleep(Duration::from_secs(1))
+                }
+
+                app.route_map
+                    .iter()
+                    .for_each(|(_, route)| route.save_ssg_html(&reqwest));
+
+                // Close server
+                let _ = rust_server.kill();
+            };
+
+            println!("Build successfully finished");
         }
         Actions::New {
             folder_name,

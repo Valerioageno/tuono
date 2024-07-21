@@ -76,8 +76,9 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
             route_declarations.push_str(&format!(
                 r#".route("{axum_route}", get({module_import}::route))"#
             ));
+            let slash = if axum_route.ends_with('/') { "" } else { "/" };
             route_declarations.push_str(&format!(
-                r#".route("/__tuono/data{axum_route}", get({module_import}::api))"#
+                r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
             ));
         }
     }
@@ -106,12 +107,9 @@ fn create_modules_declaration(routes: &HashMap<String, Route>) -> String {
 pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
     let base_path = std::env::current_dir().unwrap();
 
-    let mut source_builder = App::new();
+    let app = App::new();
 
-    source_builder.collect_routes();
-
-    dbg!(&source_builder);
-    let bundled_file = generate_axum_source(&source_builder, mode);
+    let bundled_file = generate_axum_source(&app, mode);
 
     create_main_file(&base_path, &bundled_file);
 
