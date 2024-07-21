@@ -111,13 +111,9 @@ impl Route {
 
             let pathname = &format!("/__tuono/data{path}/data.json");
 
-            dbg!(pathname);
-
             let url = base
                 .join(pathname)
                 .expect("Failed to build the reqwest URL");
-
-            dbg!(&url);
 
             let mut response = reqwest.get(url).send().unwrap();
 
