@@ -33,7 +33,8 @@ pub const AXUM_ENTRY_POINT: &str = r##"
 // File automatically generated
 // Do not manually change it
 
-use tuono_lib::{tokio, Mode, Server, axum::Router, axum::routing::get};
+use tuono_lib::{tokio, Mode, Server, axum::Router};
+// AXUM_GET_ROUTE_HANDLER
 
 const MODE: Mode = /*MODE*/;
 
@@ -116,17 +117,32 @@ pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
     Ok(())
 }
 
-fn generate_axum_source(source_builder: &App, mode: Mode) -> String {
-    AXUM_ENTRY_POINT
+fn generate_axum_source(app: &App, mode: Mode) -> String {
+    let src = AXUM_ENTRY_POINT
         .replace(
             "// ROUTE_BUILDER\n",
-            &create_routes_declaration(&source_builder.route_map),
+            &create_routes_declaration(&app.route_map),
         )
         .replace(
             "// MODULE_IMPORTS\n",
-            &create_modules_declaration(&source_builder.route_map),
+            &create_modules_declaration(&app.route_map),
         )
-        .replace("/*MODE*/", mode.as_str())
+        .replace("/*MODE*/", mode.as_str());
+
+    let has_server_handlers = app
+        .route_map
+        .iter()
+        .filter(|(_, route)| route.axum_info.is_some())
+        .collect::<Vec<(&String, &Route)>>()
+        .is_empty();
+
+    if !has_server_handlers {
+        return src.replace(
+            "// AXUM_GET_ROUTE_HANDLER",
+            "use tuono_lib::axum::routing::get;",
+        );
+    }
+    src
 }
 
 pub fn check_tuono_folder() -> io::Result<()> {
@@ -165,5 +181,28 @@ mod tests {
         let prod_bundle = generate_axum_source(&source_builder, Mode::Prod);
 
         assert!(prod_bundle.contains("const MODE: Mode = Mode::Prod;"));
+    }
+
+    #[test]
+    fn should_not_load_the_axum_get_function() {
+        let source_builder = App::new();
+
+        let dev_bundle = generate_axum_source(&source_builder, Mode::Dev);
+        assert!(!dev_bundle.contains("use tuono_lib::axum::routing::get;"));
+    }
+
+    #[test]
+    fn should_load_the_axum_get_function() {
+        let mut source_builder = App::new();
+
+        let mut route = Route::new(String::from("index.tsx"));
+        route.update_axum_info();
+
+        source_builder
+            .route_map
+            .insert(String::from("index.rs"), route);
+
+        let dev_bundle = generate_axum_source(&source_builder, Mode::Dev);
+        assert!(dev_bundle.contains("use tuono_lib::axum::routing::get;"));
     }
 }
