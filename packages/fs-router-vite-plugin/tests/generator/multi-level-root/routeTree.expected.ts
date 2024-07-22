@@ -7,20 +7,23 @@ import RootImport from './routes/__root'
 const PostsrootImport = dynamic(() => import('./routes/posts/__root'))
 const AboutImport = dynamic(() => import('./routes/about'))
 const IndexImport = dynamic(() => import('./routes/index'))
+const PostsIndexImport = dynamic(() => import('./routes/posts/index'))
 const PostsMyPostImport = dynamic(() => import('./routes/posts/my-post'))
 
 const rootRoute = createRoute({ isRoot: true, component: RootImport })
 
-const Postsroot = createRoute({
-  component: PostsrootImport,
-  getParentRoute: () => rootRoute,
-})
-
+const Postsroot = createRoute({ component: PostsrootImport })
 const About = createRoute({ component: AboutImport })
 const Index = createRoute({ component: IndexImport })
+const PostsIndex = createRoute({ component: PostsIndexImport })
 const PostsMyPost = createRoute({ component: PostsMyPostImport })
 
 // Create/Update Routes
+
+const PostsrootRoute = Postsroot.update({
+  path: '/posts',
+  getParentRoute: () => rootRoute,
+})
 
 const AboutRoute = About.update({
   path: '/about',
@@ -32,9 +35,14 @@ const IndexRoute = Index.update({
   getParentRoute: () => rootRoute,
 })
 
+const PostsIndexRoute = PostsIndex.update({
+  path: '/posts/',
+  getParentRoute: () => PostsrootRoute,
+})
+
 const PostsMyPostRoute = PostsMyPost.update({
   path: '/posts/my-post',
-  getParentRoute: () => Postsroot,
+  getParentRoute: () => PostsrootRoute,
 })
 
 // Create and export the route tree
@@ -42,5 +50,7 @@ const PostsMyPostRoute = PostsMyPost.update({
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AboutRoute,
+  PostsrootRoute.addChildren([PostsMyPostRoute, PostsIndexRoute]),
   PostsMyPostRoute,
+  PostsIndexRoute,
 ])

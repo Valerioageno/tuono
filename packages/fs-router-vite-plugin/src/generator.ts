@@ -151,6 +151,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   function buildRouteConfig(nodes: RouteNode[], depth = 1): string {
     const children = nodes.map((node) => {
+      // TODO: check if we need this
       if (node.isLayout) {
         return
       }
