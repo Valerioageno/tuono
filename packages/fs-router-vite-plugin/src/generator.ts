@@ -1,5 +1,6 @@
 import * as fsp from 'fs/promises'
 import path from 'path'
+import { hasParentRoute } from './has-parent-route'
 
 import {
   cleanPath,
@@ -91,38 +92,6 @@ async function getRouteNodes(
   return { routeNodes, rustHandlersNodes }
 }
 
-export function hasParentRoute(
-  routes: RouteNode[],
-  node: RouteNode,
-  routePathToCheck: string | undefined,
-): RouteNode | null {
-  if (!routePathToCheck || routePathToCheck === '/') {
-    return null
-  }
-
-  const sortedNodes = multiSortBy(routes, [
-    (d): number => d.routePath.length * -1,
-    (d): string | undefined => d.variableName,
-  ]).filter((d) => d.routePath !== `/${ROOT_PATH_ID}`)
-
-  for (const route of sortedNodes) {
-    if (route.routePath === '/') continue
-
-    if (
-      routePathToCheck.startsWith(`${route.routePath}/`) &&
-      route.routePath !== routePathToCheck
-    ) {
-      return route
-    }
-  }
-
-  const segments = routePathToCheck.split('/')
-  segments.pop() // Remove the last segment
-  const parentRoutePath = segments.join('/')
-
-  return hasParentRoute(routes, node, parentRoutePath)
-}
-
 export async function routeGenerator(config = defaultConfig): Promise<void> {
   if (!isFirst) {
     isFirst = true
@@ -145,7 +114,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
   const { routeNodes: beforeRouteNodes, rustHandlersNodes } =
     await getRouteNodes(config)
 
-  console.log(beforeRouteNodes)
   const preRouteNodes = multiSortBy(beforeRouteNodes, [
     (d): number => (d.routePath === '/' ? -1 : 1),
     (d): number => d.routePath.split('/').length,

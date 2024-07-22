@@ -91,6 +91,7 @@ export class Route {
   }
 }
 
+// TODO: not use yet. To be updated in tuono-fs-router-vite-plugin package
 export function createRootRoute(options: RouteOptions): Route {
   return new Route({ ...options, isRoot: true })
 }
