@@ -56,9 +56,6 @@ async function getRouteNodes(
 
           // Remove the index from the route path and
           // if the route path is empty, use `/'
-
-          const isLoader = routePath.includes('-loading')
-
           if (routePath === 'index') {
             routePath = '/'
           }
@@ -69,7 +66,6 @@ async function getRouteNodes(
             filePath,
             fullPath,
             routePath,
-            isLoader,
             variableName,
           })
         } else if (fullPath.match(/\.(rs)$/)) {
@@ -149,16 +145,11 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
   const { routeNodes: beforeRouteNodes, rustHandlersNodes } =
     await getRouteNodes(config)
 
+  console.log(beforeRouteNodes)
   const preRouteNodes = multiSortBy(beforeRouteNodes, [
     (d): number => (d.routePath === '/' ? -1 : 1),
     (d): number => d.routePath.split('/').length,
     (d): number => (d.filePath.match(/[./]index[.]/) ? 1 : -1),
-    (d): number =>
-      d.filePath.match(
-        /[./](component|errorComponent|pendingComponent|loader|lazy)[.]/,
-      )
-        ? 1
-        : -1,
     (d): number => (d.filePath.match(/[./]route[.]/) ? -1 : 1),
     (d): number => (d.routePath.endsWith('/') ? -1 : 1),
     (d): string => d.routePath,
