@@ -1,12 +1,12 @@
 import * as fsp from 'fs/promises'
 import path from 'path'
+import { buildRouteConfig } from './build-route-config'
 import { hasParentRoute } from './has-parent-route'
 
 import {
   cleanPath,
   determineNodePath,
   multiSortBy,
-  spaces,
   replaceBackslash,
   removeExt,
   routePathToVariable,
@@ -19,6 +19,7 @@ import type { Config, RouteNode } from './types'
 import { ROUTES_FOLDER, ROOT_PATH_ID, GENERATED_ROUTE_TREE } from './constants'
 
 import { format } from 'prettier'
+import { sortRouteNodes } from './sort-route-nodes'
 
 let latestTask = 0
 
@@ -114,19 +115,12 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
   const { routeNodes: beforeRouteNodes, rustHandlersNodes } =
     await getRouteNodes(config)
 
-  const preRouteNodes = multiSortBy(beforeRouteNodes, [
-    (d): number => (d.routePath === '/' ? -1 : 1),
-    (d): number => d.routePath.split('/').length,
-    (d): number => (d.filePath.match(/[./]index[.]/) ? 1 : -1),
-    (d): number => (d.filePath.match(/[./]route[.]/) ? -1 : 1),
-    (d): number => (d.routePath.endsWith('/') ? -1 : 1),
-    (d): string => d.routePath,
-  ]).filter((d) => ![`/${ROOT_PATH_ID}`].includes(d.routePath || ''))
+  const preRouteNodes = sortRouteNodes(beforeRouteNodes)
+
+  const routeNodes: RouteNode[] = []
 
   // Loop over the flat list of routeNodes and
   // build up a tree based on the routeNodes' routePath
-  const routeNodes: RouteNode[] = []
-
   const handleNode = async (node: RouteNode): Promise<void> => {
     const parentRoute = hasParentRoute(routeNodes, node, node.routePath)
 
@@ -147,26 +141,6 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   for (const node of preRouteNodes) {
     await handleNode(node)
-  }
-
-  function buildRouteConfig(nodes: RouteNode[], depth = 1): string {
-    const children = nodes.map((node) => {
-      // TODO: check if we need this
-      if (node.isLayout) {
-        return
-      }
-
-      const route = `${node.variableName}Route`
-
-      if (node.children?.length) {
-        const childConfigs = buildRouteConfig(node.children, depth + 1)
-        return `${route}.addChildren([${spaces(depth * 4)}${childConfigs}])`
-      }
-
-      return route
-    })
-
-    return children.filter(Boolean).join(`,`)
   }
 
   const routeConfigChildrenText = buildRouteConfig(routeNodes)

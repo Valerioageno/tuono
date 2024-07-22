@@ -3,6 +3,15 @@ import { hasParentRoute } from './has-parent-route'
 
 const routes = [
   {
+    filePath: 'posts/[post].tsx',
+    fullPath:
+      '/tuono/packages/fs-router-vite-plugin/tests/generator/multi-level-root/routes/posts/[post].tsx',
+    routePath: '/posts/[post]',
+    variableName: 'Postspost',
+    path: '/posts/[post]',
+    cleanedPath: '/posts/[post]',
+  },
+  {
     filePath: 'posts/__root.tsx',
     fullPath:
       '/tuono/packages/fs-router-vite-plugin/tests/generator/multi-level-root/routes/posts/__root.tsx',
@@ -41,7 +50,7 @@ const parent = {
   cleanedPath: '/posts',
 }
 
-const route = {
+const myPost = {
   filePath: 'posts/my-post.tsx',
   fullPath:
     '/tuono/packages/fs-router-vite-plugin/tests/generator/multi-level-root/routes/posts/my-post.tsx',
@@ -51,9 +60,24 @@ const route = {
   cleanedPath: '/posts/my-post',
 }
 
+const dynamicRoute = {
+  filePath: 'posts/[post].tsx',
+  fullPath:
+    '/tuono/packages/fs-router-vite-plugin/tests/generator/multi-level-root/routes/posts/[post].tsx',
+  routePath: '/posts/[post]',
+  variableName: 'Postspost',
+  path: '/posts/[post]',
+  cleanedPath: '/posts/[post]',
+}
+
 describe('hasParentRoute works', async () => {
   it('Should detect parent route', () => {
-    const parentRoute = hasParentRoute(routes, route, route.path)
+    const parentRoute = hasParentRoute(routes, myPost, myPost.path)
+    expect(parentRoute).toStrictEqual(parent)
+  })
+
+  it('Should detect parent route for dynamic routes', () => {
+    const parentRoute = hasParentRoute(routes, dynamicRoute, dynamicRoute.path)
     expect(parentRoute).toStrictEqual(parent)
   })
 })

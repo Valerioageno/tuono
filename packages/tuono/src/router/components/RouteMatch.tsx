@@ -19,20 +19,31 @@ export const RouteMatch = ({
 }: MatchProps): JSX.Element => {
   const { data, isLoading } = useServerSideProps(route, serverSideProps)
 
-  if (!route.isRoot) {
-    const Root = route.options.getParentRoute()
-    return (
-      <Root.component data={data} isLoading={isLoading}>
-        <React.Suspense>
-          <route.options.component data={data} isLoading={isLoading} />
-        </React.Suspense>
-      </Root.component>
-    )
+  return (
+    <TraverseRootComponents route={route} data={data} isLoading={isLoading} />
+  )
+}
+
+interface TraverseRootComponentsProps {
+  route: Route
+  data: any
+  isLoading: boolean
+}
+
+const TraverseRootComponents = ({
+  route,
+  data,
+  isLoading,
+}: TraverseRootComponentsProps): JSX.Element => {
+  if (route.isRoot) {
+    return <route.options.component data={data} isLoading={isLoading} />
   }
 
+  const Parent = route.options.getParentRoute()
+
   return (
-    <React.Suspense>
+    <Parent.component data={data} isLoading={isLoading}>
       <route.options.component data={data} isLoading={isLoading} />
-    </React.Suspense>
+    </Parent.component>
   )
 }

@@ -5,7 +5,7 @@ import type { RouteNode } from './types'
 export function hasParentRoute(
   routes: RouteNode[],
   node: RouteNode,
-  routePathToCheck: string | undefined,
+  routePathToCheck = '/',
 ): RouteNode | null {
   const segments = routePathToCheck.split('/')
   segments.pop() // Remove the last segment
