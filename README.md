@@ -38,6 +38,7 @@ by Tuono based on the files defined within the `./src/routes` directory.
 - 🍭  CSS modules
 - 🧬  Server Side Rendering
 - 🧵  Multi thread backend
+- ⌨️ MDX support
 - ⚙️   Build optimizations
 - Custom APIs*
 - Image optimization*
