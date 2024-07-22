@@ -46,7 +46,7 @@ async function getRouteNodes(
 
         if (dirent.isDirectory()) {
           await recurse(relativePath)
-        } else if (fullPath.match(/\.(tsx|ts|jsx|js)$/)) {
+        } else if (fullPath.match(/\.(tsx|ts|jsx|js|mdx)$/)) {
           const filePath = replaceBackslash(path.join(dir, dirent.name))
           const filePathNoExt = removeExt(filePath)
           let routePath =
@@ -220,6 +220,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   const imports = [
     ...sortedRouteNodes.map((node) => {
+      const extension = node.filePath.endsWith('mdx') ? '.mdx' : ''
       return `const ${
         node.variableName
       }Import = dynamic(() => import('./${replaceBackslash(
@@ -230,7 +231,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
           ),
           false,
         ),
-      )}'))`
+      )}${extension}'))`
     }),
   ].join('\n')
 

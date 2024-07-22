@@ -6,7 +6,7 @@ members = [
 		"crates/tuono_lib_macros",
 ]
 exclude = [
-		"examples/playground",
+		"examples/mdx",
 		"examples/tuono",
 		"examples/tutorial"
 ]

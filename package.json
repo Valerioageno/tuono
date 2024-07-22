@@ -8,8 +8,8 @@
     "format": "turbo format --filter tuono",
     "format:check": "turbo format:check --filter tuono",
     "types": "turbo types --filter tuono",
-    "test": "turbo test --filter tuono",
-	"test:watch": "turbo test:watch --filter tuono"
+    "test": "turbo test",
+	"test:watch": "turbo test:watch"
   },
   "workspaces": [
     "tuono",
