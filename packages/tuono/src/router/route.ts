@@ -56,12 +56,7 @@ export class Route {
     const customId = this.options?.id || path
 
     // Strip the parentId prefix from the first level of children
-    let id = isRoot
-      ? rootRouteId
-      : joinPaths([
-          this.parentRoute.id === rootRouteId ? '' : this.parentRoute.id,
-          customId,
-        ])
+    let id = isRoot ? rootRouteId : joinPaths([customId])
 
     if (path === rootRouteId) {
       path = '/'
@@ -71,12 +66,11 @@ export class Route {
       id = joinPaths(['/', id])
     }
 
-    const fullPath =
-      id === rootRouteId ? '/' : joinPaths([this.parentRoute.fullPath, path])
+    const fullPath = id === rootRouteId ? '/' : path
 
     this.path = path
     this.id = id
-    this.fullPath = fullPath
+    this.fullPath = fullPath || ''
   }
 
   addChildren(routes: Route[]): Route {

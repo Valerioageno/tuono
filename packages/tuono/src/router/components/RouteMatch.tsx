@@ -19,31 +19,63 @@ export const RouteMatch = ({
 }: MatchProps): JSX.Element => {
   const { data, isLoading } = useServerSideProps(route, serverSideProps)
 
+  const routes = React.useMemo(() => {
+    const components = loadParentComponents(route)
+    components.push(route)
+    return components
+  }, [route.id])
+
   return (
-    <TraverseRootComponents route={route} data={data} isLoading={isLoading} />
+    <TraverseRootComponents routes={routes} data={data} isLoading={isLoading} />
   )
 }
 
 interface TraverseRootComponentsProps {
-  route: Route
+  routes: Route[]
+  data: any
+  isLoading: boolean
+  children?: React.ReactNode
+  index?: number
+}
+
+interface ParentProps {
+  children: React.ReactNode
   data: any
   isLoading: boolean
 }
 
 const TraverseRootComponents = ({
-  route,
+  routes,
   data,
   isLoading,
+  index = 0,
 }: TraverseRootComponentsProps): JSX.Element => {
-  if (route.isRoot) {
-    return <route.options.component data={data} isLoading={isLoading} />
-  }
-
-  const Parent = route.options.getParentRoute()
+  const Parent = React.memo(
+    routes[index]?.component as unknown as (props: ParentProps) => JSX.Element,
+  )
 
   return (
-    <Parent.component data={data} isLoading={isLoading}>
-      <route.options.component data={data} isLoading={isLoading} />
-    </Parent.component>
+    <Parent data={data} isLoading={isLoading}>
+      {Boolean(routes.length > index) && (
+        <TraverseRootComponents
+          routes={routes}
+          data={data}
+          isLoading={isLoading}
+          index={index + 1}
+        />
+      )}
+    </Parent>
   )
+}
+
+const loadParentComponents = (route: Route, loader: Route[] = []): Route[] => {
+  const parentComponent = route.options?.getParentRoute?.()
+
+  loader.push(parentComponent)
+
+  if (!parentComponent.isRoot) {
+    return loadParentComponents(parentComponent, loader)
+  }
+
+  return loader.reverse()
 }

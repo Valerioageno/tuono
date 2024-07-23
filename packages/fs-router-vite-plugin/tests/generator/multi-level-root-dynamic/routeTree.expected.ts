@@ -13,7 +13,7 @@ const PostsMyPostImport = dynamic(() => import('./routes/posts/my-post'))
 
 const rootRoute = createRoute({ isRoot: true, component: RootImport })
 
-const Postsroot = createRoute({ component: PostsrootImport })
+const Postsroot = createRoute({ component: PostsrootImport, isRoot: true })
 const About = createRoute({ component: AboutImport })
 const Index = createRoute({ component: IndexImport })
 const Postspost = createRoute({ component: PostspostImport })

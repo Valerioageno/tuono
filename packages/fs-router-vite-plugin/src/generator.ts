@@ -171,7 +171,10 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   const createRoutes = [
     ...sortedRouteNodes.map((node) => {
-      return `const ${node.variableName} = createRoute({ component: ${node.variableName}Import })`
+      const isRoot = node.routePath.endsWith(ROOT_PATH_ID)
+      const rootDeclaration = isRoot ? ', isRoot: true' : ''
+
+      return `const ${node.variableName} = createRoute({ component: ${node.variableName}Import${rootDeclaration} })`
     }),
   ].join('\n')
 
