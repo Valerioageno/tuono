@@ -42,7 +42,7 @@ const PostspostRoute = Postspost.update({
 })
 
 const PostsIndexRoute = PostsIndex.update({
-  path: '/posts/',
+  path: '/posts',
   getParentRoute: () => PostsrootRoute,
 })
 

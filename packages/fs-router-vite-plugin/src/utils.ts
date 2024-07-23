@@ -100,6 +100,12 @@ export function trimPathLeft(pathToTrim: string): string {
   return pathToTrim === '/' ? pathToTrim : pathToTrim.replace(/^\/{1,}/, '')
 }
 
+export function removeLastSlash(str: string): string {
+  if (str.length > 1 && str.endsWith('/'))
+    return str.substring(0, str.length - 1)
+  return str
+}
+
 /**
  * The `node.path` is used as the `id` in the route definition.
  * This function checks if the given node has a parent and if so, it determines the correct path for the given node.

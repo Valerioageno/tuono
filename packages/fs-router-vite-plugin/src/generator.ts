@@ -11,6 +11,7 @@ import {
   removeExt,
   routePathToVariable,
   removeGroups,
+  removeLastSlash,
   removeUnderscores,
   removeLayoutSegments,
 } from './utils'
@@ -128,8 +129,8 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
     node.path = determineNodePath(node)
 
-    node.cleanedPath = removeGroups(
-      removeUnderscores(removeLayoutSegments(node.path)) ?? '',
+    node.cleanedPath = removeLastSlash(
+      removeGroups(removeUnderscores(removeLayoutSegments(node.path)) ?? ''),
     )
 
     if (node.parent) {
