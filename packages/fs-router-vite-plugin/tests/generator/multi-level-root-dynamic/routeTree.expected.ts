@@ -23,7 +23,6 @@ const PostsMyPost = createRoute({ component: PostsMyPostImport })
 // Create/Update Routes
 
 const PostsrootRoute = Postsroot.update({
-  path: '/posts',
   getParentRoute: () => rootRoute,
 })
 

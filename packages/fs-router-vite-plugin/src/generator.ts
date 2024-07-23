@@ -184,7 +184,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
         return [
           `const ${node.variableName}Route = ${node.variableName}.update({
           ${[
-            `path: '${node.cleanedPath}'`,
+            !node.path?.endsWith(ROOT_PATH_ID) && `path: '${node.cleanedPath}'`,
             `getParentRoute: () => ${node.parent?.variableName ?? 'root'}Route`,
             rustHandlersNodes.includes(node.path || '')
               ? 'hasHandler: true'
