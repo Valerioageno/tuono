@@ -4,11 +4,11 @@ import {
   createTheme,
   MantineProvider,
   AppShell,
-  Burger,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import '@mantine/core/styles.css'
 import { Head } from 'tuono'
+import Navbar from '../components/navbar'
 
 interface RootRouteProps {
   children: ReactNode
@@ -31,17 +31,8 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
             breakpoint: 'sm',
             collapsed: { mobile: !opened },
           }}
-          padding="md"
         >
-          <AppShell.Header>
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
-            />
-            <div>Logo</div>
-          </AppShell.Header>
+          <Navbar opened={opened} toggle={toggle} />
           {children}
         </AppShell>
       </MantineProvider>
