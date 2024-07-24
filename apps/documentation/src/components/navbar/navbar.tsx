@@ -1,6 +1,5 @@
-import { AppShell, Box, Burger, Button, Flex } from '@mantine/core'
+import { AppShell, Burger, Flex } from '@mantine/core'
 import ThemeBtn from '../theme-btn'
-import { IconBrandGithub } from '@tabler/icons-react'
 
 interface NavbarProps {
   opened: boolean

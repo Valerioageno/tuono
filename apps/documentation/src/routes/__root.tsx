@@ -6,9 +6,11 @@ import {
   AppShell,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import '@mantine/core/styles.css'
 import { Head } from 'tuono'
 import Navbar from '../components/navbar'
+
+import '@mantine/core/styles.css'
+import '@mantine/code-highlight/styles.css'
 
 interface RootRouteProps {
   children: ReactNode
