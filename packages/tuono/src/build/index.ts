@@ -10,9 +10,12 @@ const BASE_CONFIG: InlineConfig = {
   publicDir: '../public',
   cacheDir: 'cache',
   envDir: '../',
+  optimizeDeps: {
+    exclude: ['@mdx-js/react'],
+  },
   plugins: [
-    { enforce: 'pre', ...mdx() },
-    react(),
+    { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
+    react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     ViteFsRouter(),
     LazyLoadingPlugin(),
   ],
@@ -53,6 +56,7 @@ export function developmentCSRWatch() {
       ...BASE_CONFIG,
       // Entry point for the development vite proxy
       base: '/vite-server/',
+
       server: {
         port: VITE_PORT,
         strictPort: true,
