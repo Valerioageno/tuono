@@ -1,13 +1,19 @@
 import { MDXProvider } from '@mdx-js/react'
 
-import MdxCodeHighlight from './mdx-pre'
-import { Link } from 'tuono'
+import MdxLink from './mdx-link'
+import type { ReactNode } from 'react'
 
-export default function MdxProvider({ children }): JSX.Element {
+interface MdxProviderProps {
+  children: ReactNode
+}
+
+export default function MdxProvider({
+  children,
+}: MdxProviderProps): JSX.Element {
   return (
     <MDXProvider
       components={{
-        a: Link,
+        a: MdxLink,
       }}
     >
       {children}
