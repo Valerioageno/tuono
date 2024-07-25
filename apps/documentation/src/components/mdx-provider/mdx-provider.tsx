@@ -4,6 +4,7 @@ import MdxLink from './mdx-link'
 import type { ReactNode } from 'react'
 import MdxPre from './mdx-pre'
 import MdxQuote from './mdx-quote'
+import MdxCode from './mdx-code'
 
 interface MdxProviderProps {
   children: ReactNode
@@ -18,6 +19,7 @@ export default function MdxProvider({
         a: MdxLink,
         pre: MdxPre,
         blockquote: MdxQuote,
+        code: MdxCode,
       }}
     >
       {children}
