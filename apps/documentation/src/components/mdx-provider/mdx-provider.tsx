@@ -2,6 +2,7 @@ import { MDXProvider } from '@mdx-js/react'
 
 import MdxLink from './mdx-link'
 import type { ReactNode } from 'react'
+import MdxPre from './mdx-pre'
 
 interface MdxProviderProps {
   children: ReactNode
@@ -14,6 +15,7 @@ export default function MdxProvider({
     <MDXProvider
       components={{
         a: MdxLink,
+        pre: MdxPre,
       }}
     >
       {children}
