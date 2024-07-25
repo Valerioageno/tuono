@@ -1,3 +1,5 @@
+import Hero from '../components/hero'
+
 export default function IndexPage(): JSX.Element {
-  return <h1>Index page</h1>
+  return <Hero />
 }

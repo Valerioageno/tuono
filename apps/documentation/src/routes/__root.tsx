@@ -20,6 +20,7 @@ const theme = createTheme({})
 
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure()
+
   return (
     <>
       <Head>

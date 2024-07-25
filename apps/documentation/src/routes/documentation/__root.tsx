@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AppShell } from '@mantine/core'
+import { AppShell, Container } from '@mantine/core'
 import MdxProvider from '../../components/mdx-provider'
 import Sidebar from '../../components/sidebar'
 
@@ -12,7 +12,9 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
     <>
       <Sidebar />
       <AppShell.Main>
-        <MdxProvider>{children}</MdxProvider>
+        <Container>
+          <MdxProvider>{children}</MdxProvider>
+        </Container>
       </AppShell.Main>
     </>
   )

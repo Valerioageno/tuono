@@ -1,5 +1,5 @@
 import { AppShell, Burger, Flex } from '@mantine/core'
-import { Link } from 'tuono'
+import { Link, useRouter } from 'tuono'
 import ThemeBtn from '../theme-btn'
 
 interface NavbarProps {
@@ -8,10 +8,13 @@ interface NavbarProps {
 }
 
 export default function Navbar({ opened, toggle }: NavbarProps): JSX.Element {
+  const { pathname } = useRouter()
   return (
     <AppShell.Header p="sm">
       <Flex justify="space-between">
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        {pathname.startsWith('/documentation') && (
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        )}
         <Link href="/">Logo</Link>
         <Link href="/documentation">Documentation</Link>
         <ThemeBtn />
