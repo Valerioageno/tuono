@@ -5,9 +5,10 @@ import {
 } from '@mantine/core'
 import { IconSun, IconMoon } from '@tabler/icons-react'
 import cx from 'clsx'
+
 import classes from './theme-btn.module.css'
 
-export default function ThemeBtn() {
+export default function ThemeBtn(): JSX.Element {
   const { setColorScheme } = useMantineColorScheme()
   const computedColorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,

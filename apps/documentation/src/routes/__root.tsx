@@ -16,7 +16,10 @@ interface RootRouteProps {
   children: ReactNode
 }
 
-const theme = createTheme({})
+const theme = createTheme({
+  primaryColor: 'violet',
+  primaryShade: { light: 6, dark: 8 },
+})
 
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure()
