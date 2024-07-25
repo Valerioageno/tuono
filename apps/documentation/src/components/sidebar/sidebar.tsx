@@ -20,7 +20,11 @@ export default function Sidebar(): JSX.Element {
         <NavLink href="/" component={Link} label="Intro" />
       </NavLink>
       <NavLink label="Routing" href="#required-for-focus" defaultOpened>
-        <NavLink href="/" component={Link} label="Intro" />
+        <NavLink
+          href="/documentation/routing"
+          component={Link}
+          label="FS routing"
+        />
       </NavLink>
       <NavLink
         label="Contributing"
