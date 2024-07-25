@@ -15,7 +15,7 @@ const BASE_CONFIG: InlineConfig = {
   },
   plugins: [
     { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
-    // eslint-disable-next-line
+    // @ts-ignore: TS configuration issue.
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     ViteFsRouter(),
     LazyLoadingPlugin(),
