@@ -63,12 +63,13 @@ pub async fn watch() -> Result<()> {
 
         for event in action.events.iter() {
             for path in event.paths() {
-                if path.0.to_string_lossy().ends_with(".rs") {
+                let file_path = path.0.to_string_lossy();
+                if file_path.ends_with(".rs") {
                     should_reload_rust_server = true
                 }
 
-                // Either tsx and jsx
-                if path.0.to_string_lossy().ends_with("sx") {
+                // Either tsx, jsx and mdx
+                if file_path.ends_with("sx") || file_path.ends_with("mdx") {
                     should_reload_ssr_bundle = true
                 }
             }
