@@ -6,14 +6,9 @@ export default function Sidebar(): JSX.Element {
     <AppShell.Navbar p="md">
       <h3>Tutorial</h3>
       <NavLink
-        href="/documentation/installation"
+        href="/documentation/tutorial/intro"
         component={Link}
-        label="Installation"
-      />
-      <NavLink
-        href="/documentation/requirements"
-        component={Link}
-        label="Requirements"
+        label="Intro"
       />
       <h3>Documentation</h3>
       <NavLink

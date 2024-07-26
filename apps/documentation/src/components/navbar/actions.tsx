@@ -10,10 +10,11 @@ export default function Actions(): JSX.Element {
         href="/documentation"
         component={Link}
         size="compact-lg"
-        leftSection={'Docs'}
         rightSection={<IconBook />}
         autoContrast
-      />
+      >
+        Get started
+      </Button>
       <ActionIcon
         variant="default"
         size="lg"
