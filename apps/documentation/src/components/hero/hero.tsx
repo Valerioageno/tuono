@@ -25,7 +25,7 @@ export default function Hero(): JSX.Element {
       </Center>
       <Center mt={50}>
         <Group>
-          <Button component={Link} href="/documentation" size="lg">
+          <Button component={Link} href="/documentation/installation" size="lg">
             Get Started
           </Button>
           <CopyButton value="cargo install tuono">

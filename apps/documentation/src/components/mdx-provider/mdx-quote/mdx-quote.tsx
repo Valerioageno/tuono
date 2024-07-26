@@ -6,7 +6,15 @@ export default function MdxQuote(
 ): JSX.Element {
   return (
     <>
-      <Blockquote color="violet" p={8} iconSize={30} {...props} />
+      <Blockquote
+        color="violet"
+        p={8}
+        px={20}
+        mt={30}
+        iconSize={30}
+        {...props}
+        style={{ borderRadius: 8 }}
+      />
       <Space h="md" />
     </>
   )
