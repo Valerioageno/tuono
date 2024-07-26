@@ -40,7 +40,7 @@ jobs:
       run: npm i -g pnpm
         
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --ignore-workspace
 
     - name: Build project
       run: tuono build --static
@@ -63,7 +63,7 @@ jobs:
       run: npm i -g pnpm
        
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --ignore-workspace
 
     - name: Check formatting
       run: pnpm format:check
