@@ -43,7 +43,7 @@ jobs:
       run: pnpm install
 
     - name: Build project
-      run: tuono build
+      run: tuono build --static
 
     - name: Test project
       run: pnpm test
