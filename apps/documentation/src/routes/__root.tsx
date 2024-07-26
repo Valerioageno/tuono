@@ -19,6 +19,20 @@ interface RootRouteProps {
 const theme = createTheme({
   primaryColor: 'violet',
   primaryShade: { light: 6, dark: 8 },
+  fontFamily: 'Roboto',
+  fontSizes: {
+    // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+    xs: '16px',
+    sm: '16px',
+  },
+
+  headings: {
+    sizes: {
+      h1: {
+        fontSize: '48px',
+      },
+    },
+  },
 })
 
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {

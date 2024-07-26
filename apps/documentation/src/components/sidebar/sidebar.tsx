@@ -16,18 +16,11 @@ export default function Sidebar(): JSX.Element {
         label="Requirements"
       />
       <h3>Documentation</h3>
-      <NavLink label="Installation" href="#required-for-focus" defaultOpened>
-        <NavLink
-          href="/documentation/installation"
-          component={Link}
-          label="Installation guide"
-        />
-        <NavLink
-          href="/documentation/requirements"
-          component={Link}
-          label="Requirements"
-        />
-      </NavLink>
+      <NavLink
+        href="/documentation/installation"
+        component={Link}
+        label="Installation"
+      />
       <NavLink label="Routing" href="#required-for-focus" defaultOpened>
         <NavLink
           href="/documentation/routing"

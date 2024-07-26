@@ -1,4 +1,4 @@
-import { AppShell, Burger, Flex } from '@mantine/core'
+import { AppShell, Burger, Button, Flex, Title } from '@mantine/core'
 import { Link, useRouter } from 'tuono'
 import Actions from './actions'
 
@@ -21,7 +21,9 @@ export default function Navbar({ opened, toggle }: NavbarProps): JSX.Element {
               size="sm"
             />
           )}
-          <Link href="/">Tuono</Link>
+          <Button component={Link} href="/" variant="transparent" p={0} fz={28}>
+            Tuono
+          </Button>
         </Flex>
         <Actions />
       </Flex>
