@@ -1,4 +1,4 @@
-import { AppShell, Burger, Button, Flex, Title } from '@mantine/core'
+import { AppShell, Burger, Button, Flex } from '@mantine/core'
 import { Link, useRouter } from 'tuono'
 import Actions from './actions'
 

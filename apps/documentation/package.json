@@ -2,6 +2,12 @@
   "name": "tuono",
   "description": "The react/rust fullstack framework",
   "version": "0.0.1",
+  "scripts": {
+    "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
+    "format": "prettier -u --write --ignore-unknown '**/*'",
+    "format:check": "prettier --check --ignore-unknown '**/*'",
+    "types": "tsc --noEmit"
+  },
   "dependencies": {
     "@mantine/code-highlight": "^7.11.2",
     "@mantine/core": "^7.11.2",
@@ -17,9 +23,11 @@
     "@types/mdx": "^2.0.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "eslint": "^8.56.0",
     "postcss": "^8.4.39",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
+    "prettier": "^3.2.4",
     "typescript": "^5.5.4"
   }
 }

@@ -18,6 +18,7 @@ export default function MdxProvider({
     <MDXProvider
       components={{
         a: MdxLink,
+        // @ts-expect-error: useless finding the correct props types
         pre: MdxPre,
         blockquote: MdxQuote,
         code: MdxCode,

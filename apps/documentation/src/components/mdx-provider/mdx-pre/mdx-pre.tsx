@@ -1,10 +1,13 @@
 import { CodeHighlight } from '@mantine/code-highlight'
 
-export default function MdxPre(props): JSX.Element {
+interface PreProps {
+  children: any
+}
+export default function MdxPre({ children }: PreProps): JSX.Element {
   return (
     <CodeHighlight
-      code={props.children.props.children}
-      language={props.children.props.className?.replace('language-', '')}
+      code={children.props.children || ''}
+      language={children.props.className?.replace('language-', '')}
     />
   )
 }
