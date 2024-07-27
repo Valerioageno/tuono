@@ -18,7 +18,7 @@ export default function Sidebar(): JSX.Element {
       />
       <NavLink label="Routing" href="#required-for-focus" defaultOpened>
         <NavLink
-          href="/documentation/routing"
+          href="/documentation/routing/intro"
           component={Link}
           label="FS routing"
         />
