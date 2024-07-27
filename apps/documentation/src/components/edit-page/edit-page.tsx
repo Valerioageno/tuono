@@ -15,7 +15,7 @@ export default function EditPage(): JSX.Element {
       variant="transparent"
       leftSection={<IconEdit />}
       target="_blank"
-      href={GITHUB_URL.concat(pathname)}
+      href={GITHUB_URL.concat(pathname).concat('.mdx')}
     >
       Edit page
     </Button>
