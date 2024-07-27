@@ -18,7 +18,7 @@ interface RootRouteProps {
 
 const theme = createTheme({
   primaryColor: 'violet',
-  primaryShade: { light: 6, dark: 8 },
+  primaryShade: { light: 6, dark: 9 },
   fontFamily: 'Roboto',
   respectReducedMotion: true,
   fontSizes: {
