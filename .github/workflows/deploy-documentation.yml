@@ -1,6 +1,8 @@
 name: Deploy documentation website on AWS S3
 on:
   push:
+    branches:
+      - main
     paths:
       - 'apps/documentation/**'
 
