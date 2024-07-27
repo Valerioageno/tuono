@@ -81,7 +81,7 @@ impl Route {
             .send()
             .unwrap();
 
-        let file_path = PathBuf::from(format!("out/static{}.html", &self.path));
+        let file_path = self.html_file_path();
 
         let parent_dir = file_path.parent().unwrap();
 
@@ -123,6 +123,11 @@ impl Route {
             io::copy(&mut response, &mut data_file).expect("Failed to write the JSON on the file");
         }
     }
+
+    fn html_file_path(&self) -> PathBuf {
+        let cleaned_path = self.path.replace("index", "");
+        PathBuf::from(format!("out/static{}/index.html", cleaned_path))
+    }
 }
 
 #[cfg(test)]
@@ -161,5 +166,23 @@ mod tests {
 
         assert_eq!(dyn_info.axum_route, "/:posts");
         assert_eq!(dyn_info.module_import, "dyn_posts");
+    }
+
+    #[test]
+    fn should_define_the_correct_html_build_path() {
+        let routes = [
+            ("/index", "out/static/index.html"),
+            ("/documentation", "out/static/documentation/index.html"),
+            (
+                "/documentation/routing",
+                "out/static/documentation/routing/index.html",
+            ),
+        ];
+
+        for (path, html) in routes {
+            let route = Route::new(path.to_string());
+
+            assert_eq!(route.html_file_path(), PathBuf::from(html))
+        }
     }
 }

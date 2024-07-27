@@ -63,6 +63,7 @@ impl App {
             .unwrap()
             .replace(&format!("{base_path_str}/src/routes"), "")
             .replace(".rs", "")
+            .replace(".mdx", "")
             .replace(".tsx", "");
 
         if entry.extension().unwrap() == "rs" {

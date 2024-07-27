@@ -104,9 +104,9 @@ pub fn app() -> std::io::Result<()> {
                     sleep(Duration::from_secs(1))
                 }
 
-                app.route_map
-                    .iter()
-                    .for_each(|(_, route)| route.save_ssg_html(&reqwest));
+                for (_, route) in app.route_map {
+                    route.save_ssg_html(&reqwest)
+                }
 
                 // Close server
                 let _ = rust_server.kill();
