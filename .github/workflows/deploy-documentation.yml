@@ -44,7 +44,7 @@ jobs:
         with:
           folder: out/static
           bucket: tuono-documentation
-          bucket-region: eu-central-1
+          bucket-region: eu-west-3
           dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
           invalidation: /
           delete-removed: true
