@@ -9,13 +9,13 @@
     "format:check": "turbo format:check",
     "types": "turbo types --filter tuono",
     "test": "turbo test",
-	"test:watch": "turbo test:watch"
+    "test:watch": "turbo test:watch"
   },
   "workspaces": [
     "tuono",
-	"tuono-lazy-fn-vite-plugin",
-	"tuono-fs-router-vite-plugin",
-	"tuono-router"
+    "tuono-lazy-fn-vite-plugin",
+    "tuono-fs-router-vite-plugin",
+    "tuono-router"
   ],
   "author": "Valerio Ageno",
   "license": "MIT",
@@ -38,6 +38,6 @@
     "vitest": "^1.5.2"
   },
   "dependencies": {
-    "turbo": "^2.0.4"
+    "turbo": "^2.0.12"
   }
 }
