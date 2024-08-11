@@ -6,12 +6,6 @@ import react from '@vitejs/plugin-react'
 
 const config = defineConfig({
   plugins: [react()],
-  test: {
-    name: 'react-router',
-    watch: true,
-    environment: 'jsdom',
-    globals: true,
-  },
 })
 
 export default mergeConfig(
