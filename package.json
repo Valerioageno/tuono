@@ -2,7 +2,7 @@
   "name": "workspace",
   "packageManager": "pnpm@9.1.1",
   "scripts": {
-    "dev": "turbo dev --filter tuono",
+    "dev": "turbo watch dev",
     "build": "turbo build --filter tuono",
     "lint": "turbo lint",
     "format": "turbo format",
