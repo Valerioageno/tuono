@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "turbo dev --filter tuono",
     "build": "turbo build --filter tuono",
-    "lint": "turbo lint --filter tuono",
-    "format": "turbo format --filter tuono",
-    "format:check": "turbo format:check --filter tuono",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "format:check": "turbo format:check",
     "types": "turbo types --filter tuono",
     "test": "turbo test",
 	"test:watch": "turbo test:watch"
@@ -14,7 +14,8 @@
   "workspaces": [
     "tuono",
 	"tuono-lazy-fn-vite-plugin",
-	"tuono-fs-router-vite-plugin"
+	"tuono-fs-router-vite-plugin",
+	"tuono-router"
   ],
   "author": "Valerio Ageno",
   "license": "MIT",

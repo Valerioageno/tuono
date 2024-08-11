@@ -3,7 +3,7 @@ import * as React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import MetaTagsServer from 'react-meta-tags/server'
 import { MetaTagsContext } from 'react-meta-tags'
-import { RouterProvider, createRouter } from '../router'
+import { RouterProvider, createRouter } from 'tuono-router'
 
 type RouteTree = any
 type Mode = 'Dev' | 'Prod'
