@@ -7,7 +7,7 @@ import {
   RouterProvider,
   dynamic,
   useRouter,
-} from './router'
+} from 'tuono-router'
 
 export type { TuonoProps } from './types'
 

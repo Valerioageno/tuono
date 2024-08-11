@@ -6,17 +6,18 @@ import react from '@vitejs/plugin-react'
 
 const config = defineConfig({
   plugins: [react()],
+  test: {
+    name: 'react-router',
+    watch: true,
+    environment: 'jsdom',
+    globals: true,
+  },
 })
 
 export default mergeConfig(
   config,
   tanstackBuildConfig({
-    entry: [
-      './src/index.ts',
-      './src/build/index.ts',
-      './src/ssr/index.tsx',
-      './src/hydration/index.tsx',
-    ],
+    entry: './src/index.ts',
     srcDir: './src',
   }),
 )

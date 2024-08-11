@@ -8,9 +8,7 @@
     "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
     "format": "prettier -u --write --ignore-unknown '**/*'",
     "format:check": "prettier --check --ignore-unknown '**/*'",
-    "types": "tsc --noEmit",
-    "test:watch": "vitest",
-    "test": "vitest run"
+    "types": "tsc --noEmit"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",
@@ -92,17 +90,14 @@
     "react-meta-tags": "^1.0.1",
     "tuono-fs-router-vite-plugin": "workspace:*",
     "tuono-lazy-fn-vite-plugin": "workspace:*",
-    "vite": "^5.2.11",
-    "zustand": "4.4.7"
+    "tuono-router": "workspace:*",
+    "vite": "^5.2.11"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.4.5",
-    "@testing-library/react": "^15.0.7",
     "@types/babel-traverse": "^6.25.10",
     "@types/babel__traverse": "^7.20.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "jsdom": "^24.0.0",
     "prettier": "^3.2.4",
     "vitest": "^1.5.2"
   },

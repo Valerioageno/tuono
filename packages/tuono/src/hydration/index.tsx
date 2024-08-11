@@ -1,6 +1,6 @@
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
-import { RouterProvider, createRouter } from '../router'
+import { RouterProvider, createRouter } from 'tuono-router'
 
 type RouteTree = any
 
