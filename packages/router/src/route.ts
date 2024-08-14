@@ -6,7 +6,7 @@ interface RouteOptions {
   isRoot?: boolean
   getParentRoute?: () => Route
   path?: string
-  component: () => JSX.Element
+  component: RouteComponent
 }
 
 export function createRoute(options: RouteOptions): Route {

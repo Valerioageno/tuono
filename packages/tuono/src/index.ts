@@ -1,15 +1,4 @@
 import Head from 'react-meta-tags'
-import {
-  createRoute,
-  createRootRoute,
-  createRouter,
-  Link,
-  RouterProvider,
-  dynamic,
-  useRouter,
-} from 'tuono-router'
-
-export type { TuonoProps } from './types'
 
 export {
   createRoute,
@@ -18,6 +7,10 @@ export {
   Link,
   RouterProvider,
   dynamic,
+  lazyLoadComponent,
   useRouter,
-  Head,
-}
+} from 'tuono-router'
+
+export { Head }
+
+export type { TuonoProps } from './types'

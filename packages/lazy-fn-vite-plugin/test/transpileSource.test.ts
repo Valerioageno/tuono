@@ -10,10 +10,9 @@ const PokemonspokemonImport = dynamic(
 )
 `
 
-const CLIENT_RESULT = `import { lazy } from "react";
-import { createRoute } from 'tuono';
-const IndexImport = lazy(() => import('./../src/routes/index'));
-const PokemonspokemonImport = lazy(() => import('./../src/routes/pokemons/[pokemon]'));`
+const CLIENT_RESULT = `import { createRoute, lazyLoadComponent as dynamic } from 'tuono';
+const IndexImport = dynamic(() => import('./../src/routes/index'));
+const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`
 
 const SERVER_RESULT = `import { createRoute } from 'tuono';
 import IndexImport from "./../src/routes/index";
