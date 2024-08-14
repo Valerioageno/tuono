@@ -11,3 +11,10 @@ export interface ServerProps {
   }
   props: any
 }
+
+export interface RouteProps {
+  data: any
+  isLoading: boolean
+}
+
+export type RouteComponent = (props: RouteProps) => JSX.Element

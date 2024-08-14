@@ -1,4 +1,5 @@
 import type { RouterType } from './router'
+import type { RouteComponent } from './types'
 import { trimPathLeft, joinPaths } from './utils'
 
 interface RouteOptions {
@@ -25,7 +26,7 @@ export class Route {
   router: RouterType
   isRoot: boolean
   originalIndex?: number
-  component: () => JSX.Element
+  component: RouteComponent
 
   constructor(options: RouteOptions) {
     this.isRoot = options.isRoot ?? typeof options.getParentRoute !== 'function'
