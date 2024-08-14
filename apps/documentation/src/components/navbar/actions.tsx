@@ -1,4 +1,4 @@
-import { Flex, Button, ActionIcon } from '@mantine/core'
+import { Flex, Button, ActionIcon, Group } from '@mantine/core'
 import { IconBrandGithub, IconBook } from '@tabler/icons-react'
 import ThemeBtn from '../theme-btn'
 import { Link } from 'tuono'
@@ -15,17 +15,19 @@ export default function Actions(): JSX.Element {
       >
         Get started
       </Button>
-      <ActionIcon
-        variant="default"
-        size="lg"
-        aria-label="Check the project on github"
-        href="https://github.com/Valerioageno/tuono"
-        target="_blank"
-        component="a"
-      >
-        <IconBrandGithub />
-      </ActionIcon>
-      <ThemeBtn />
+      <Group gap={8} visibleFrom="sm">
+        <ActionIcon
+          variant="default"
+          size="lg"
+          aria-label="Check the project on github"
+          href="https://github.com/Valerioageno/tuono"
+          target="_blank"
+          component="a"
+        >
+          <IconBrandGithub />
+        </ActionIcon>
+        <ThemeBtn />
+      </Group>
     </Flex>
   )
 }
