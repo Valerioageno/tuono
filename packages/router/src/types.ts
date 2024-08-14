@@ -17,4 +17,6 @@ export interface RouteProps {
   isLoading: boolean
 }
 
-export type RouteComponent = (props: RouteProps) => JSX.Element
+export type RouteComponent = ((props: RouteProps) => JSX.Element) & {
+  preload: () => void
+}

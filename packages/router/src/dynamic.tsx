@@ -1,4 +1,7 @@
 import * as React from 'react'
+import type { RouteComponent } from './types'
+
+type ImportFn = () => Promise<{ default: React.ComponentType<any> }>
 
 /**
  * Helper function to lazy load any component.
@@ -9,7 +12,7 @@ import * as React from 'react'
  * It can be wrapped within a React.Suspense component in order to handle its loading state.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const dynamic = (importFn: () => JSX.Element): JSX.Element => {
+export const dynamic = (importFn: ImportFn): JSX.Element => {
   /**
    *
    * This function is just a placeholder. The real work is done by the bundler.
@@ -34,4 +37,10 @@ export const dynamic = (importFn: () => JSX.Element): JSX.Element => {
    * Check the `lazy-fn-vite-plugin` package for more
    */
   return <></>
+}
+
+export const lazyLoadComponent = (factory: ImportFn): RouteComponent => {
+  const Component = React.lazy(factory) as unknown as RouteComponent
+  Component.preload = factory
+  return Component
 }

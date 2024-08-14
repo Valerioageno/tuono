@@ -5,7 +5,7 @@ import type { PluginItem } from '@babel/core'
 import {
   TUONO_MAIN_PACKAGE,
   TUONO_DYNAMIC_FN_ID,
-  REACT_LAZY_FN_ID,
+  TUONO_LAZY_FN_ID,
 } from './constants'
 
 import * as t from '@babel/types'
@@ -19,6 +19,7 @@ import type {
 } from '@babel/types'
 
 /**
+ * [SERVER build]
  * This plugin just removes the `dynamic` imported function from any tuono import
  */
 const RemoveTuonoLazyImport: PluginItem = {
@@ -38,49 +39,28 @@ const RemoveTuonoLazyImport: PluginItem = {
 }
 
 /**
- * This plugin adds: "Import { lazy } from 'react'"
- * and translate dynamic call into a React.lazy call
+ * [CLIENT build]
+ * This plugin replace the `dynamic` function with the `lazyLoadComponent` one
  */
-const ImportReactLazy: PluginItem = {
-  name: 'import-react-lazy-plugin',
+const ReplaceTuonoLazyImport: PluginItem = {
+  name: 'remove-tuono-lazy-import-plugin',
   visitor: {
-    // Add the import statement
-    Program: (path: any) => {
-      let isReactImported = false
-
-      path.node.body.forEach((val: any) => {
-        if (val.type === 'ImportDeclaration' && val.source.value === 'react') {
-          isReactImported = true
-          // TODO: Handle also here case of already imported react
-          // Right now works just for the main routes file
+    ImportSpecifier: (path) => {
+      if ((path.node.imported as Identifier).name === TUONO_DYNAMIC_FN_ID) {
+        if (
+          (path.parentPath.node as ImportDeclaration).source.value ===
+          TUONO_MAIN_PACKAGE
+        ) {
+          ;(path.node.imported as Identifier).name = TUONO_LAZY_FN_ID
         }
-      })
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!isReactImported) {
-        const importDeclaration = t.importDeclaration(
-          [
-            t.importSpecifier(
-              t.identifier(REACT_LAZY_FN_ID),
-              t.identifier(REACT_LAZY_FN_ID),
-            ),
-          ],
-          t.stringLiteral('react'),
-        )
-        path.unshiftContainer('body', importDeclaration)
-      }
-    },
-    // Update lazy function name from `dynamic` to `lazy`
-    CallExpression: (path: any) => {
-      if (path.node.callee?.name === TUONO_DYNAMIC_FN_ID) {
-        path.node.callee.name = REACT_LAZY_FN_ID
       }
     },
   },
 }
 
 /**
- * For the server side we need to statically import the lazy loaded components
+ * [SERVER build]
+ * This plugin statically imports the lazy loaded components
  */
 const TurnLazyIntoStaticImport: PluginItem = {
   name: 'turn-lazy-into-static-import-plugin',
@@ -124,8 +104,8 @@ export function LazyLoadingPlugin(): Plugin {
           plugins: [
             ['@babel/plugin-syntax-jsx', {}],
             ['@babel/plugin-syntax-typescript', { isTSX: true }],
-            [RemoveTuonoLazyImport],
-            [!opts?.ssr ? ImportReactLazy : []],
+            [!opts?.ssr ? ReplaceTuonoLazyImport : []],
+            [opts?.ssr ? RemoveTuonoLazyImport : []],
             [opts?.ssr ? TurnLazyIntoStaticImport : []],
           ],
           sourceMaps: true,

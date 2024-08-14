@@ -14,7 +14,7 @@ const root = {
   component: ({ children }: Props) => (
     <div data-testid="root">root route {children}</div>
   ),
-} as Route
+} as unknown as Route
 
 const parent = {
   component: ({ children }: Props) => (
@@ -23,14 +23,14 @@ const parent = {
   options: {
     getParentRoute: () => root,
   },
-} as Route
+} as unknown as Route
 
 const route = {
   component: () => <p data-testid="route">current route</p>,
   options: {
     getParentRoute: () => parent,
   },
-} as Route
+} as unknown as Route
 
 describe('Test RouteMatch component', () => {
   afterEach(() => {

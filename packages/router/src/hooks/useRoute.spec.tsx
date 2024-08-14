@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { getRouteByPathname } from './Matches'
+import useRoute from './useRoute'
 import { cleanup } from '@testing-library/react'
 
-describe('Test getRouteByPathname fn', () => {
+describe('Test useRoute fn', () => {
   afterEach(() => {
     cleanup()
   })
 
   test('match routes by ids', () => {
-    vi.mock('../hooks/useInternalRouter.tsx', () => ({
+    vi.mock('./useInternalRouter.tsx', () => ({
       useInternalRouter: (): { routesById: Record<string, any> } => {
         return {
           routesById: {
@@ -23,15 +23,13 @@ describe('Test getRouteByPathname fn', () => {
       },
     }))
 
-    expect(getRouteByPathname('/')?.id).toBe('/')
-    expect(getRouteByPathname('/not-found')?.id).toBe(undefined)
-    expect(getRouteByPathname('/about')?.id).toBe('/about')
-    expect(getRouteByPathname('/posts/')?.id).toBe('/posts/')
-    expect(getRouteByPathname('/posts/dynamic-post')?.id).toBe('/posts/[post]')
-    expect(getRouteByPathname('/posts/defined-post')?.id).toBe(
-      '/posts/defined-post',
-    )
-    expect(getRouteByPathname('/posts/dynamic-post/dynamic-comment')?.id).toBe(
+    expect(useRoute('/')?.id).toBe('/')
+    expect(useRoute('/not-found')?.id).toBe(undefined)
+    expect(useRoute('/about')?.id).toBe('/about')
+    expect(useRoute('/posts/')?.id).toBe('/posts/')
+    expect(useRoute('/posts/dynamic-post')?.id).toBe('/posts/[post]')
+    expect(useRoute('/posts/defined-post')?.id).toBe('/posts/defined-post')
+    expect(useRoute('/posts/dynamic-post/dynamic-comment')?.id).toBe(
       '/posts/[post]/[comment]',
     )
   })
