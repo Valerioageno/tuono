@@ -33,12 +33,8 @@ function RouterContextProvider({
 
   const routerContext = getRouterContext()
 
-  const pendingElement = router.options.defaultPendingComponent ? (
-    <router.options.defaultPendingComponent />
-  ) : null
-
   return (
-    <React.Suspense fallback={pendingElement}>
+    <React.Suspense>
       <routerContext.Provider value={router}>{children}</routerContext.Provider>
     </React.Suspense>
   )
