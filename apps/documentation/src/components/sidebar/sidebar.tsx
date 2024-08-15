@@ -1,34 +1,30 @@
-import { AppShell, NavLink } from '@mantine/core'
-import { Link } from 'tuono'
+import { AppShell } from '@mantine/core'
+import SidebarLink from './SidebarLink'
 
 export default function Sidebar({ close }: { close: () => void }): JSX.Element {
   return (
     <AppShell.Navbar p="md">
       <h3>Tutorial</h3>
-      <NavLink
+      <SidebarLink
         href="/documentation/tutorial/intro"
-        component={Link}
         label="Intro"
         onClick={close}
       />
       <h3>Documentation</h3>
-      <NavLink
+      <SidebarLink
         href="/documentation/installation"
-        component={Link}
         label="Installation"
         onClick={close}
       />
-      <NavLink label="Routing" href="#required-for-focus" defaultOpened>
-        <NavLink
+      <SidebarLink label="Routing" href="#required-for-focus" defaultOpened>
+        <SidebarLink
           href="/documentation/routing/intro"
-          component={Link}
           label="FS routing"
           onClick={close}
         />
-      </NavLink>
-      <NavLink
-        label="Contributing"
-        component={Link}
+      </SidebarLink>
+      <SidebarLink
+        label="✨ Contributing"
         href="/documentation/contributing"
         onClick={close}
       />
