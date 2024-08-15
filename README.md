@@ -1,15 +1,15 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png" width="200px">
-</p>
-<h1 align="center">Tuono<br>The react/rust fullstack framework</h1>
-<div align="center">
-    <img src="https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg" />
-    <img src="https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg" />
-</div>
+[Documentation](https://tuono.dev) | [Tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md) |
+[✨Contributing](https://tuono.dev/documentation/contributing)
 
-<br>
-<br>
+# Tuono
 
+<img align="right" src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png" width="160px">
+
+![](https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg)
+![](https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg)
+
+
+**Tuono** is the react/rust fullstack framework.
 
 Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
 Why Tuono? Just a badass name.
