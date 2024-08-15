@@ -38,14 +38,16 @@ export function BreadcrumbElement({
   href,
   label,
 }: BreadcrumbElementProps): JSX.Element {
+  if (href) {
+    return (
+      <Button component={Link} href={href} variant="subtle" radius="xl" px={10}>
+        {label}
+      </Button>
+    )
+  }
+
   return (
-    <Button
-      component={href ? Link : 'span'}
-      href={href}
-      variant={href ? 'subtle' : 'light'}
-      radius="xl"
-      px={href ? 10 : undefined}
-    >
+    <Button component="span" variant="light" radius="xl">
       {label}
     </Button>
   )

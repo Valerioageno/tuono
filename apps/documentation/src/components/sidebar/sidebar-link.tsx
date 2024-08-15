@@ -18,28 +18,29 @@ export default function SidebarLink(
   const { pathname } = useRouter()
   const [isOpen, setIsOpen] = useState<boolean>(!!props.defaultOpened)
 
-  return (
-    <NavLink
-      component={props.href.startsWith('#') ? 'button' : Link}
-      active={pathname === props.href}
-      className={styles.link}
-      rightSection={
-        props.children && (
-          <IconChevronRight
-            size="1.2rem"
-            stroke={1.5}
-            className="mantine-rotate-rtl"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsOpen((state) => !state)
-            }}
-          />
-        )
-      }
-      opened={isOpen}
-      autoContrast
-      {...props}
-    />
-  )
+  const internalProps = {
+    active: pathname === props.href,
+    className: styles.link,
+    rightSection: props.children && (
+      <IconChevronRight
+        size="1.2rem"
+        stroke={1.5}
+        className="mantine-rotate-rtl"
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          setIsOpen((state) => !state)
+        }}
+      />
+    ),
+    opened: isOpen,
+    autoContrast: true,
+    ...props,
+  }
+
+  if (props.href.startsWith('#')) {
+    return <NavLink component="button" {...internalProps} />
+  }
+
+  return <NavLink component={Link} {...internalProps} />
 }
