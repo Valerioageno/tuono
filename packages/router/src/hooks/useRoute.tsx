@@ -3,6 +3,18 @@ import { useInternalRouter } from './useInternalRouter'
 
 const DYNAMIC_PATH_REGEX = /\[(.*?)\]/
 
+/**
+ * In order to correctly handle pathnames that might finish with a slash
+ * we first sanitize them by removing the final slash.
+ */
+export function sanitizePathname(pathname: string): string {
+  if (pathname.endsWith('/') && pathname !== '/') {
+    return pathname.substring(0, pathname.length - 1)
+  }
+
+  return pathname
+}
+
 /*
  * This hook is also implemented on server side to match the bundle
  * file to load at the first rendering.
@@ -13,6 +25,8 @@ const DYNAMIC_PATH_REGEX = /\[(.*?)\]/
  */
 export default function useRoute(pathname?: string): Route | undefined {
   if (!pathname) return
+
+  pathname = sanitizePathname(pathname)
 
   const { routesById } = useInternalRouter()
 
