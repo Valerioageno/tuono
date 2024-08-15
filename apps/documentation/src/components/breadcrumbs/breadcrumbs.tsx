@@ -15,7 +15,13 @@ export default function TuonoBreadcrumbs({
       mb="md"
       mt="md"
     >
-      <Button href="/" component={Link} variant="subtle" radius="xl" p={5}>
+      <Button
+        href="/documentation"
+        component={Link}
+        variant="subtle"
+        radius="xl"
+        p={5}
+      >
         <IconBolt />
       </Button>
       {children}

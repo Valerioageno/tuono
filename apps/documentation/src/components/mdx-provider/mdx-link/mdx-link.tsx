@@ -27,7 +27,6 @@ export default function MdxLink(
       component={Link}
       {...props}
       target="_blank"
-      rightSection={<IconExternalLink size="16px" style={{ marginLeft: -5 }} />}
       variant="transparent"
       style={{ height: '20px' }}
       mt={-2}

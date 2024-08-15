@@ -7,7 +7,7 @@ export default function Actions(): JSX.Element {
   return (
     <Flex gap={8}>
       <Button
-        href="/documentation/installation"
+        href="/documentation"
         component={Link}
         size="compact-lg"
         rightSection={<IconBook />}

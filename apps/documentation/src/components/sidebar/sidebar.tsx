@@ -11,9 +11,15 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
         onClick={close}
       />
       <h3>Documentation</h3>
+      <SidebarLink href="/documentation" label="Overview" onClick={close} />
       <SidebarLink
         href="/documentation/installation"
         label="Installation"
+        onClick={close}
+      />
+      <SidebarLink
+        href="/documentation/getting-started"
+        label="Getting started"
         onClick={close}
       />
       <SidebarLink label="Routing" href="/documentation/routing" defaultOpened>

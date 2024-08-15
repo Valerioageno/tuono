@@ -8,7 +8,7 @@ export default function MdxQuote(
     <>
       <Blockquote
         color="violet"
-        p={8}
+        py={1}
         px={20}
         mt={30}
         iconSize={30}
