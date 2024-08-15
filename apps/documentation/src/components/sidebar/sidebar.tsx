@@ -22,7 +22,12 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
         label="Getting started"
         onClick={close}
       />
-      <SidebarLink label="Routing" href="/documentation/routing" defaultOpened>
+      <SidebarLink
+        label="Routing"
+        href="/documentation/routing"
+        defaultOpened
+        onClick={close}
+      >
         <SidebarLink
           href="/documentation/routing/intro"
           label="Project structure"
