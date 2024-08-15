@@ -1,5 +1,5 @@
 import { AppShell } from '@mantine/core'
-import SidebarLink from './SidebarLink'
+import SidebarLink from './sidebar-link'
 
 export default function Sidebar({ close }: { close: () => void }): JSX.Element {
   return (
@@ -16,17 +16,18 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
         label="Installation"
         onClick={close}
       />
-      <SidebarLink label="Routing" href="#required-for-focus" defaultOpened>
+      <SidebarLink label="Routing" href="/documentation/routing" defaultOpened>
         <SidebarLink
           href="/documentation/routing/intro"
-          label="FS routing"
+          label="Project structure"
           onClick={close}
         />
       </SidebarLink>
       <SidebarLink
-        label="✨ Contributing"
+        label="Contributing"
         href="/documentation/contributing"
         onClick={close}
+        leftSection="✨"
       />
     </AppShell.Navbar>
   )
