@@ -24,6 +24,12 @@ export default function Link(
   const handleTransition = (e: MouseEvent<HTMLAnchorElement>): void => {
     e.preventDefault()
     props.onClick?.(e)
+
+    if (props.href?.startsWith('#')) {
+      window.location.hash = props.href
+      return
+    }
+
     router.push(props.href || '')
   }
 
