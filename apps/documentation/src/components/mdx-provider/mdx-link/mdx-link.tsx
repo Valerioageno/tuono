@@ -6,7 +6,7 @@ import { IconExternalLink } from '@tabler/icons-react'
 export default function MdxLink(
   props: AnchorHTMLAttributes<HTMLAnchorElement>,
 ): JSX.Element {
-  if (props.href?.startsWith('http')) {
+  if (props.href?.startsWith('http') || props.href?.startsWith('mailto')) {
     return (
       <Button
         component="a"
