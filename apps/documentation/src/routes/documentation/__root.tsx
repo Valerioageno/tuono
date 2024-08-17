@@ -11,13 +11,13 @@ interface RootRouteProps {
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
   return (
     <AppShell.Main>
-      <Container p={20} size="lg">
+      <Container size="lg" p={5}>
         <Flex>
           <Container id="mdx-root" component="article">
             <MdxProvider>{children}</MdxProvider>
             <EditPage />
           </Container>
-          <Container size="xs">
+          <Container size="xs" visibleFrom="lg">
             <TableOfContents withTabs={false} />
           </Container>
         </Flex>

@@ -89,7 +89,6 @@ export function TableOfContents({
       component="nav"
       mod={{ 'with-tabs': withTabs }}
       className={classes.wrapper}
-      visibleFrom="lg"
     >
       <div className={classes.inner}>
         <div>
