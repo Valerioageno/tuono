@@ -13,7 +13,7 @@ import { Link } from 'tuono'
 
 export default function Hero(): JSX.Element {
   return (
-    <Container size={1100} mt={200}>
+    <Container size={1100} my={100}>
       <Center>
         <Title order={1}>The react/rust fullstack framework</Title>
       </Center>

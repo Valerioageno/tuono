@@ -10,6 +10,8 @@ import { Head, useRouter } from 'tuono'
 import Navbar from '../components/navbar'
 
 import '@mantine/core/styles.css'
+import '@mantine/code-highlight/styles.css'
+
 import Sidebar from '../components/sidebar'
 
 interface RootRouteProps {

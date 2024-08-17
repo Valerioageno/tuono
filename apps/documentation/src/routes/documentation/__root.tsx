@@ -4,8 +4,6 @@ import MdxProvider from '../../components/mdx-provider'
 import EditPage from '../../components/edit-page'
 import TableOfContents from '../../components/table-of-content'
 
-import '@mantine/code-highlight/styles.css'
-
 interface RootRouteProps {
   children: ReactNode
 }
