@@ -27,9 +27,16 @@ impl AxumInfo {
 
         let axum_route = path.replace("/index", "");
 
+        let module_import = module
+            .as_str()
+            .to_string()
+            .replace('/', "_")
+            .replace('.', "_dot_")
+            .to_lowercase();
+
         if axum_route.is_empty() {
             return AxumInfo {
-                module_import: module.as_str().to_string().replace('/', "_"),
+                module_import,
                 axum_route: "/".to_string(),
             };
         }
@@ -47,7 +54,7 @@ impl AxumInfo {
         }
 
         AxumInfo {
-            module_import: module.as_str().to_string().replace('/', "_").to_lowercase(),
+            module_import,
             axum_route,
         }
     }

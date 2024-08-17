@@ -120,6 +120,7 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/posts/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/[post].rs",
             "/home/user/Documents/tuono/src/routes/posts/UPPERCASE.rs",
+            "/home/user/Documents/tuono/src/routes/sitemap.xml.rs",
         ];
 
         routes
@@ -132,6 +133,7 @@ mod tests {
             ("/posts/index", "posts_index"),
             ("/posts/[post]", "posts_dyn_post"),
             ("/posts/UPPERCASE", "posts_uppercase"),
+            ("/sitemap.xml", "sitemap_dot_xml"),
         ];
 
         results.into_iter().for_each(|(path, module_import)| {
