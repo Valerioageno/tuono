@@ -38,48 +38,46 @@ to mock an heavy network load over the application server.
 Running 30s test @ http://localhost:3000/
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    69.13ms  149.25ms   1.81s    88.24%
-    Req/Sec    11.52k    12.76k   36.27k    68.64%
-  4112347 requests in 30.06s, 3.03GB read
-Requests/sec: 136796.43
-Transfer/sec:    103.09MB
+    Latency    79.72ms  162.90ms   1.71s    87.70%
+    Req/Sec    11.50k    15.04k   42.40k    67.36%
+  4111435 requests in 30.06s, 3.03GB read
+Requests/sec: 136788.14
+Transfer/sec:    103.08MB
 ```
 
 ```
 // NextJs pages router
 > pnpm build
 
-> pnpm start
+> pm2 start ./ecosystem.config.js
 
 > wrk -t12 -c400 -d30s http://localhost:3000/
 
 Running 30s test @ http://localhost:3000/
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   179.44ms   80.47ms   1.99s    86.03%
-    Req/Sec   175.00    102.16     1.12k    76.97%
-  48510 requests in 30.08s, 69.58MB read
-  Socket errors: connect 0, read 0, write 0, timeout 298
-Requests/sec:   1612.85
-Transfer/sec:      2.31MB
+    Latency    36.02ms   21.81ms 608.77ms   93.99%
+    Req/Sec     0.96k   183.53     3.38k    84.99%
+  344202 requests in 30.10s, 493.73MB read
+Requests/sec:  11434.43
+Transfer/sec:     16.40MB
 ```
 
 ```
 // NextJs app router
 > pnpm build
 
-> pnpm start
+> pm2 start ./ecosystem.config.js
 
 > wrk -t12 -c400 -d30s http://localhost:3000/
 
 Running 30s test @ http://localhost:3000/
   12 threads and 400 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency   577.15ms  122.46ms   1.99s    81.42%
-    Req/Sec    84.17     78.74   323.00     77.03%
-  19285 requests in 30.09s, 86.61MB read
-  Socket errors: connect 0, read 0, write 0, timeout 199
-Requests/sec:    640.90
-Transfer/sec:      2.88MB
+    Latency    61.03ms   18.65ms 341.31ms   86.25%
+    Req/Sec   547.55     96.59     1.16k    80.59%
+  195590 requests in 30.10s, 715.91MB read
+Requests/sec:   6498.62
+Transfer/sec:     23.79MB
 ```
 
