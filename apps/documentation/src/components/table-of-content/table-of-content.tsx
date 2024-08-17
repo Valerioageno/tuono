@@ -74,6 +74,7 @@ export function TableOfContents({
       key={heading.id}
       component={Link}
       fz="sm"
+      p={10}
       className={classes.link}
       mod={{ active: active === index }}
       href={`#${heading.id}`}
