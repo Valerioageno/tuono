@@ -8,8 +8,8 @@ export default function MdxPre({ children }: PreProps): JSX.Element {
   return (
     <CodeHighlight
       className={styles.pre}
-      style={{ borderRadius: 8 }}
       code={children.props.children || ''}
+      style={{ borderRadius: 8 }}
       language={children.props.className?.replace('language-', '')}
     />
   )
