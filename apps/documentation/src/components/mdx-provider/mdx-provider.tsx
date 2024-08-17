@@ -5,9 +5,8 @@ import type { ReactNode } from 'react'
 import MdxPre from './mdx-pre'
 import MdxQuote from './mdx-quote'
 import MdxCode from './mdx-code'
-import MdxTitle from './mdx-title'
+import { h } from './mdx-title'
 import MdxBold from './mdx-bold/mdx-bold'
-import MdxH2 from './mdx-h2/mdx-h2'
 
 interface MdxProviderProps {
   children: ReactNode
@@ -24,8 +23,12 @@ export default function MdxProvider({
         pre: MdxPre,
         blockquote: MdxQuote,
         code: MdxCode,
-        h1: MdxTitle,
-        h2: MdxH2,
+        h1: h(1),
+        h2: h(2),
+        h3: h(3),
+        h4: h(4),
+        h5: h(5),
+        h6: h(6),
         strong: MdxBold,
       }}
     >
