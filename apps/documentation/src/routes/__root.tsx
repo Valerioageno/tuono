@@ -22,6 +22,13 @@ const theme = createTheme({
   primaryShade: { light: 6, dark: 9 },
   fontFamily: 'Roboto',
   respectReducedMotion: true,
+  radius: {
+    xs: '8px',
+    lg: '8px',
+    xl: '8px',
+    md: '8px',
+    sm: '8px',
+  },
   fontSizes: {
     // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     xs: '16px',

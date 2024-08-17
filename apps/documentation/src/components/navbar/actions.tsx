@@ -6,16 +6,16 @@ import { Link } from 'tuono'
 export default function Actions(): JSX.Element {
   return (
     <Flex gap={8}>
-      <Button
-        href="/documentation"
-        component={Link}
-        size="compact-lg"
-        rightSection={<IconBook />}
-        autoContrast
-      >
-        Get started
-      </Button>
       <Group gap={8} visibleFrom="sm">
+        <Button
+          href="/documentation"
+          component={Link}
+          size="compact-lg"
+          rightSection={<IconBook />}
+          autoContrast
+        >
+          Get started
+        </Button>
         <ActionIcon
           variant="default"
           size="lg"
@@ -36,9 +36,8 @@ export default function Actions(): JSX.Element {
         >
           <IconBrandX />
         </ActionIcon>
-
-        <ThemeBtn />
       </Group>
+      <ThemeBtn />
     </Flex>
   )
 }
