@@ -27,9 +27,16 @@ impl AxumInfo {
 
         let axum_route = path.replace("/index", "");
 
+        let module_import = module
+            .as_str()
+            .to_string()
+            .replace('/', "_")
+            .replace('.', "_dot_")
+            .to_lowercase();
+
         if axum_route.is_empty() {
             return AxumInfo {
-                module_import: module.as_str().to_string().replace('/', "_"),
+                module_import,
                 axum_route: "/".to_string(),
             };
         }
@@ -47,11 +54,14 @@ impl AxumInfo {
         }
 
         AxumInfo {
-            module_import: module.as_str().to_string().replace('/', "_").to_lowercase(),
+            module_import,
             axum_route,
         }
     }
 }
+
+// TODO: to be extended with common scenarios
+const NO_HTML_EXTENSIONS: [&str; 1] = ["xml"];
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Route {
@@ -73,7 +83,7 @@ impl Route {
         self.axum_info = Some(AxumInfo::new(self.path.clone()))
     }
 
-    pub fn save_ssg_html(&self, reqwest: &Client) {
+    pub fn save_ssg_file(&self, reqwest: &Client) {
         let path = &self.path.replace("index", "");
 
         let mut response = reqwest
@@ -81,7 +91,7 @@ impl Route {
             .send()
             .unwrap();
 
-        let file_path = self.html_file_path();
+        let file_path = self.output_file_path();
 
         let parent_dir = file_path.parent().unwrap();
 
@@ -124,8 +134,16 @@ impl Route {
         }
     }
 
-    fn html_file_path(&self) -> PathBuf {
+    fn output_file_path(&self) -> PathBuf {
         let cleaned_path = self.path.replace("index", "");
+
+        if NO_HTML_EXTENSIONS
+            .iter()
+            .any(|extension| self.path.ends_with(extension))
+        {
+            return PathBuf::from(format!("out/static{}", cleaned_path));
+        }
+
         PathBuf::from(format!("out/static{}/index.html", cleaned_path))
     }
 }
@@ -173,6 +191,7 @@ mod tests {
         let routes = [
             ("/index", "out/static/index.html"),
             ("/documentation", "out/static/documentation/index.html"),
+            ("/sitemap.xml", "out/static/sitemap.xml"),
             (
                 "/documentation/routing",
                 "out/static/documentation/routing/index.html",
@@ -182,7 +201,7 @@ mod tests {
         for (path, html) in routes {
             let route = Route::new(path.to_string());
 
-            assert_eq!(route.html_file_path(), PathBuf::from(html))
+            assert_eq!(route.output_file_path(), PathBuf::from(html))
         }
     }
 }

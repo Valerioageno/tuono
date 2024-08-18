@@ -105,7 +105,7 @@ pub fn app() -> std::io::Result<()> {
                 }
 
                 for (_, route) in app.route_map {
-                    route.save_ssg_html(&reqwest)
+                    route.save_ssg_file(&reqwest)
                 }
 
                 // Close server
