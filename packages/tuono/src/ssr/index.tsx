@@ -24,14 +24,14 @@ window.__vite_plugin_react_preamble_installed__ = true
 function generateCssLinks(cssBundles: string[], mode: Mode): string {
   if (mode === 'Dev') return ''
   return cssBundles.reduce((acc, value) => {
-    return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />\n`
+    return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />`
   }, '')
 }
 
 function generateJsScripts(jsBundles: string[], mode: Mode): string {
   if (mode === 'Dev') return ''
   return jsBundles.reduce((acc, value) => {
-    return acc + `<script type="module" src="/${value}"></script>\n`
+    return acc + `<script type="module" src="/${value}"></script>`
   }, '')
 }
 
@@ -57,8 +57,6 @@ export function serverSideRendering(routeTree: RouteTree) {
     return `<!doctype html>
   <html>
     <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	  ${metaTags}
 	  ${generateCssLinks(cssBundles, mode)}
     </head>
