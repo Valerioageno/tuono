@@ -14,7 +14,7 @@ function getHeadingsData(headings: HTMLHeadingElement[]): Heading[] {
   for (const heading of headings) {
     if (heading.id) {
       result.push({
-        depth: parseInt(heading.getAttribute('data-order'), 10),
+        depth: parseInt(heading.getAttribute('data-order') || '1', 10),
         content: heading.getAttribute('data-heading') || '',
         id: heading.id,
         getNode: () =>

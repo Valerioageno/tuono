@@ -1,9 +1,6 @@
-import { Title } from '@mantine/core'
-import type { HTMLAttributes } from 'react'
+import { Title, type TitleProps } from '@mantine/core'
 
-export default function MdxTitle(
-  props: HTMLAttributes<HTMLHeadingElement> & { order: number },
-): JSX.Element {
+export default function MdxTitle(props: TitleProps): JSX.Element {
   return (
     <Title
       data-heading={props.children}
@@ -19,6 +16,4 @@ export default function MdxTitle(
 
 export const h =
   (order: 1 | 2 | 3 | 4 | 5 | 6) =>
-  (props: HTMLAttributes<HTMLHeadingElement>): JSX.Element => (
-    <MdxTitle order={order} {...props} />
-  )
+  (props: TitleProps): JSX.Element => <MdxTitle order={order} {...props} />

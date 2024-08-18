@@ -70,7 +70,7 @@ export function TableOfContents({
   }
 
   const items = filteredHeadings.map((heading, index) => (
-    <Text<Link>
+    <Text
       key={heading.id}
       component={Link}
       fz="sm"
