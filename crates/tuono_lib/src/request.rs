@@ -34,7 +34,7 @@ impl From<Uri> for Location {
 
 #[derive(Debug, Clone)]
 pub struct Request {
-    uri: Uri,
+    pub uri: Uri,
     pub headers: HeaderMap,
     pub params: HashMap<String, String>,
 }

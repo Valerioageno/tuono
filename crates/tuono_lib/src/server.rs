@@ -2,6 +2,7 @@ use crate::mode::{Mode, GLOBAL_MODE};
 
 use crate::manifest::load_manifest;
 use axum::routing::{get, Router};
+use colored::Colorize;
 use ssr_rs::Ssr;
 use tower_http::services::ServeDir;
 
@@ -37,7 +38,7 @@ impl Server {
         let fetch = reqwest::Client::new();
 
         if self.mode == Mode::Dev {
-            println!("\nDevelopment app ready at http://localhost:3000/");
+            println!("  Ready at: {}\n", "http://localhost:3000".blue().bold());
             let router = self
                 .router
                 .to_owned()
@@ -50,7 +51,10 @@ impl Server {
                 .await
                 .expect("Failed to serve development server");
         } else {
-            println!("\nProduction app ready at http://localhost:3000/");
+            println!(
+                "  Production server at: {}\n",
+                "http://localhost:3000".blue().bold()
+            );
             let router = self
                 .router
                 .to_owned()

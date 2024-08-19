@@ -3,7 +3,9 @@ use crate::{ssr::Js, Payload};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{Html, IntoResponse, Redirect};
 use axum::Json;
+use colored::*;
 use erased_serde::Serialize;
+use tokio::time::Instant;
 
 pub struct Props {
     data: Box<dyn Serialize>,
@@ -72,13 +74,25 @@ impl Response {
     pub fn render_to_string(&self, req: Request) -> impl IntoResponse {
         match self {
             Self::Props(Props { data, http_code }) => {
+                let start = Instant::now();
                 let payload = Payload::new(&req, data).client_payload().unwrap();
 
-                match Js::render_to_string(Some(&payload)) {
+                let response = match Js::render_to_string(Some(&payload)) {
                     Ok(html) => (*http_code, Html(html)),
                     Err(_) => (*http_code, Html("500 Internal server error".to_string())),
                 }
-                .into_response()
+                .into_response();
+
+                let duration = start.elapsed();
+
+                println!(
+                    "  GET {} {} in {}ms",
+                    req.uri.path(),
+                    http_code.as_str().green(),
+                    duration.as_millis()
+                );
+
+                response
             }
             Self::Redirect(to) => Redirect::permanent(to).into_response(),
             Self::Custom(response) => response.clone().into_response(),
