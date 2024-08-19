@@ -44,7 +44,6 @@ fn build_react_ssr_src() -> Job {
 
 #[tokio::main]
 pub async fn watch() -> Result<()> {
-    println!("Starting development environment...");
     watch_react_src().start().await;
 
     let run_server = build_rust_src();
@@ -76,7 +75,7 @@ pub async fn watch() -> Result<()> {
         }
 
         if should_reload_rust_server {
-            println!("Reloading...");
+            println!("  Reloading...");
             run_server.stop();
             bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
             run_server.start();

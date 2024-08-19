@@ -4,6 +4,8 @@ use std::io;
 use std::io::prelude::*;
 use std::path::Path;
 
+use clap::crate_version;
+
 use crate::app::App;
 use crate::mode::Mode;
 use crate::route::AxumInfo;
@@ -42,6 +44,7 @@ const MODE: Mode = /*MODE*/;
 
 #[tokio::main]
 async fn main() {
+    println!("\n  ⚡ Tuono v/*VERSION*/");
     let router = Router::new()
         // ROUTE_BUILDER
         ;
@@ -127,6 +130,7 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
             "// MODULE_IMPORTS\n",
             &create_modules_declaration(&app.route_map),
         )
+        .replace("/*VERSION*/", crate_version!())
         .replace("/*MODE*/", mode.as_str());
 
     let has_server_handlers = app
