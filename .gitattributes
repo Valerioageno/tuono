@@ -1,1 +1,10 @@
 examples/** linguist-documentation
+*.css linguist-detectable=false
+*.scss linguist-detectable=false
+*.js linguist-detectable=false
+*.jsx linguist-detectable=true
+*.tsx linguist-detectable=true
+*.ts linguist-detectable=true
+*.rs linguist-detectable=true 
+*.html linguist-detectable=false  
+*.sh linguist-detectable=false
