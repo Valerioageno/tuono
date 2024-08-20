@@ -18,12 +18,14 @@ Some of its features are:
 
 - 🟦  Native Typescript
 - 🌐  NextJs like Routing
-- 🔥  Hot Module Reload
 - 🍭  CSS/SCSS modules
 - 🧬  Server Side Rendering
-- 🧵  Multi thread backend
-- ⌨️ MDX support
-- ⚙️   Build optimizations
+- 🔥  Hot Module Reload
+
+## 📖 Documentation
+
+The [documentation](https://tuono.dev/documentation) is available on
+[tuono.dev](https://tuono.dev/).
 
 ## Introduction
 
