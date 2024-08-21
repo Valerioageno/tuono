@@ -13,7 +13,6 @@ jobs:
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
           reporter: github-pr-check
           # Change reporter level if you need.
-          level: error
+          level: 'error'
           patterns: '**/*.md **/*.txt **/*.mdx'
           disabled_categories: null
-          fail_level: error
