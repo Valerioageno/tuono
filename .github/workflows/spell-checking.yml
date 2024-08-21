@@ -5,6 +5,7 @@ on:
       - '**/*.mdx'
       - '**/*.md'
       - '**/*.txt'
+      - '.github/**'
 
 jobs:
   spell_checking:
