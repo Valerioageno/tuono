@@ -10,7 +10,7 @@ on:
 jobs:
   spell_checking:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    name: runner / <linter-name>
+    name: runner / LanguageTools
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,3 +21,4 @@ jobs:
           reporter: github-pr-review
           # Change reporter level if you need.
           level: error
+          patterns: '**/*.md **/*.txt **/*.mdx'
