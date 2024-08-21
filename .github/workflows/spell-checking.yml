@@ -11,8 +11,9 @@ jobs:
       - uses: reviewdog/action-languagetool@v1.19.0
         with:
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
-          reporter: github-pr-check
+          reporter: 'github-pr-check'
           # Change reporter level if you need.
           level: 'error'
           patterns: '**/*.md **/*.txt **/*.mdx'
           disabled_categories: null
+          disabled_rules: null
