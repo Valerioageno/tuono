@@ -10,7 +10,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: reviewdog/action-languagetool@v1.19.0
         with:
-          github_token: ${{ secrets.github_token }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
           reporter: github-pr-check
           # Change reporter level if you need.
