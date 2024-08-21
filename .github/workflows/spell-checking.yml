@@ -16,3 +16,4 @@ jobs:
           level: error
           patterns: '**/*.md **/*.txt **/*.mdx'
           disabled_categories: null
+          fail_level: error
