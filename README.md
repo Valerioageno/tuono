@@ -8,8 +8,9 @@
 ![](https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg)
 ![](https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg)
 
+Adding file to commit history for testing
 
-**Tuono the fastest react framework out there**
+**Tuono is the fastest React framework out there**
 
 Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
 Why Tuono? Just a badass name.

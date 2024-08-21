@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: reviewdog/action-languagetool@v1.19.0
+      - uses: reviewdog/action-languagetool@v1
         with:
           github_token: ${{ secrets.REVIEWDOG_TOKEN }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
@@ -16,6 +16,6 @@ jobs:
           # Change reporter level if you need.
           level: 'error'
           patterns: '**/*.md **/*.txt **/*.mdx'
-          enabled_categories: 'STYLE,PLAIN_ENGLISH,WHITESPACE_RULE,EN_QUOTES,DASH_RULE,WORD_CONTAINS_UNDERSCORE,UPPERCASE_SENTENCE_START,ARROWS,COMMA_PARENTHESIS_WHITESPACE,UNLIKELY_OPENING_PUNCTUATION,SENTENCE_WHITESPACE,EN_UNPAIRED_BRACKETS,PHRASE_REPETITION,PUNCTUATION_PARAGRAPH_END'
+          #enabled_categories: 'STYLE,PLAIN_ENGLISH,WHITESPACE_RULE,EN_QUOTES,DASH_RULE,WORD_CONTAINS_UNDERSCORE,UPPERCASE_SENTENCE_START,ARROWS,COMMA_PARENTHESIS_WHITESPACE,UNLIKELY_OPENING_PUNCTUATION,SENTENCE_WHITESPACE,EN_UNPAIRED_BRACKETS,PHRASE_REPETITION,PUNCTUATION_PARAGRAPH_END'
           disabled_categories: ''
           disabled_rules: ''
