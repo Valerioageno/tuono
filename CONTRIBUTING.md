@@ -2,12 +2,12 @@
 ![](https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# How to contribute to Tuono
+# How to Contribute to Tuono
 
 ## Contributions 
 Any feature contribution or suggestion is strongly appreciated.
-Since the current project size there isn't yet a defined way to start a discussion. Consider to [open a new issue](https://github.com/Valerioageno/tuono/issues/new)
-or to reach me using my email address [valerioageno@yahoo.it](mailto:valerioageno@ahoo.it). I'm also available on twitter (X) DMs @valerioageno.
+Since the current project size, there isn't yet a defined way to start a discussion. Consider [opening a new issue](https://github.com/Valerioageno/tuono/issues/new)
+or to reach me using my email address, [valerioageno@yahoo.it](mailto:valerioageno@ahoo.it). I'm also available on Twitter (X); DM @valerioageno.
 
 ## Bugs
 
@@ -17,5 +17,5 @@ or to reach me using my email address [valerioageno@yahoo.it](mailto:valerioagen
 
 **Did you write a patch that fixes a bug?**
 - Open a new GitHub pull request with the patch.
-- Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
+- Ensure the PR description clearly describes the problem and solution. Include the relevant issue number, if applicable.
 - The pull requests must pass all the CI pipelines
