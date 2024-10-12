@@ -36,7 +36,7 @@ jobs:
   publish-on-crates-dry-run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions-rs/toolchain@v1
       with:
           toolchain: stable
@@ -85,7 +85,7 @@ jobs:
     needs: [publish-on-crates-dry-run, publish-on-npm-dry-run]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions-rs/toolchain@v1
       with:
           toolchain: stable
