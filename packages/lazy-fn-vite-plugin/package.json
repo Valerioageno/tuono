@@ -46,6 +46,6 @@
     "@tanstack/config": "^0.13.0",
     "@types/babel__core": "^7.20.5",
     "prettier": "^3.2.4",
-    "vitest": "^1.5.2"
+    "vitest": "^2.0.0"
   }
 }
