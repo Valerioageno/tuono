@@ -1,5 +1,5 @@
 use crate::mode::{Mode, GLOBAL_MODE};
-use ssr_rs::Ssr;
+use ssr_rs::{Ssr, SsrError};
 use std::cell::RefCell;
 use std::fs::read_to_string;
 use std::path::PathBuf;
@@ -10,7 +10,7 @@ use std::path::PathBuf;
 pub struct Js;
 
 impl Js {
-    pub fn render_to_string(payload: Option<&str>) -> Result<String, &'static str> {
+    pub fn render_to_string(payload: Option<&str>) -> Result<String, SsrError> {
         let mode = GLOBAL_MODE.get().expect("Failed to get GLOBAL_MODE");
 
         if *mode == Mode::Dev {
@@ -36,7 +36,7 @@ impl ProdJs {
 struct DevJs;
 
 impl DevJs {
-    pub fn render_to_string(params: Option<&str>) -> Result<String, &'static str> {
+    pub fn render_to_string(params: Option<&str>) -> Result<String, SsrError> {
         Ssr::from(
             read_to_string(PathBuf::from("./.tuono/server/dev-server.js"))
                 .expect("Server bundle not found"),
