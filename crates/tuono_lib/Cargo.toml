@@ -19,7 +19,7 @@ name = "tuono_lib"
 path = "src/lib.rs"
 
 [dependencies]
-ssr_rs = "0.5.5"
+ssr_rs = "0.7.0"
 axum = {version = "0.7.5", features = ["json", "ws"]}
 tokio = { version = "1.37.0", features = ["full"] }
 serde = { version = "1.0.202", features = ["derive"] }
