@@ -47,7 +47,7 @@
     "zustand": "4.4.7"
   },
   "devDependencies": {
-    "@tanstack/config": "^0.7.11",
+    "@tanstack/config": "^0.13.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
     "jsdom": "^24.0.0",
