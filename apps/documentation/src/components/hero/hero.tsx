@@ -15,12 +15,12 @@ export default function Hero(): JSX.Element {
   return (
     <Container size={1100} my={100}>
       <Center>
-        <Title order={1}>The react/rust fullstack framework</Title>
+        <Title order={1}>The React/Rust full-stack framework</Title>
       </Center>
       <Center mt={50}>
         <Text fz="18px">
-          The technologies we love seamessly working together to unleash the
-          <strong> highest web performance</strong> ever met on react
+          The technologies we love seamlessly working together to unleash the
+          <strong> highest web performance</strong> ever met on React
         </Text>
       </Center>
       <Center mt={50}>
