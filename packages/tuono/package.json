@@ -1,6 +1,6 @@
 {
   "name": "tuono",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "The react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
