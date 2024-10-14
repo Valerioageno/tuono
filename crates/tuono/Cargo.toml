@@ -25,7 +25,7 @@ miette = "7.2.0"
 watchexec-signals = "3.0.0"
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0.202", features = ["derive"] }
-watchexec-supervisor = "2.0.0"
+watchexec-supervisor = "3.0.0"
 glob = "0.3.1"
 regex = "1.10.4"
 reqwest = {version = "0.12.4", features =["blocking", "json"]}
