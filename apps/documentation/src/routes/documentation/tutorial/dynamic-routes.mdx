@@ -1,0 +1,159 @@
+import { Head } from 'tuono'
+
+<Head>
+  <title>Tutorial - Dynamic routes</title>
+</Head>
+
+import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
+
+<Breadcrumbs>
+  <Element label="Tutorial" href="/documentation/tutorial" />
+  <Element label="Dynamic routes" />
+</Breadcrumbs>
+
+# Dynamic routes
+
+## Create the pokemon route
+
+The homepage is ready. We have the full list of pokemons and they are all links. Great!
+
+Now we want to make those links actually pointing to a real page. Let’s create the dynamic route.
+
+Create the folder `routes/pokemons` and then create the two files `[pokemon].tsx` and `[pokemon].rs`.
+
+These two will handle every requests that points to `http://localhost:3000/pokemons/bulbasaur..mew`.
+
+Let’s first work on the server side file. Paste into the new `[pokemon].rs` file the following code:
+
+```rust
+// src/routes/pokemons/[pokemon].rs
+use serde::{Deserialize, Serialize};
+use tuono_lib::reqwest::Client;
+use tuono_lib::{Props, Request, Response};
+
+const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemon {
+    name: String,
+    id: u16,
+    weight: u16,
+    height: u16,
+}
+
+#[tuono_lib::handler]
+async fn get_pokemon(req: Request, fetch: Client) -> Response {
+    // The param `pokemon` is defined in the route filename [pokemon].rs
+    let pokemon = req.params.get("pokemon").unwrap();
+
+    return match fetch.get(format!("{POKEMON_API}/{pokemon}")).send().await {
+        Ok(res) => {
+            let data = res.json::<Pokemon>().await.unwrap();
+            Response::Props(Props::new(data))
+        }
+        Err(_err) => Response::Props(Props::new("{}"))
+    };
+}
+```
+
+Then let’s work on the frontend. Paste into the `[pokemon].tsx` file the following code:
+
+```tsx
+import { TuonoProps } from 'tuono'
+import PokemonView from '../../components/PokemonView'
+
+export default function Pokemon({ data }: TuonoProps): JSX.Element {
+  return <PokemonView pokemon={data} />
+}
+```
+
+The browser should complain that the component `PokemonView` does not exist. Let’s create it then!
+
+```tsx
+// components/PokemonView.tsx
+import { Link } from 'tuono'
+import styles from './PokemonView.module.css'
+
+interface Pokemon {
+  name: string
+  id: string
+  weight: number
+  height: number
+}
+
+export default function PokemonView({
+  pokemon,
+}: {
+  pokemon?: Pokemon
+}): JSX.Element {
+  return (
+    <div>
+      <Link className={styles['back-btn']} href="/">
+        Back
+      </Link>
+      {pokemon?.name && (
+        <div className={styles.pokemon}>
+          <div>
+            <h1 className={styles.name}>{pokemon.name}</h1>
+            <dl className={styles.spec}>
+              <dt className={styles.label}>Weight:</dt>
+              <dd>{pokemon.weight}lbs</dd>
+            </dl>
+            <dl className={styles.spec}>
+              <dt className={styles.label}>Height:</dt>
+              <dd>{pokemon.height}ft</dd>
+            </dl>
+          </div>
+          <img
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+<br />
+
+```css
+/* components/PokemonView.module.css */
+.back-btn {
+  background-color: white;
+  border-radius: 10px;
+  padding: 7px 15px;
+  color: black;
+  text-decoration: none;
+  border: solid #f0f0f0 1px;
+  font-size: 20px;
+}
+
+.back-btn:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.pokemon {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.name {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.pokemon img {
+  width: 400px;
+}
+
+.spec {
+  display: flex;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.label {
+  font-weight: 700;
+}
+```

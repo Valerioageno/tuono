@@ -1,0 +1,66 @@
+import { Head } from 'tuono'
+
+<Head>
+  <title>Tutorial - Scaffold new project</title>
+</Head>
+
+import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
+
+<Breadcrumbs>
+  <Element label="Tutorial" href="/documentation/tutorial" />
+  <Element label="Development setup" />
+</Breadcrumbs>
+
+# Development setup
+
+## Scaffold a new project
+
+To setup a new fresh project you just need to run the following command:
+
+```
+$ tuono new tuono-tutorial
+```
+
+Get into the project folder and install the dependencies with:
+
+```
+$ npm install
+```
+
+Open it with your favourite code editor.
+
+The project will have the following structure:
+
+```
+├── package.json
+├── public
+├── src
+│   ├── routes
+│   └── styles
+├── Cargo.toml
+├── README.md
+└── tsconfig.json
+```
+
+`public/`: put here all the files you want to be public
+
+`src/routes/`: All the files in this folder are considered routes. All the routes are server side rendered out of the box.
+To add server side capabilities just create a rust file with the same name as the route (i.e. `about.tsx` → `about.rs`).
+
+`src/styles/`: In this folder there is the `global.css` file that stores all the global styles. For the rest of the project you can use
+CSS modules.
+
+## Start the dev environment
+
+To start the development environment you just need to run the following command within the project folder:
+
+```
+$ tuono dev
+```
+
+The first time might take a little bit because it will install all the rust’s dependencies. All the other execution will be pretty quick!
+
+> 💡 The tuono dev development script is currently under strong optimization improvements.
+> In case you face any error delete the cache `.tuono` folder and run it again!
+
+Then open [http://localhost:3000/](http://localhost:3000) on the browser.
