@@ -10,24 +10,51 @@ const PokemonspokemonImport = dynamic(
 )
 `
 
-const CLIENT_RESULT = `import { createRoute, lazyLoadComponent as dynamic } from 'tuono';
-const IndexImport = dynamic(() => import('./../src/routes/index'));
-const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`
+const NON_DYNAMIC_SOURCE = `
+import { createRoute } from 'tuono'
+import {dynamic} from 'external-lib'
 
-const SERVER_RESULT = `import { createRoute } from 'tuono';
-import IndexImport from "./../src/routes/index";
-import PokemonspokemonImport from "./../src/routes/pokemons/[pokemon]";`
+const IndexImport = dynamic(() => import('./../src/routes/index'))
+const PokemonspokemonImport = dynamic(
+  () => import('./../src/routes/pokemons/[pokemon]'),
+)
+`
 
 describe('Transpile tuono source', () => {
   it('Into the client bundle', () => {
     const bundle = LazyLoadingPlugin().transform?.(SOURCE_CODE, 'id')
-    expect(bundle).toBe(CLIENT_RESULT)
+    expect(bundle)
+      .toBe(`import { createRoute, lazyLoadComponent as dynamic } from 'tuono';
+const IndexImport = dynamic(() => import('./../src/routes/index'));
+const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
   })
 
   it('Into the server bundle', () => {
     const bundle = LazyLoadingPlugin().transform?.(SOURCE_CODE, 'id', {
       ssr: true,
     })
-    expect(bundle).toBe(SERVER_RESULT)
+    expect(bundle).toBe(`import { createRoute } from 'tuono';
+import IndexImport from "./../src/routes/index";
+import PokemonspokemonImport from "./../src/routes/pokemons/[pokemon]";`)
+  })
+})
+
+describe('Non tuono dynamic function', () => {
+  it('Into the client bundle', () => {
+    const bundle = LazyLoadingPlugin().transform?.(NON_DYNAMIC_SOURCE, 'id')
+    expect(bundle).toBe(`import { createRoute } from 'tuono';
+import { dynamic } from 'external-lib';
+const IndexImport = dynamic(() => import('./../src/routes/index'));
+const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
+  })
+
+  it('Into the server bundle', () => {
+    const bundle = LazyLoadingPlugin().transform?.(NON_DYNAMIC_SOURCE, 'id', {
+      ssr: true,
+    })
+    expect(bundle).toBe(`import { createRoute } from 'tuono';
+import { dynamic } from 'external-lib';
+const IndexImport = dynamic(() => import('./../src/routes/index'));
+const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
   })
 })

@@ -1,6 +1,6 @@
 {
   "name": "workspace",
-  "packageManager": "pnpm@9.12.1",
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "dev": "turbo watch dev",
     "build": "turbo build --filter tuono",
@@ -20,7 +20,7 @@
   "author": "Valerio Ageno",
   "license": "MIT",
   "devDependencies": {
-    "@tanstack/config": "^0.13.0",
+    "@tanstack/config": "^0.7.0",
     "@types/node": "^20.12.7",
     "@types/react": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
@@ -35,7 +35,7 @@
     "prettier": "^3.2.4",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
-    "vitest": "^2.0.0"
+    "vitest": "^1.5.2"
   },
   "dependencies": {
     "turbo": "^2.0.12"

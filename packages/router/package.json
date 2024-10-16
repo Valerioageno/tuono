@@ -1,6 +1,6 @@
 {
   "name": "tuono-router",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "React routing component for the framework tuono. Tuono is the react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -44,14 +44,14 @@
   "dependencies": {
     "react-intersection-observer": "^9.13.0",
     "vite": "^5.2.11",
-    "zustand": "5.0.0"
+    "zustand": "4.4.7"
   },
   "devDependencies": {
-    "@tanstack/config": "^0.13.0",
+    "@tanstack/config": "^0.7.11",
     "@testing-library/jest-dom": "^6.4.5",
-    "@testing-library/react": "^16.0.0",
-    "jsdom": "^25.0.0",
+    "@testing-library/react": "^15.0.7",
+    "jsdom": "^24.0.0",
     "prettier": "^3.2.4",
-    "vitest": "^2.0.0"
+    "vitest": "^1.5.2"
   }
 }

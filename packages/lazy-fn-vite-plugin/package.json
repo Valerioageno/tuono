@@ -1,6 +1,6 @@
 {
   "name": "tuono-lazy-fn-vite-plugin",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Plugin for the tuono's lazy fn. Tuono is the react/rust fullstack framework",
   "scripts": {
     "dev": "vite build --watch",
@@ -43,9 +43,9 @@
     "vite": "^5.2.11"
   },
   "devDependencies": {
-    "@tanstack/config": "^0.13.0",
+    "@tanstack/config": "^0.7.11",
     "@types/babel__core": "^7.20.5",
     "prettier": "^3.2.4",
-    "vitest": "^2.0.0"
+    "vitest": "^1.5.2"
   }
 }

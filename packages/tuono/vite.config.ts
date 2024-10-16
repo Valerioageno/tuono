@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 import { defineConfig, mergeConfig } from 'vitest/config'
-import { tanstackViteConfig } from '@tanstack/config/vite'
+import { tanstackBuildConfig } from '@tanstack/config/build'
 import react from '@vitejs/plugin-react'
 
 const config = defineConfig({
@@ -10,7 +10,7 @@ const config = defineConfig({
 
 export default mergeConfig(
   config,
-  tanstackViteConfig({
+  tanstackBuildConfig({
     entry: [
       './src/index.ts',
       './src/build/index.ts',
