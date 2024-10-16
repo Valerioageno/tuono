@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react'
 const config = defineConfig({
   plugins: [react()],
   test: {
-    name: 'react-router',
+    name: 'tuono-router',
     watch: true,
     environment: 'jsdom',
     globals: true,
