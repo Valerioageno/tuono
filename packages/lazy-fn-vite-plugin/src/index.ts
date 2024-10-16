@@ -1,6 +1,7 @@
 import type { Plugin } from 'vite'
 import * as babel from '@babel/core'
 import type { PluginItem } from '@babel/core'
+import { isTuonoDynamicFnImported } from './utils'
 
 import {
   TUONO_MAIN_PACKAGE,
@@ -12,7 +13,6 @@ import * as t from '@babel/types'
 
 import type {
   Identifier,
-  ImportDeclaration,
   CallExpression,
   ArrowFunctionExpression,
   StringLiteral,
@@ -26,13 +26,8 @@ const RemoveTuonoLazyImport: PluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
   visitor: {
     ImportSpecifier: (path) => {
-      if ((path.node.imported as Identifier).name === TUONO_DYNAMIC_FN_ID) {
-        if (
-          (path.parentPath.node as ImportDeclaration).source.value ===
-          TUONO_MAIN_PACKAGE
-        ) {
-          path.remove()
-        }
+      if (isTuonoDynamicFnImported(path)) {
+        path.remove()
       }
     },
   },
@@ -46,15 +41,36 @@ const ReplaceTuonoLazyImport: PluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
   visitor: {
     ImportSpecifier: (path) => {
-      if ((path.node.imported as Identifier).name === TUONO_DYNAMIC_FN_ID) {
-        if (
-          (path.parentPath.node as ImportDeclaration).source.value ===
-          TUONO_MAIN_PACKAGE
-        ) {
-          ;(path.node.imported as Identifier).name = TUONO_LAZY_FN_ID
-        }
+      if (isTuonoDynamicFnImported(path)) {
+        ;(path.node.imported as Identifier).name = TUONO_LAZY_FN_ID
       }
     },
+  },
+}
+
+const turnLazyIntoStatic = {
+  VariableDeclaration: (path: babel.NodePath<t.VariableDeclaration>): void => {
+    path.node.declarations.forEach((el) => {
+      const init = el.init as CallExpression
+      if ((init.callee as Identifier).name === TUONO_DYNAMIC_FN_ID) {
+        const importName = (el.id as Identifier).name
+        const importPath = (
+          (
+            (init.arguments[0] as ArrowFunctionExpression)
+              .body as CallExpression
+          ).arguments[0] as StringLiteral
+        ).value
+
+        if (importName && importPath) {
+          const importDeclaration = t.importDeclaration(
+            [t.importDefaultSpecifier(t.identifier(importName))],
+            t.stringLiteral(importPath),
+          )
+
+          path.replaceWith(importDeclaration)
+        }
+      }
+    })
   },
 }
 
@@ -65,27 +81,13 @@ const ReplaceTuonoLazyImport: PluginItem = {
 const TurnLazyIntoStaticImport: PluginItem = {
   name: 'turn-lazy-into-static-import-plugin',
   visitor: {
-    VariableDeclaration: (path) => {
-      path.node.declarations.forEach((el) => {
-        const init = el.init as CallExpression
-        if ((init.callee as Identifier).name === TUONO_DYNAMIC_FN_ID) {
-          const importName = (el.id as Identifier).name
-          const importPath = (
-            (
-              (init.arguments[0] as ArrowFunctionExpression)
-                .body as CallExpression
-            ).arguments[0] as StringLiteral
-          ).value
-
-          if (importName && importPath) {
-            const importDeclaration = t.importDeclaration(
-              [t.importDefaultSpecifier(t.identifier(importName))],
-              t.stringLiteral(importPath),
-            )
-
-            path.replaceWith(importDeclaration)
+    Program: (path) => {
+      path.traverse({
+        ImportSpecifier: (subPath) => {
+          if (isTuonoDynamicFnImported(subPath)) {
+            path.traverse(turnLazyIntoStatic)
           }
-        }
+        },
       })
     },
   },
