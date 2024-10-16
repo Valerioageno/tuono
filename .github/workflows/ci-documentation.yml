@@ -34,7 +34,7 @@ jobs:
       uses: actions-rust-lang/setup-rust-toolchain@v1 
 
     - name: Install tuono
-      run: cargo install tuono@0.10.2
+      run: cargo install tuono@0.10.1
 
     - name: Install pnpm
       run: npm i -g pnpm
