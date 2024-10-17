@@ -1,0 +1,105 @@
+import { Head } from 'tuono'
+
+<Head>
+  <title>Tutorial - API fetching</title>
+</Head>
+
+import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
+
+<Breadcrumbs>
+  <Element label="Tutorial" href="/documentation/tutorial" />
+  <Element label="API fetching" />
+</Breadcrumbs>
+
+# API fetching
+
+The goal is to use the [PokeAPI](https://pokeapi.co/docs/v2) to list all the pokemons of the first generation (the best one btw) and then reserve a \_\_ page for each one separately.
+
+## Fetch all the pokemons
+
+To start let’s fetch all of them in the root page; since we want to render them on the server side we gonna need to implement the logic in the `index.rs` file.
+
+Clear the `index.rs` file and paste:
+
+```rust
+// src/routes/index.rs
+use serde::{Deserialize, Serialize};
+use tuono_lib::reqwest::Client;
+use tuono_lib::{Props, Request, Response};
+
+const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemons {
+    results: Vec<Pokemon>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Pokemon {
+    name: String,
+    url: String,
+}
+
+#[tuono_lib::handler]
+async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
+    return match fetch.get(ALL_POKEMON).send().await {
+        Ok(res) => {
+            let data = res.json::<Pokemons>().await.unwrap();
+            Response::Props(Props::new(data))
+        }
+        Err(_err) => Response::Props(Props::new("{}")),
+    };
+}
+```
+
+Now the pokemons are correctly fetched and hydrated on the client side so we can actually use them. Clear the `index.tsx` file and paste:
+
+```tsx
+// src/routes/index.tsx
+import type { TuonoProps } from 'tuono'
+
+interface Pokemon {
+  name: string
+}
+
+interface IndexProps {
+  results: Pokemon[]
+}
+
+export default function IndexPage({
+  data,
+}: TuonoProps<IndexProps>): JSX.Element {
+  if (!data?.results) {
+    return <></>
+  }
+
+  return (
+    <>
+      <header className="header">
+        <a href="https://crates.io/crates/tuono" target="_blank">
+          Crates
+        </a>
+        <a href="https://www.npmjs.com/package/tuono" target="_blank">
+          Npm
+        </a>
+      </header>
+      <div className="title-wrap">
+        <h1 className="title">
+          TU<span>O</span>NO
+        </h1>
+        <div className="logo">
+          <img src="rust.svg" className="rust" />
+          <img src="react.svg" className="react" />
+        </div>
+      </div>
+      <ul style={{ flexWrap: 'wrap', display: 'flex', gap: 10 }}>
+        {data.results.map((pokemon) => {
+          return pokemon.name
+        })}
+      </ul>
+    </>
+  )
+}
+```
+
+Refresh now the browser! A bit ugly but all the pokemons are finally printed on screen!

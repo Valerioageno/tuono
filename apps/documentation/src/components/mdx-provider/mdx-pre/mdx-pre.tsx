@@ -9,7 +9,7 @@ export default function MdxPre({ children }: PreProps): JSX.Element {
     <CodeHighlight
       className={styles.pre}
       code={children.props.children || ''}
-      style={{ borderRadius: 8 }}
+      style={{ borderRadius: 8, fontWeight: 100 }}
       language={children.props.className?.replace('language-', '')}
     />
   )

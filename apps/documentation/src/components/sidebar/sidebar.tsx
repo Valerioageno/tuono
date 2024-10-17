@@ -4,13 +4,58 @@ import SidebarLink from './sidebar-link'
 export default function Sidebar({ close }: { close: () => void }): JSX.Element {
   return (
     <AppShell.Navbar p="md">
-      <h3>Tutorial</h3>
       <SidebarLink
-        href="/documentation/tutorial/intro"
-        label="Intro"
+        href="/documentation/tutorial"
+        label="Tutorial"
+        defaultOpened
         onClick={close}
-      />
-      <h3>Documentation</h3>
+      >
+        <SidebarLink
+          href="/documentation/tutorial/overview"
+          label="Development setup"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/api-fetching"
+          label="API fetching"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/components"
+          label="Components"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/dynamic-routes"
+          label="Dynamic routes"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/error-handling"
+          label="Error handling"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/seo"
+          label="SEO and meta tags"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/redirections"
+          label="Server redirection"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/production"
+          label="Production build"
+          onClick={close}
+        />
+        <SidebarLink
+          href="/documentation/tutorial/conclusion"
+          label="Conclusion"
+          onClick={close}
+        />
+      </SidebarLink>
       <SidebarLink href="/documentation" label="Overview" onClick={close} />
       <SidebarLink
         href="/documentation/installation"
@@ -25,7 +70,6 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
       <SidebarLink
         label="Routing"
         href="/documentation/routing"
-        defaultOpened
         onClick={close}
       >
         <SidebarLink
