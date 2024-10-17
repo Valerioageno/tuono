@@ -33,7 +33,7 @@ enum Actions {
 }
 
 #[derive(Parser, Debug)]
-#[command(version, about = "The react/rust fullstack framework")]
+#[command(version, about = "The React/Rust full-stack framework")]
 struct Args {
     #[command(subcommand)]
     action: Actions,
