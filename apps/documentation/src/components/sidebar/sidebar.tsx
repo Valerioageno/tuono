@@ -4,6 +4,12 @@ import SidebarLink from './sidebar-link'
 export default function Sidebar({ close }: { close: () => void }): JSX.Element {
   return (
     <AppShell.Navbar p="md">
+      <SidebarLink href="/documentation" label="Overview" onClick={close} />
+      <SidebarLink
+        href="/documentation/installation"
+        label="Installation"
+        onClick={close}
+      />
       <SidebarLink
         href="/documentation/tutorial"
         label="Tutorial"
@@ -56,12 +62,6 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
           onClick={close}
         />
       </SidebarLink>
-      <SidebarLink href="/documentation" label="Overview" onClick={close} />
-      <SidebarLink
-        href="/documentation/installation"
-        label="Installation"
-        onClick={close}
-      />
       <SidebarLink
         href="/documentation/getting-started"
         label="Getting started"
