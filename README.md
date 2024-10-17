@@ -1,4 +1,4 @@
-[Documentation](https://tuono.dev) | [Tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md) |
+[Documentation](https://tuono.dev) | [Tutorial](https://tuono.dev/documentation/tutorial) |
 [✨Contributing](https://tuono.dev/documentation/contributing)
 
 # Tuono
