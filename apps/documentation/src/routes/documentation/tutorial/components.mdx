@@ -15,7 +15,7 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 ## Creating a stand-alone component
 
-Let’s then create the button needed for displaying the list of pokemons.
+Let’s then create the button needed for displaying the list of Pokémon.
 
 Create the following file `src/components/PokemonLink.tsx` and fill the content with:
 
@@ -45,7 +45,7 @@ export default function PokemonLink({
 }
 ```
 
-Now that the link is done let’s import it in the `index.tsx` file
+Now that the link is done, let’s import it into the `index.tsx` file
 
 ```diff
 // src/routes/index.tsx
@@ -63,8 +63,8 @@ Now that the link is done let’s import it in the `index.tsx` file
 // ...
 ```
 
-Now the links work. Clicking on any of them we get redirected to the 404 page because we haven’t yet implemented the `pokemons/[pokemon]` page.
-As previously said CSS modules are enabled out of the box so let’s make those links a little bit nicer.
+Now the links work. Clicking on any of them, we get redirected to the 404 page because we haven’t yet implemented the `pokemons/[pokemon]` page.
+As previously said, CSS modules are enabled out of the box, so let’s make those links a little bit nicer.
 
 Create alongside the `PokemonLink.tsx` component the CSS module `PokemonLink.module.css` and copy the following content into it:
 
