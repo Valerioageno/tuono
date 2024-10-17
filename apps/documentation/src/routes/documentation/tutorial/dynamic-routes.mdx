@@ -1,27 +1,27 @@
 import { Head } from 'tuono'
 
 <Head>
-  <title>Tutorial - __ routes</title>
+  <title>Tutorial - Dynamic routes</title>
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 <Breadcrumbs>
   <Element label="Tutorial" href="/documentation/tutorial" />
-  <Element label="__ routes" />
+  <Element label="Dynamic routes" />
 </Breadcrumbs>
 
-# \_\_ routes
+# Dynamic routes
 
-## Create the pokemon route
+## Create the Pokémon route
 
-The homepage is ready. We have the full list of pokemons and they are all links. Great!
+The homepage is ready. We have the full list of Pokémon and they are all links. Great!
 
-Now we want to make those links actually pointing to a real page. Let’s create the \_\_ route.
+Now we want to make those links actually point to a real page. Let’s create the \_\_ route.
 
 Create the folder `routes/pokemons` and then create the two files `[pokemon].tsx` and `[pokemon].rs`.
 
-These two will handle every requests that points to `http://localhost:3000/pokemons/bulbasaur..mew`.
+These two will handle every request that points to `http://localhost:3000/pokemons/bulbasaur..mew`.
 
 Let’s first work on the server side file. Paste into the new `[pokemon].rs` file the following code:
 

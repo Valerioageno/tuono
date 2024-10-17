@@ -17,7 +17,7 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
         onClick={close}
       >
         <SidebarLink
-          href="/documentation/tutorial/overview"
+          href="/documentation/tutorial/development-setup"
           label="Development setup"
           onClick={close}
         />
@@ -62,11 +62,7 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
           onClick={close}
         />
       </SidebarLink>
-      <SidebarLink
-        href="/documentation/getting-started"
-        label="Getting started"
-        onClick={close}
-      />
+      <SidebarLink href="/documentation/cli" label="CLI" onClick={close} />
       <SidebarLink
         label="Routing"
         href="/documentation/routing"
