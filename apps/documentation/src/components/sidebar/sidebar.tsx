@@ -17,7 +17,7 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
         onClick={close}
       >
         <SidebarLink
-          href="/documentation/tutorial/overview"
+          href="/documentation/tutorial/development-setup"
           label="Development setup"
           onClick={close}
         />
