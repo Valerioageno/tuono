@@ -13,11 +13,11 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 # API fetching
 
-The goal is to use the [PokeAPI](https://pokeapi.co/docs/v2) to list all the pokemons of the first generation (the best one btw) and then reserve a \_\_ page for each one separately.
+The goal is to use the [PokeAPI](https://pokeapi.co/docs/v2) to list all the Pokémon of the first generation (the best one, btw) and then reserve a dynamic page for each one separately.
 
-## Fetch all the pokemons
+## Fetch all the Pokémon
 
-To start let’s fetch all of them in the root page; since we want to render them on the server side we gonna need to implement the logic in the `index.rs` file.
+To start, let’s fetch all of them from the root page. Since we want to render them on the server side, we going to need to implement the logic in the `index.rs` file.
 
 Clear the `index.rs` file and paste:
 
@@ -52,7 +52,7 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 }
 ```
 
-Now the pokemons are correctly fetched and hydrated on the client side so we can actually use them. Clear the `index.tsx` file and paste:
+Now the Pokémon are correctly fetched and hydrated on the client side, so we can actually use them. Clear the `index.tsx` file and paste:
 
 ```tsx
 // src/routes/index.tsx
@@ -102,4 +102,4 @@ export default function IndexPage({
 }
 ```
 
-Refresh now the browser! A bit ugly but all the pokemons are finally printed on screen!
+Refresh the browser now! A bit ugly, but all the Pokémon are finally printed on screen!
