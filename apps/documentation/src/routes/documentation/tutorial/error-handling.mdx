@@ -13,9 +13,9 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 # Error handling
 
-With the current setup all the routes always return a `200 Success` http status no matter the response type.
+With the current setup, all the routes always return a `200 Success` HTTP status, no matter the response type.
 
-In order to return a more meaningful status code to the browser the `Props` struct can be initialized with also the
+In order to return a more meaningful status code to the browser, the `Props` struct can also be initialized with the
 `Props::new_with_status()` method.
 
 Let's see how it works!
@@ -98,5 +98,5 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 }
 ```
 
-If you now try to load a not existing pokemon (`http://localhost:3000/pokemons/tuono-pokemon`) you will
+If you now try to load a not-existing Pokémon (`http://localhost:3000/pokemons/tuono-pokemon`) you will
 correctly receive a 404 status code in the console.
