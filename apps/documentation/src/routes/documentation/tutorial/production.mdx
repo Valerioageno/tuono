@@ -13,21 +13,21 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 # Production build
 
-The source now is ready to be released. Both server and client have been managed in a unoptimized way
-to easy the development experience. To build the project to the production state just run:
+The source is now ready to be released. Both server and client have been managed in an unoptimized way
+to ease the development experience. To build the project to the production state, just run:
 
 ```shell
 $ tuono build
 ```
 
-This command just created the final assets within the `out` directory. To run then the prodiction server
+This command just created the final assets within the `out` directory. To run the production server,
 run:
 
 ```shell
 $ cargo run --release
 ```
 
-Check again [`http://localhost:3000/`](http://localhost:3000/) - This environment now has all the
-optimizations ready to unleash the power of a rust server that seamessly renders a React application!🚀
+Check again [`http://localhost:3000/`](http://localhost:3000/) This environment now has all the
+optimizations ready to unleash the power of a rust server that seamlessly renders a React application!🚀
 
 > Note: The `out` directory is not standalone. You can't rely just on it to run the production server.
