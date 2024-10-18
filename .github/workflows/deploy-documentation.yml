@@ -16,7 +16,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    steps:    
+    steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
@@ -28,14 +28,14 @@ jobs:
           node-version: 20
 
       - name: Setup rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1 
+        uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Install tuono
-        run: cargo install tuono@0.10.3
+        run: cargo install tuono@0.10.4
 
       - name: Install pnpm
         run: npm i -g pnpm
-        
+
       - name: Install dependencies
         run: pnpm install --ignore-workspace
 

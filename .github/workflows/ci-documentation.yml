@@ -18,32 +18,32 @@ jobs:
     defaults:
       run:
         working-directory: ./apps/documentation
-    
-    steps:    
-    - name: Check out code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-    - name: Setup rust
-      uses: actions-rust-lang/setup-rust-toolchain@v1 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Install tuono
-      run: cargo install tuono@0.10.3
+      - name: Setup rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
 
-    - name: Install pnpm
-      run: npm i -g pnpm
-        
-    - name: Install dependencies
-      run: pnpm install --ignore-workspace
+      - name: Install tuono
+        run: cargo install tuono@0.10.4
 
-    - name: Build project
-      run: tuono build --static
+      - name: Install pnpm
+        run: npm i -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+
+      - name: Build project
+        run: tuono build --static
 
   fmt-lint-and-types:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -53,23 +53,23 @@ jobs:
       run:
         working-directory: ./apps/documentation
 
-    steps:    
-    - name: Check out code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
-        
-    - name: Install pnpm
-      run: npm i -g pnpm
-       
-    - name: Install dependencies
-      run: pnpm install --ignore-workspace
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-    - name: Check formatting
-      run: pnpm format:check
-      
-    - name: Lint
-      run: pnpm lint
- 
-    - name: Types
-      run: pnpm types
+      - name: Install pnpm
+        run: npm i -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --ignore-workspace
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Types
+        run: pnpm types
