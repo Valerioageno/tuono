@@ -13,6 +13,7 @@
   },
   "workspaces": [
     "tuono",
+	"tuono-html-tags",
     "tuono-lazy-fn-vite-plugin",
     "tuono-fs-router-vite-plugin",
     "tuono-router"
