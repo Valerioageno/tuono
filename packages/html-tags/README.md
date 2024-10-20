@@ -6,4 +6,4 @@ Check [tuono](https://tuono.dev) for more.
 
 ## Credits
 
-This package is a fork of [s-yadav/react-meta-tags](https://github.com/s-yadav/react-meta-tags).
+This package is heavily inspired by [s-yadav/react-meta-tags](https://github.com/s-yadav/react-meta-tags).

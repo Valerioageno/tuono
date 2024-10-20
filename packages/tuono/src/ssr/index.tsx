@@ -1,8 +1,8 @@
 import 'fast-text-encoding' // Mandatory for React18
 import * as React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
-import MetaTagsServer from 'react-meta-tags/server'
-import { MetaTagsContext } from 'react-meta-tags'
+import MetaTagsServer from 'tuono-html-tags/server'
+import { MetaTagsContext } from 'tuono-html-tags'
 import { RouterProvider, createRouter } from 'tuono-router'
 
 type RouteTree = any
@@ -22,39 +22,39 @@ window.__vite_plugin_react_preamble_installed__ = true
 <script type="module" src="http://localhost:${TUONO_DEV_SERVER_PORT}${VITE_PROXY_PATH}/client-main.tsx"></script>`
 
 function generateCssLinks(cssBundles: string[], mode: Mode): string {
-  if (mode === 'Dev') return ''
-  return cssBundles.reduce((acc, value) => {
-    return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />`
-  }, '')
+	if (mode === 'Dev') return ''
+	return cssBundles.reduce((acc, value) => {
+		return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />`
+	}, '')
 }
 
 function generateJsScripts(jsBundles: string[], mode: Mode): string {
-  if (mode === 'Dev') return ''
-  return jsBundles.reduce((acc, value) => {
-    return acc + `<script type="module" src="/${value}"></script>`
-  }, '')
+	if (mode === 'Dev') return ''
+	return jsBundles.reduce((acc, value) => {
+		return acc + `<script type="module" src="/${value}"></script>`
+	}, '')
 }
 
 export function serverSideRendering(routeTree: RouteTree) {
-  return function render(payload: string | undefined): string {
-    const props = payload ? JSON.parse(payload) : {}
+	return function render(payload: string | undefined): string {
+		const props = payload ? JSON.parse(payload) : {}
 
-    const mode = props.mode as Mode
-    const jsBundles = props.jsBundles as string[]
-    const cssBundles = props.cssBundles as string[]
-    const router = createRouter({ routeTree }) // Render the app
+		const mode = props.mode as Mode
+		const jsBundles = props.jsBundles as string[]
+		const cssBundles = props.cssBundles as string[]
+		const router = createRouter({ routeTree }) // Render the app
 
-    const metaTagsInstance = MetaTagsServer()
+		const metaTagsInstance = MetaTagsServer()
 
-    const app = renderToString(
-      <MetaTagsContext extract={metaTagsInstance.extract}>
-        <RouterProvider router={router} serverProps={props} />
-      </MetaTagsContext>,
-    )
+		const app = renderToString(
+			<MetaTagsContext extract={metaTagsInstance.extract}>
+				<RouterProvider router={router} serverProps={props} />
+			</MetaTagsContext>,
+		)
 
-    const metaTags = metaTagsInstance.renderToString()
+		const metaTags = metaTagsInstance.renderToString()
 
-    return `<!doctype html>
+		return `<!doctype html>
   <html>
     <head>
 	  ${metaTags}
@@ -63,16 +63,16 @@ export function serverSideRendering(routeTree: RouteTree) {
     <body>
       <div id="__tuono">${app}</div>
       ${renderToStaticMarkup(
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__TUONO_SSR_PROPS__=${payload}`,
-          }}
-        />,
-      )}
+			<script
+				dangerouslySetInnerHTML={{
+					__html: `window.__TUONO_SSR_PROPS__=${payload}`,
+				}}
+			/>,
+		)}
 	  ${generateJsScripts(jsBundles, mode)}
       ${mode === 'Dev' ? VITE_DEV_AND_HMR : ''}
     </body>
   </html>
   `
-  }
+	}
 }

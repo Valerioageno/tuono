@@ -1,4 +1,4 @@
-import Head from 'react-meta-tags'
+import Head from 'tuono-html-tags'
 
 export {
   createRoute,

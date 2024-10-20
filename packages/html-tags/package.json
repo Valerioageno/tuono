@@ -2,9 +2,15 @@
   "name": "tuono-html-tags",
   "version": "0.10.4",
   "description": "Tuono package that handles the HTML tags",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
+    "format": "prettier -u --write --ignore-unknown '**/*'",
+    "format:check": "prettier --check --ignore-unknown '**/*'",
+    "types": "tsc --noEmit",
+    "test:watch": "vitest",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "Valerio Ageno",
@@ -19,6 +25,16 @@
     "README.md"
   ],
   "exports": {
+    "./server": {
+      "import": {
+        "types": "./dist/esm/server/index.d.ts",
+        "default": "./dist/esm/server/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/server/index.d.ts",
+        "default": "./dist/cjs/server/index.js"
+      }
+    },
     ".": {
       "import": {
         "types": "./dist/esm/index.d.ts",
@@ -37,6 +53,10 @@
   },
   "devDependencies": {
     "@tanstack/config": "^0.7.11",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "vitest": "^2.0.0"
   }
 }
