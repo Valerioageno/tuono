@@ -4,30 +4,30 @@ import type { ReactNode } from 'react'
 type ExtractFn = (elements: ReactNode) => void
 
 interface MetaTagsContextValues {
-	extract?: ExtractFn
+  extract?: ExtractFn
 }
 
 const MetaContext = createContext<MetaTagsContextValues>({})
 
 interface MetaTagsContextProps {
-	children: ReactNode
-	extract?: ExtractFn
+  children: ReactNode
+  extract?: ExtractFn
 }
 
 export default function MetaContextProvider({
-	extract,
-	children,
+  extract,
+  children,
 }: MetaTagsContextProps): ReactNode {
-	return (
-		<MetaContext.Provider
-			value={{
-				extract,
-			}}
-		>
-			{children}
-		</MetaContext.Provider>
-	)
+  return (
+    <MetaContext.Provider
+      value={{
+        extract,
+      }}
+    >
+      {children}
+    </MetaContext.Provider>
+  )
 }
 
 export const useMetaTagsContext = (): MetaTagsContextValues =>
-	useContext(MetaContext)
+  useContext(MetaContext)

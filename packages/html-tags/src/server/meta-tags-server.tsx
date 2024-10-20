@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 interface MetaServerTagsOut {
-	extract: (el: ReactNode) => void
-	renderToString: () => string
+  extract: (el: ReactNode) => void
+  renderToString: () => string
 }
 
 /*
@@ -13,14 +13,14 @@ interface MetaServerTagsOut {
  *
  */
 export default function MetaTagsServer(): MetaServerTagsOut {
-	let headElms: ReactNode
+  let headElms: ReactNode
 
-	return {
-		extract(elms: ReactNode): void {
-			headElms = elms
-		},
-		renderToString(): string {
-			return renderToStaticMarkup(headElms)
-		},
-	}
+  return {
+    extract(elms: ReactNode): void {
+      headElms = elms
+    },
+    renderToString(): string {
+      return renderToStaticMarkup(headElms)
+    },
+  }
 }
