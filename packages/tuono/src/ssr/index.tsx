@@ -1,8 +1,8 @@
 import 'fast-text-encoding' // Mandatory for React18
 import * as React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
-import MetaTagsServer from 'react-meta-tags/server'
-import { MetaTagsContext } from 'react-meta-tags'
+import type { HelmetServerState } from 'react-helmet-async'
+import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider, createRouter } from 'tuono-router'
 
 type RouteTree = any
@@ -44,23 +44,26 @@ export function serverSideRendering(routeTree: RouteTree) {
     const cssBundles = props.cssBundles as string[]
     const router = createRouter({ routeTree }) // Render the app
 
-    const metaTagsInstance = MetaTagsServer()
-
+    const helmetContext = {}
     const app = renderToString(
-      <MetaTagsContext extract={metaTagsInstance.extract}>
+      <HelmetProvider context={helmetContext}>
         <RouterProvider router={router} serverProps={props} />
-      </MetaTagsContext>,
+      </HelmetProvider>,
     )
 
-    const metaTags = metaTagsInstance.renderToString()
+    const { helmet } = helmetContext as { helmet: HelmetServerState }
 
     return `<!doctype html>
-  <html>
+  <html ${helmet.htmlAttributes.toString()}>
     <head>
-	  ${metaTags}
+	  ${helmet.title.toString()}
+      ${helmet.priority.toString()}
+      ${helmet.meta.toString()}
+      ${helmet.link.toString()}
+      ${helmet.script.toString()}
 	  ${generateCssLinks(cssBundles, mode)}
     </head>
-    <body>
+    <body ${helmet.bodyAttributes.toString()}>
       <div id="__tuono">${app}</div>
       ${renderToStaticMarkup(
         <script
