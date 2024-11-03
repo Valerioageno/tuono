@@ -2,6 +2,10 @@ import { Head } from 'tuono'
 
 <Head>
   <title>Tutorial - API fetching</title>
+  <link
+    rel="canonical"
+    href="https://tuono.dev/documentation/tutorial/api-fetching"
+  />
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
@@ -106,7 +110,10 @@ Refresh the browser now! A bit ugly, but all the Pokémon are finally printed on
 
 import NavigationButtons from '../../../components/navigation-buttons'
 
-<NavigationButtons 
-		prev={{title: 'Development setup', href:"/documentation/tutorial/development-setup"}}
-		next={{title: 'Components', href:"/documentation/tutorial/components"}}
+<NavigationButtons
+  prev={{
+    title: 'Development setup',
+    href: '/documentation/tutorial/development-setup',
+  }}
+  next={{ title: 'Components', href: '/documentation/tutorial/components' }}
 />

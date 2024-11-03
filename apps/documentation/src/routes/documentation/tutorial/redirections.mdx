@@ -2,6 +2,10 @@ import { Head } from 'tuono'
 
 <Head>
   <title>Tutorial - Redirections</title>
+  <link
+    rel="canonical"
+    href="https://tuono.dev/documentation/tutorial/redirections"
+  />
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
@@ -48,7 +52,10 @@ Click on it and see the application automatically redirecting you to your favour
 
 import NavigationButtons from '../../../components/navigation-buttons'
 
-<NavigationButtons 
-		prev={{title: 'SEO and meta tags', href:"/documentation/tutorial/seo"}}
-		next={{title: 'Production build', href:"/documentation/tutorial/production"}}
+<NavigationButtons
+  prev={{ title: 'SEO and meta tags', href: '/documentation/tutorial/seo' }}
+  next={{
+    title: 'Production build',
+    href: '/documentation/tutorial/production',
+  }}
 />

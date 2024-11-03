@@ -2,6 +2,10 @@ import { Head } from 'tuono'
 
 <Head>
   <title>Tutorial - Components</title>
+  <link
+    rel="canonical"
+    href="https://tuono.dev/documentation/tutorial/components"
+  />
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
@@ -130,7 +134,10 @@ export default function PokemonLink({
 
 import NavigationButtons from '../../../components/navigation-buttons'
 
-<NavigationButtons 
-		prev={{title: 'API fetching', href:"/documentation/tutorial/api-fetching"}}
-		next={{title: 'Dynamic routes', href:"/documentation/tutorial/dynamic-routes"}}
+<NavigationButtons
+  prev={{ title: 'API fetching', href: '/documentation/tutorial/api-fetching' }}
+  next={{
+    title: 'Dynamic routes',
+    href: '/documentation/tutorial/dynamic-routes',
+  }}
 />

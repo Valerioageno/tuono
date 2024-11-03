@@ -2,6 +2,10 @@ import { Head } from 'tuono'
 
 <Head>
   <title>Tutorial - Building for production</title>
+  <link
+    rel="canonical"
+    href="https://tuono.dev/documentation/tutorial/production"
+  />
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
@@ -34,7 +38,10 @@ optimizations ready to unleash the power of a rust server that seamlessly render
 
 import NavigationButtons from '../../../components/navigation-buttons'
 
-<NavigationButtons 
-		prev={{title: 'Server redirection', href:"/documentation/tutorial/redirections"}}
-		next={{title: 'Conclusion', href:"/documentation/tutorial/conclusion"}}
+<NavigationButtons
+  prev={{
+    title: 'Server redirection',
+    href: '/documentation/tutorial/redirections',
+  }}
+  next={{ title: 'Conclusion', href: '/documentation/tutorial/conclusion' }}
 />
