@@ -1,4 +1,4 @@
-import Head from 'react-meta-tags'
+export { Helmet as Head } from 'react-helmet-async'
 
 export {
   createRoute,
@@ -10,7 +10,5 @@ export {
   lazyLoadComponent,
   useRouter,
 } from 'tuono-router'
-
-export { Head }
 
 export type { TuonoProps } from './types'
