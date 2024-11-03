@@ -100,3 +100,10 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 
 If you now try to load a not-existing Pokémon (`http://localhost:3000/pokemons/tuono-pokemon`) you will
 correctly receive a 404 status code in the console.
+
+import NavigationButtons from '../../../components/navigation-buttons'
+
+<NavigationButtons 
+		prev={{title: 'Dynamic routes', href:"/documentation/tutorial/dynamic-routes"}}
+		next={{title: 'SEO and meta tags', href:"/documentation/tutorial/seo"}}
+/>
