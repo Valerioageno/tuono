@@ -2,6 +2,7 @@ import { Head } from 'tuono'
 
 <Head>
   <title>Tutorial - SEO and meta tags</title>
+  <link rel="canonical" href="https://tuono.dev/documentation/tutorial/seo" />
 </Head>
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
@@ -97,7 +98,13 @@ The `Head` component takes as children any valid HTML meta tag.
 
 import NavigationButtons from '../../../components/navigation-buttons'
 
-<NavigationButtons 
-		prev={{title: 'Error handling', href:"/documentation/tutorial/error-handling"}}
-		next={{title: 'Server redirection', href:"/documentation/tutorial/redirections"}}
+<NavigationButtons
+  prev={{
+    title: 'Error handling',
+    href: '/documentation/tutorial/error-handling',
+  }}
+  next={{
+    title: 'Server redirection',
+    href: '/documentation/tutorial/redirections',
+  }}
 />
