@@ -5,13 +5,20 @@ import useRoute from '../hooks/useRoute'
 import { useInView } from 'react-intersection-observer'
 
 interface TuonoLinkProps {
+  /**
+   * If "true" the route gets loaded when the link enters the viewport. Default "true"
+   */
   preload?: boolean
+  /**
+   * If "false" the scroll offset will be kept across page navigation. Default "true"
+   */
+  scroll?: boolean
 }
 
 export default function Link(
   componentProps: AnchorHTMLAttributes<HTMLAnchorElement> & TuonoLinkProps,
 ): JSX.Element {
-  const { preload = true, ...props } = componentProps
+  const { preload = true, scroll = true, ...props } = componentProps
   const router = useRouter()
   const route = useRoute(props.href)
   const { ref } = useInView({
@@ -30,7 +37,7 @@ export default function Link(
       return
     }
 
-    router.push(props.href || '')
+    router.push(props.href || '', { scroll })
   }
 
   return (
