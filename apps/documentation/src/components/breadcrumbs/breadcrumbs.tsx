@@ -1,31 +1,67 @@
 import { Breadcrumbs, Button } from '@mantine/core'
-import { Link } from 'tuono'
+import { Link, Head } from 'tuono'
 
 import { IconChevronRight, IconBolt } from '@tabler/icons-react'
-import type { ReactNode } from 'react'
+
+interface Breadcrumb {
+  href?: string
+  label: string
+}
+interface BreadcrumbsProps {
+  breadcrumbs: Breadcrumb[]
+}
 
 export default function TuonoBreadcrumbs({
-  children,
-}: {
-  children: ReactNode
-}): JSX.Element {
+  breadcrumbs = [],
+}: BreadcrumbsProps): JSX.Element {
   return (
-    <Breadcrumbs
-      separator={<IconChevronRight size="1.1rem" stroke={1.5} />}
-      mb="md"
-      mt="md"
-    >
-      <Button
-        href="/documentation"
-        component={Link}
-        variant="subtle"
-        radius="xl"
-        p={5}
+    <>
+      <Head>
+        <script type="application/ld+json">
+          {`[
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  '@type': "ListItem",
+                  "position": 1,
+                  "name": "Tuono - Documentation",
+                  "item": "https://tuono.dev/documentation",
+                }${breadcrumbs.length > 0 ? ',' : ''}
+                ${breadcrumbs
+                  .map((br, i) =>
+                    JSON.stringify({
+                      '@type': 'ListItem',
+                      position: i + 2,
+                      name: br.label,
+                      item: br.href ? `https://tuono.dev${br.href}` : undefined,
+                    }),
+                  )
+                  .join(',')}]
+            }
+          ]`}
+        </script>
+      </Head>
+      <Breadcrumbs
+        separator={<IconChevronRight size="1.1rem" stroke={1.5} />}
+        mb="md"
+        mt="md"
       >
-        <IconBolt />
-      </Button>
-      {children}
-    </Breadcrumbs>
+        <Button
+          href="/documentation"
+          component={Link}
+          variant="subtle"
+          radius="xl"
+          p={5}
+        >
+          <IconBolt />
+        </Button>
+        {breadcrumbs.map((br) => (
+          <BreadcrumbElement href={br.href} label={br.label} key={br.label} />
+        ))}
+      </Breadcrumbs>
+    </>
   )
 }
 
