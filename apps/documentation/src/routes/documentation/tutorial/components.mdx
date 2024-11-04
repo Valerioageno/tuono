@@ -8,10 +8,12 @@ import MetaTags from '../../../components/meta-tags'
 
 import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
-<Breadcrumbs>
-  <Element label="Tutorial" href="/documentation/tutorial" />
-  <Element label="Components" />
-</Breadcrumbs>
+<Breadcrumbs
+  breadcrumbs={[
+    { label: 'Tutorial', href: '/documentation/tutorial' },
+    { label: 'Components' },
+  ]}
+/>
 
 # Components
 
