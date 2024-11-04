@@ -21,6 +21,7 @@ import { ROUTES_FOLDER, ROOT_PATH_ID, GENERATED_ROUTE_TREE } from './constants'
 
 import { format } from 'prettier'
 import { sortRouteNodes } from './sort-route-nodes'
+import isDefaultExported from './utils/is-default-exported'
 
 let latestTask = 0
 
@@ -50,6 +51,13 @@ async function getRouteNodes(
         if (dirent.isDirectory()) {
           await recurse(relativePath)
         } else if (fullPath.match(/\.(tsx|ts|jsx|js|mdx)$/)) {
+          // Check that the route is correctly default exported
+          if (
+            fullPath.match(/\.(tsx|ts|jsx|js)$/) &&
+            !isDefaultExported((await fsp.readFile(fullPath)).toString())
+          ) {
+            return
+          }
           const filePath = replaceBackslash(path.join(dir, dirent.name))
           const filePathNoExt = removeExt(filePath)
           let routePath =
