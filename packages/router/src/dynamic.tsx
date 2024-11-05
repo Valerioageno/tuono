@@ -1,4 +1,5 @@
 import * as React from 'react'
+import type { ReactElement, ComponentType } from 'react'
 import type { RouteComponent } from './types'
 
 type ImportFn = () => Promise<{ default: React.ComponentType<any> }>
@@ -40,7 +41,18 @@ export const dynamic = (importFn: ImportFn): JSX.Element => {
 }
 
 export const lazyLoadComponent = (factory: ImportFn): RouteComponent => {
-  const Component = React.lazy(factory) as unknown as RouteComponent
-  Component.preload = factory
+  let LoadedComponent: ComponentType<any> | undefined
+  const LazyComponent = React.lazy(factory) as unknown as RouteComponent
+
+  const loadComponent = (): Promise<void> =>
+    factory().then((module) => {
+      LoadedComponent = module.default
+    })
+
+  const Component = (props: any): ReactElement =>
+    React.createElement(LoadedComponent || LazyComponent, props)
+
+  Component.preload = loadComponent
+
   return Component
 }
