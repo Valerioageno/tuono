@@ -36,6 +36,11 @@ export default function MetaTags({
       <meta property="og:description" content={description} />
       <meta property="og:site_name" content="Tuono" />
       <meta property="og:locale" content="en_US" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@tuono_dev" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content="https://tuono.dev/og-cover.png" />
     </Head>
   )
 }
