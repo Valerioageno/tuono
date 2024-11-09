@@ -18,8 +18,7 @@ export default function TuonoBreadcrumbs({
     <>
       <Head>
         <script type="application/ld+json">
-          {`[
-            {
+          {`{
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
               "itemListElement": [
@@ -27,13 +26,13 @@ export default function TuonoBreadcrumbs({
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Tuono - The React/Rust fullstack framework",
-                  "item": "https://tuono.dev",
+                  "item": "https://tuono.dev"
                 },
                 {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Tuono - Documentation",
-                  "item": "https://tuono.dev/documentation",
+                  "item": "https://tuono.dev/documentation"
                 }${breadcrumbs.length > 0 ? ',' : ''}
                 ${breadcrumbs
                   .map((br, i) =>
@@ -46,7 +45,7 @@ export default function TuonoBreadcrumbs({
                   )
                   .join(',')}]
             }
-          ]`}
+          `}
         </script>
       </Head>
       <Breadcrumbs
