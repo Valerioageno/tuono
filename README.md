@@ -10,16 +10,18 @@
 
 **Tuono is the fastest React framework out there**
 
-Tuono (Italian word for "thunder", pronounced /2 Oh No/). 
+Tuono (Italian word for "thunder", pronounced /2 Oh No/).
 Why Tuono? Just a badass name.
 
-Some of its features are: 
+If you have experience with [Next.js](https://nextjs.org/) you will feel home here.
 
-- 🟦  Native Typescript
-- 🌐  NextJs like Routing
-- 🍭  CSS/SCSS modules
-- 🧬  Server Side Rendering
-- 🔥  Hot Module Reload
+Some of its features are:
+
+- 🟦 Native Typescript
+- 🌐 Next.js like Routing
+- 🍭 CSS/SCSS modules
+- 🧬 Server Side Rendering
+- 🔥 Hot Module Reload
 
 ## 📖 Documentation
 
@@ -30,7 +32,7 @@ The [documentation](https://tuono.dev/documentation) is available on
 
 **NodeJs/Deno/Bun are the only runtimes that allow a React app to be full-stack right? (no)**
 
-Tuono is a full-stack React framework with the server side written in Rust. 
+Tuono is a full-stack React framework with the server side written in Rust.
 Because of this, Tuono is extremely fast, and the requests are handled by a multithreaded Rust server.
 React is still React - it is just superpowered.
 
@@ -40,12 +42,19 @@ Tuono provides a collection of utilities to handle the server side code seamless
 Each server-side route is managed in a separate file alongside the React route. The routing is handled
 by Tuono based on the files defined within the `./src/routes` directory.
 
+**How is Tuono different from Next.js?**
+
+The Tuono API tries to stick as much as possible to the Next.js one (or at least takes a huge inspiration
+from it). The major difference is the backend system. While Next.js relies entirely on Node/Deno/Bun,
+Tuono runs the server without any intermediary runtime. This enables impressive performance improvements
+(check the benchmarks [here](https://github.com/Valerioageno/tuono/tree/main/benches)).
+
 ## Getting started
 
 As already mentioned above, I strongly suggest you take a look at the
 [tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md).
 
-Tuono is the CLI that provides all the needed commands to handle the full-stack project. 
+Tuono is the CLI that provides all the needed commands to handle the full-stack project.
 To download it is required [cargo](https://doc.rust-lang.org/cargo/), which is the [rust](https://www.rust-lang.org/)
 package manager.
 
@@ -53,7 +62,7 @@ Then run `cargo install tuono`.
 
 To list all the available commands, run `tuono -h`
 
-To create a new project, run `tuono new [NAME]` (optionally, you can pass the `--template` (or `-t`) flag - check the 
+To create a new project, run `tuono new [NAME]` (optionally, you can pass the `--template` (or `-t`) flag - check the
 [examples](https://github.com/Valerioageno/tuono/tree/main/examples) folder).
 
 Then, to run the local development environment, run it inside the project folder `tuono dev`
@@ -64,6 +73,7 @@ and to set the server project in `production` mode.
 Now to execute it just run `cargo run --release`.
 
 ## Contributing
+
 Any help or suggestion will be appreciated and encouraged.
 Check the [✨Contributing](https://tuono.dev/documentation/contributing) page
 
