@@ -15,7 +15,7 @@ export default function Hero(): JSX.Element {
   return (
     <Container size={1100} my={100}>
       <Center>
-        <Title order={1}>The React/Rust full-stack framework</Title>
+        <Title order={1}>Superfast fullstack react framework</Title>
       </Center>
       <Center mt={50}>
         <Text fz="18px">
