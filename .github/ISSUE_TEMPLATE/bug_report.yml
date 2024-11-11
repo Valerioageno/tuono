@@ -1,0 +1,90 @@
+name: Bug report
+description: File a bug report
+title: '[Bug]: '
+labels: ['bug']
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected behaviour
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reproduce
+      description: Steps to reproduce the behavior (code, example repository)
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: input
+    id: tuono-version
+    attributes: 
+      label: Tuono version
+      placeholder: "[e.g. 0.4.0]"
+    validations:
+      required: false
+  - type: input
+    id: os-version
+    attributes: 
+      label: OS
+      placeholder: "[e.g. MacOS, Windows]"
+    validations:
+      required: false
+  - type: input
+    id: browser-version
+    attributes: 
+      label: Browser
+      placeholder: "[e.g. chrome, safari]"
+    validations:
+      required: false
+  - type: input
+    id: node-version
+    attributes: 
+      label: Node version
+      placeholder: "[e.g. 20.0.0]"
+    validations:
+      required: false
+  - type: input
+    id: rust-version
+    attributes: 
+      label: Rust version
+      placeholder: "[e.g. 1.79.0]"
+    validations:
+      required: false
+  - type: input
+    id: create-version
+    attributes: 
+      label: Crate version
+      placeholder: "[e.g. 1.78.0]"
+    validations:
+      required: false
+  - type: input
+    id: node-package-manager-version
+    attributes: 
+      label: Node Package Manger version
+      placeholder: "[e.g. pnpm: 9.5.0] "
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context about the bug here.
+    validations:
+      required: false
