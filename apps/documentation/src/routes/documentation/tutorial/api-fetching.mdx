@@ -56,6 +56,10 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 }
 ```
 
+> The first argument is always the request `req: Request` which contains the request data like the query parameters and the headers.
+The rest of the arguments are optional and they don't need to be specified
+if they are not used. Enabled out of the box a [Reqwest](https://docs.rs/reqwest/latest/reqwest/) HTTP client.
+
 Now the Pokémon are correctly fetched and hydrated on the client side, so we can actually use them. Clear the `index.tsx` file and paste:
 
 ```tsx
