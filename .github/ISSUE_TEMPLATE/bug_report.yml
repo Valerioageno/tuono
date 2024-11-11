@@ -22,7 +22,7 @@ body:
     id: steps
     attributes:
       label: How to reproduce
-      description: Steps to reproduce the behavior (code, online sandbox, example repository)
+      description: Steps to reproduce the behavior (code, example repository)
     validations:
       required: true
   - type: textarea
