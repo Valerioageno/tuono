@@ -52,7 +52,7 @@ Tuono runs the server without any intermediary runtime. This enables impressive 
 ## Getting started
 
 As already mentioned above, I strongly suggest you take a look at the
-[tutorial](https://github.com/Valerioageno/tuono/blob/main/docs/tutorial.md).
+[tutorial](https://tuono.dev/documentation/tutorial).
 
 Tuono is the CLI that provides all the needed commands to handle the full-stack project.
 To download it is required [cargo](https://doc.rust-lang.org/cargo/), which is the [rust](https://www.rust-lang.org/)
