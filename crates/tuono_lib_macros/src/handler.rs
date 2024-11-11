@@ -41,15 +41,12 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             continue;
         }
 
-        match arg {
-            FnArg::Typed(pat_type) => {
-                let index = i - 1;
-                let argument_name = *pat_type.pat.clone();
-                let argument_type = *pat_type.ty.clone();
-                argument_names.insert(index, argument_name.clone());
-                axum_arguments.insert(index, create_struct_fn_arg(argument_name, argument_type))
-            }
-            _ => {}
+        if let FnArg::Typed(pat_type) = arg {
+            let index = i - 1;
+            let argument_name = *pat_type.pat.clone();
+            let argument_type = *pat_type.ty.clone();
+            argument_names.insert(index, argument_name.clone());
+            axum_arguments.insert(index, create_struct_fn_arg(argument_name, argument_type))
         }
     }
 
