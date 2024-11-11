@@ -1,4 +1,4 @@
-use tuono_lib::reqwest::{Client, StatusCode};
+use tuono_lib::reqwest::StatusCode;
 use tuono_lib::{Request, Response};
 use tuono_lib::axum::http::{header, HeaderMap};
 use glob::glob;
@@ -36,7 +36,7 @@ fn clean_path(value: String) -> String {
 }
 
 #[tuono_lib::handler]
-async fn generate_sitemap(_req: Request, _fetch: Client) -> Response {
+async fn generate_sitemap(_req: Request) -> Response {
     let mut headers = HeaderMap::new();
     headers.insert(header::CONTENT_TYPE, "text/xml".parse().unwrap());
 
