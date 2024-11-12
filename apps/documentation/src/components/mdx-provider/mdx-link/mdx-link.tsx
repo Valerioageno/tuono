@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes } from 'react'
+import type { JSX, AnchorHTMLAttributes } from 'react'
 import { Button } from '@mantine/core'
 import { Link } from 'tuono'
 import { IconExternalLink } from '@tabler/icons-react'

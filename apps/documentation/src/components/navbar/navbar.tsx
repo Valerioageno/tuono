@@ -1,5 +1,7 @@
+import type { JSX } from 'react'
 import { AppShell, Burger, Button, Flex } from '@mantine/core'
 import { Link, useRouter } from 'tuono'
+
 import Actions from './actions'
 
 interface NavbarProps {

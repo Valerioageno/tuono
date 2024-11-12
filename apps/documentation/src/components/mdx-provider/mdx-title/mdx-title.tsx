@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { Title, type TitleProps } from '@mantine/core'
 
 export default function MdxTitle(props: TitleProps): JSX.Element {

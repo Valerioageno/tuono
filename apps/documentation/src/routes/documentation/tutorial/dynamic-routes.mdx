@@ -63,6 +63,7 @@ async fn get_pokemon(req: Request, fetch: Client) -> Response {
 Then let’s work on the frontend. Paste into the `[pokemon].tsx` file the following code:
 
 ```tsx
+import type { JSX } from 'react'
 import { TuonoProps } from 'tuono'
 import PokemonView from '../../components/PokemonView'
 

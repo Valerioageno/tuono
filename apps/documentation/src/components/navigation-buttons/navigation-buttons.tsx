@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { Box, Button, Text, Title, Flex } from '@mantine/core'
 import { Link } from 'tuono'
 import { IconArrowRight, IconArrowLeft } from '@tabler/icons-react'

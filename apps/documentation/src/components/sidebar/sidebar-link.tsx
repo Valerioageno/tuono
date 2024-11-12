@@ -1,5 +1,6 @@
+import type { JSX, ReactNode } from 'react'
+import { useState } from 'react'
 import { NavLink, type NavLinkProps } from '@mantine/core'
-import { useState, type ReactNode } from 'react'
 import { Link, useRouter } from 'tuono'
 import { IconChevronRight } from '@tabler/icons-react'
 

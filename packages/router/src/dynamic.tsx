@@ -13,7 +13,7 @@ type ImportFn = () => Promise<{ default: React.ComponentType<any> }>
  * It can be wrapped within a React.Suspense component in order to handle its loading state.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const dynamic = (importFn: ImportFn): JSX.Element => {
+export const dynamic = (importFn: ImportFn): React.JSX.Element => {
   /**
    *
    * This function is just a placeholder. The real work is done by the bundler.

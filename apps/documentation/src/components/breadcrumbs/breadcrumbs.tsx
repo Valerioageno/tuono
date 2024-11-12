@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { Breadcrumbs, Button } from '@mantine/core'
 import { Link, Head } from 'tuono'
 

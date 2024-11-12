@@ -1,4 +1,6 @@
+import type { JSX } from 'react'
 import { AppShell } from '@mantine/core'
+
 import SidebarLink from './sidebar-link'
 
 export default function Sidebar({ close }: { close: () => void }): JSX.Element {

@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { Code } from '@mantine/core'
 import type { HTMLAttributes } from 'react'
 

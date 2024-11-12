@@ -1,5 +1,5 @@
+import type { JSX, HTMLAttributes } from 'react'
 import { Blockquote, Space } from '@mantine/core'
-import type { HTMLAttributes } from 'react'
 
 export default function MdxQuote(
   props: HTMLAttributes<HTMLQuoteElement>,

@@ -25,6 +25,7 @@ Create the following file `src/components/PokemonLink.tsx` and fill the content 
 
 ```tsx
 // src/components/PokemonLink.tsx
+import type { JSX } from 'react'
 import { Link } from 'tuono'
 
 interface Pokemon {
@@ -109,8 +110,9 @@ Then import the styles into the `PokemonLink` component as following:
 
 ```diff
 // src/components/PokemonLink.tsx
-import { Link } from "tuono";
-import type { Pokemon } from "./../types/pokemon";
+import type { JSX } from 'react'
+import { Link } from "tuono"
+import type { Pokemon } from "./../types/pokemon"
 ++ import styles from './PokemonLink.module.css'
 
 export default function PokemonLink({

@@ -1,6 +1,7 @@
 /*
  * Component inspired by: https://github.com/mantinedev/mantine/tree/master/apps/mantine.dev/src/components/TableOfContents
  */
+import type { JSX } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter, Link } from 'tuono'
 import { IconList } from '@tabler/icons-react'

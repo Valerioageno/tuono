@@ -64,6 +64,7 @@ Now the Pokémon are correctly fetched and hydrated on the client side, so we ca
 
 ```tsx
 // src/routes/index.tsx
+import type { JSX } from 'react'
 import type { TuonoProps } from 'tuono'
 
 interface Pokemon {
@@ -76,9 +77,9 @@ interface IndexProps {
 
 export default function IndexPage({
   data,
-}: TuonoProps<IndexProps>): JSX.Element {
+}: TuonoProps<IndexProps>): JSX.Element | null {
   if (!data?.results) {
-    return <></>
+    return null
   }
 
   return (
