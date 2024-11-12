@@ -2,7 +2,7 @@
   "name": "workspace",
   "packageManager": "pnpm@9.12.3+sha256.24235772cc4ac82a62627cd47f834c72667a2ce87799a846ec4e8e555e2d4b8b",
   "scripts": {
-    "dev": "turbo watch dev",
+    "dev": "turbo dev",
     "build": "turbo build --filter tuono",
     "lint": "turbo lint",
     "format": "turbo format",
@@ -38,6 +38,6 @@
     "vitest": "^2.0.0"
   },
   "dependencies": {
-    "turbo": "^2.0.12"
+    "turbo": "^2.2.3"
   }
 }
