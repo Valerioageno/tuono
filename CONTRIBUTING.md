@@ -6,14 +6,14 @@
 
 ## Contributions 
 Any feature contribution or suggestion is strongly appreciated.
-Since the current project size, there isn't yet a defined way to start a discussion. Consider [opening a new issue](https://github.com/Valerioageno/tuono/issues/new)
+Since the current project size, there isn't yet a defined way to start a discussion. Consider [opening a new issue](https://github.com/Valerioageno/tuono/issues/new/choose)
 or to reach me using my email address, [valerioageno@yahoo.it](mailto:valerioageno@ahoo.it). I'm also available on Twitter (X); DM @valerioageno.
 
 ## Bugs
 
 **Did you find a bug?**
 - Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/Valerioageno/tuono/issues).
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/Valerioageno/tuono/issues/new). Be sure to include a title and clear description, as much relevant information as possible, and a code sample or an executable test case demonstrating the expected behavior that is not occurring.
+- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/Valerioageno/tuono/issues/new/choose). Be sure to include a title and clear description, as much relevant information as possible, and a code sample or an executable test case demonstrating the expected behavior that is not occurring.
 
 **Did you write a patch that fixes a bug?**
 - Open a new GitHub pull request with the patch.
