@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, JSX } from 'react'
 import { AppShell, Container } from '@mantine/core'
+
 import MdxProvider from '../../components/mdx-provider'
 import EditPage from '../../components/edit-page'
 

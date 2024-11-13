@@ -26,6 +26,7 @@ To do so `tuono` also exposes the `<Head />` component useful exactly for handli
 
 ```diff
 // src/routes/index.tsx
+import type { JSX } from 'react'
 import type { TuonoProps } from "tuono";
 ++ import { Head } from "tuono"
 
@@ -80,6 +81,7 @@ export default function IndexPage({
 
 ```diff
 // src/routes/pokemons/[pokemon].tsx
+import type { JSX } from 'react'
 -- import { TuonoProps } from "tuono";
 ++ import { TuonoProps, Head } from "tuono";
 import PokemonView from "../../components/PokemonView";

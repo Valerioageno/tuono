@@ -1,7 +1,9 @@
+import type { JSX } from 'react'
 import { Flex, Button, ActionIcon, Group } from '@mantine/core'
 import { IconBrandGithub, IconBook, IconBrandX } from '@tabler/icons-react'
-import ThemeBtn from '../theme-btn'
 import { Link } from 'tuono'
+
+import ThemeBtn from '../theme-btn'
 
 export default function Actions(): JSX.Element {
   return (

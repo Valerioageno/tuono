@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { MDXProvider } from '@mdx-js/react'
 
 import MdxLink from './mdx-link'

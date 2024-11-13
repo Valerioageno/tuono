@@ -1,3 +1,5 @@
+import type { JSX } from 'react'
+
 import { trimPath, trimPathRight } from './utils'
 import type { Route } from './route'
 

@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { Button } from '@mantine/core'
 import { IconEdit } from '@tabler/icons-react'
 import { useRouter } from 'tuono'

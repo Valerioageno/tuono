@@ -17,7 +17,7 @@ interface TuonoLinkProps {
 
 export default function Link(
   componentProps: AnchorHTMLAttributes<HTMLAnchorElement> & TuonoLinkProps,
-): JSX.Element {
+): React.JSX.Element {
   const { preload = true, scroll = true, ...props } = componentProps
   const router = useRouter()
   const route = useRoute(props.href)

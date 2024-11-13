@@ -9,7 +9,7 @@ interface MatchesProps {
   serverSideProps: any
 }
 
-export function Matches({ serverSideProps }: MatchesProps): JSX.Element {
+export function Matches({ serverSideProps }: MatchesProps): React.JSX.Element {
   const location = useRouterStore((st) => st.location)
 
   const route = useRoute(location.pathname)

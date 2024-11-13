@@ -16,7 +16,7 @@ interface MatchProps {
 export const RouteMatch = ({
   route,
   serverSideProps,
-}: MatchProps): JSX.Element => {
+}: MatchProps): React.JSX.Element => {
   const { data, isLoading } = useServerSideProps(route, serverSideProps)
 
   const routes = React.useMemo(() => loadParentComponents(route), [route.id])
@@ -55,13 +55,13 @@ const TraverseRootComponents = React.memo(
     isLoading,
     index = 0,
     children,
-  }: TraverseRootComponentsProps): JSX.Element => {
+  }: TraverseRootComponentsProps): React.JSX.Element => {
     if (routes.length > index) {
       const Parent = React.useMemo(
         () =>
           routes[index]?.component as unknown as (
             props: ParentProps,
-          ) => JSX.Element,
+          ) => React.JSX.Element,
         [],
       )
 

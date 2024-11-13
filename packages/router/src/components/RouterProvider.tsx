@@ -1,9 +1,10 @@
-import { getRouterContext } from './RouterContext'
-import { Matches } from './Matches'
+import React from 'react'
+import type { ReactNode, JSX } from 'react'
 import { useListenBrowserUrlUpdates } from '../hooks/useListenBrowserUrlUpdates'
-import React, { type ReactNode } from 'react'
 import { initRouterStore } from '../hooks/useRouterStore'
 import type { ServerProps } from '../types'
+import { getRouterContext } from './RouterContext'
+import { Matches } from './Matches'
 
 type Router = any
 
