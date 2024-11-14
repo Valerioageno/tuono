@@ -15,9 +15,6 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./apps/documentation
 
     steps:
       - name: Check out code
@@ -40,18 +37,16 @@ jobs:
         run: npm i -g pnpm
 
       - name: Install dependencies
-        run: pnpm install --ignore-workspace
+        run: pnpm install
 
       - name: Build project
+        working-directory: ./apps/documentation
         run: tuono build --static
 
   fmt-lint-and-types:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    defaults:
-      run:
-        working-directory: ./apps/documentation
 
     steps:
       - name: Check out code
@@ -63,13 +58,13 @@ jobs:
         run: npm i -g pnpm
 
       - name: Install dependencies
-        run: pnpm install --ignore-workspace
+        run: pnpm install
 
       - name: Check formatting
-        run: pnpm format:check
+        run: pnpm docs:format:check
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm docs:lint
 
       - name: Types
-        run: pnpm types
+        run: pnpm docs:types
