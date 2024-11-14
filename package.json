@@ -2,21 +2,20 @@
   "name": "workspace",
   "packageManager": "pnpm@9.13.0+sha512.beb9e2a803db336c10c9af682b58ad7181ca0fbd0d4119f2b33d5f2582e96d6c0d93c85b23869295b765170fbdaa92890c0da6ada457415039769edf3c959efe",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build --filter tuono",
-    "lint": "turbo lint",
-    "format": "turbo format",
-    "format:check": "turbo format:check",
-    "types": "turbo types --filter tuono",
-    "test": "turbo test",
-    "test:watch": "turbo test:watch"
+    "dev": "turbo dev --filter=./packages/*",
+    "build": "turbo build --filter=./packages/*",
+    "lint": "turbo lint --filter=./packages/*",
+    "format": "turbo format --filter=./packages/*",
+    "format:check": "turbo format:check --filter=./packages/*",
+    "types": "turbo types --filter=./packages/*",
+    "test": "turbo test --filter=./packages/*",
+    "test:watch": "turbo test:watch --filter=./packages/*",
+    "docs:lint": "turbo lint --filter=documentation",
+    "docs:format": "turbo format --filter=documentation",
+    "docs:format:check": "turbo format:check --filter=documentation",
+    "docs:types": "turbo types --filter=documentation",
+    "check-all": "turbo build lint format:check types"
   },
-  "workspaces": [
-    "tuono",
-    "tuono-lazy-fn-vite-plugin",
-    "tuono-fs-router-vite-plugin",
-    "tuono-router"
-  ],
   "author": "Valerio Ageno",
   "license": "MIT",
   "devDependencies": {
