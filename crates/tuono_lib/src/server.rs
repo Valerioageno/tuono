@@ -1,6 +1,6 @@
-use crate::mode::{Mode, GLOBAL_MODE};
-
 use crate::manifest::load_manifest;
+use crate::mode::{Mode, GLOBAL_MODE};
+use crate::services::logger::LoggerLayer;
 use axum::routing::{get, Router};
 use colored::Colorize;
 use ssr_rs::Ssr;
@@ -42,6 +42,7 @@ impl Server {
             let router = self
                 .router
                 .to_owned()
+                .layer(LoggerLayer::new())
                 .route("/vite-server/", get(vite_websocket_proxy))
                 .route("/vite-server/*path", get(vite_reverse_proxy))
                 .fallback_service(ServeDir::new(DEV_PUBLIC_DIR).fallback(get(catch_all)))
@@ -58,6 +59,7 @@ impl Server {
             let router = self
                 .router
                 .to_owned()
+                .layer(LoggerLayer::new())
                 .fallback_service(ServeDir::new(PROD_PUBLIC_DIR).fallback(get(catch_all)))
                 .with_state(fetch);
 
