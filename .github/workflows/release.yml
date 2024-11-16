@@ -23,26 +23,26 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: pnpm install 
+        run: pnpm install
 
       - name: Build
         run: pnpm build
 
       - name: Publish
-        run: pnpm publish -r --no-git-checks --dry-run 
+        run: pnpm publish -r --no-git-checks --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-on-crates-dry-run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions-rs/toolchain@v1
-      with:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
           toolchain: stable
           override: true
-    - uses: katyo/publish-crates@v2
-      with:
+      - uses: katyo/publish-crates@v2
+        with:
           path: './crates/tuono'
           dry-run: true
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
         run: cp README.md packages/tuono/README.md
 
       - name: Install dependencies
-        run: pnpm install 
+        run: pnpm install
 
       - name: Build
         run: pnpm build
@@ -85,13 +85,14 @@ jobs:
     needs: [publish-on-crates-dry-run, publish-on-npm-dry-run]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions-rs/toolchain@v1
-      with:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
           toolchain: stable
           override: true
-    - uses: katyo/publish-crates@v2
-      with:
+      - uses: katyo/publish-crates@v2
+        with:
           path: './crates/tuono'
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
+          no-verify: true
