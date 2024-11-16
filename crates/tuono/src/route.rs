@@ -32,6 +32,7 @@ impl AxumInfo {
             .to_string()
             .replace('/', "_")
             .replace('.', "_dot_")
+            .replace('-', "_hyphen_")
             .to_lowercase();
 
         if axum_route.is_empty() {
@@ -47,6 +48,7 @@ impl AxumInfo {
                     .as_str()
                     .to_string()
                     .replace('/', "_")
+                    .replace('-', "_hyphen_")
                     .replace('[', "dyn_")
                     .replace(']', ""),
                 axum_route: axum_route.replace('[', ":").replace(']', ""),

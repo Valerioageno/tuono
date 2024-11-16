@@ -119,6 +119,8 @@ mod tests {
             "/home/user/Documents/tuono/src/routes/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/index.rs",
             "/home/user/Documents/tuono/src/routes/posts/[post].rs",
+            "/home/user/Documents/tuono/src/routes/posts/handle-this.rs",
+            "/home/user/Documents/tuono/src/routes/posts/handle-this/[post].rs",
             "/home/user/Documents/tuono/src/routes/posts/UPPERCASE.rs",
             "/home/user/Documents/tuono/src/routes/sitemap.xml.rs",
         ];
@@ -132,6 +134,11 @@ mod tests {
             ("/about", "about"),
             ("/posts/index", "posts_index"),
             ("/posts/[post]", "posts_dyn_post"),
+            ("/posts/handle-this", "posts_handle_hyphen_this"),
+            (
+                "/posts/handle-this/[post]",
+                "posts_handle_hyphen_this_dyn_post",
+            ),
             ("/posts/UPPERCASE", "posts_uppercase"),
             ("/sitemap.xml", "sitemap_dot_xml"),
         ];
