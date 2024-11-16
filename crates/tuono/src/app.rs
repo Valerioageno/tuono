@@ -135,7 +135,10 @@ mod tests {
             ("/posts/index", "posts_index"),
             ("/posts/[post]", "posts_dyn_post"),
             ("/posts/handle-this", "posts_handle_hyphen_this"),
-            ("/posts/handle-this/[post]", "posts_handle_hyphen_this_dyn_post"),
+            (
+                "/posts/handle-this/[post]",
+                "posts_handle_hyphen_this_dyn_post",
+            ),
             ("/posts/UPPERCASE", "posts_uppercase"),
             ("/sitemap.xml", "sitemap_dot_xml"),
         ];
