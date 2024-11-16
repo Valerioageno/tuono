@@ -1,6 +1,10 @@
 import type { JSX } from 'react'
 import { Flex, Button, ActionIcon, Group } from '@mantine/core'
-import { IconBrandGithub, IconBook, IconBrandX } from '@tabler/icons-react'
+import {
+  IconBrandGithub,
+  IconBook,
+  IconBrandDiscord,
+} from '@tabler/icons-react'
 import { Link } from 'tuono'
 
 import ThemeBtn from '../theme-btn'
@@ -31,12 +35,12 @@ export default function Actions(): JSX.Element {
         <ActionIcon
           variant="default"
           size="lg"
-          aria-label="We are also on X!"
-          href="https://x.com/tuono_dev"
+          aria-label="Join the Tuono's community on Discord!"
+          href="https://discord.com/invite/sFNaHGkj"
           target="_blank"
           component="a"
         >
-          <IconBrandX />
+          <IconBrandDiscord />
         </ActionIcon>
       </Group>
       <ThemeBtn />
