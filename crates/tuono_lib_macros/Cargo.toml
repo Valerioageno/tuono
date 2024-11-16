@@ -2,7 +2,7 @@
 name = "tuono_lib_macros"
 version = "0.12.3"
 edition = "2021"
-description = "Superfasrt React fullstack framework"
+description = "Superfast React fullstack framework"
 homepage = "https://tuono.dev"
 keywords = [ "react", "typescript", "fullstack", "web", "ssr"]
 repository = "https://github.com/Valerioageno/tuono"
