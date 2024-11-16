@@ -1,7 +1,8 @@
 {
   "name": "tuono",
   "version": "0.12.3",
-  "description": "The react/rust fullstack framework",
+  "description": "Superfast React fullstack framework",
+  "homepage": "https://tuono.dev",
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
