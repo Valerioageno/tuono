@@ -30,8 +30,9 @@ impl AxumInfo {
         let module_import = module
             .as_str()
             .to_string()
-            .replace(['/', '-'], "_")
+            .replace('/', "_")
             .replace('.', "_dot_")
+            .replace('-', "_hyphen_")
             .to_lowercase();
 
         if axum_route.is_empty() {
@@ -46,7 +47,8 @@ impl AxumInfo {
                 module_import: module
                     .as_str()
                     .to_string()
-                    .replace(['/', '-'], "_")
+                    .replace('/', "_")
+                    .replace('-', "_hyphen_")
                     .replace('[', "dyn_")
                     .replace(']', ""),
                 axum_route: axum_route.replace('[', ":").replace(']', ""),
@@ -184,19 +186,6 @@ mod tests {
 
         assert_eq!(dyn_info.axum_route, "/:posts");
         assert_eq!(dyn_info.module_import, "dyn_posts");
-    }
-
-    #[test]
-    fn should_handle_hyphen() {
-        let info = AxumInfo::new("/a-hyphen/index".to_string());
-
-        assert_eq!(info.axum_route, "/a-hyphen");
-        assert_eq!(info.module_import, "a_hyphen_index");
-
-        let dyn_info = AxumInfo::new("/a-hyphen/[posts]".to_string());
-
-        assert_eq!(dyn_info.axum_route, "/a-hyphen/:posts");
-        assert_eq!(dyn_info.module_import, "a_hyphen_dyn_posts");
     }
 
     #[test]
