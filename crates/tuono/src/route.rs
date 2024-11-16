@@ -30,9 +30,8 @@ impl AxumInfo {
         let module_import = module
             .as_str()
             .to_string()
-            .replace('/', "_")
+            .replace(['/', '-'], "_")
             .replace('.', "_dot_")
-            .replace('-', "_")
             .to_lowercase();
 
         if axum_route.is_empty() {
@@ -47,8 +46,7 @@ impl AxumInfo {
                 module_import: module
                     .as_str()
                     .to_string()
-                    .replace('/', "_")
-                    .replace('-', "_")
+                    .replace(['/', '-'], "_")
                     .replace('[', "dyn_")
                     .replace(']', ""),
                 axum_route: axum_route.replace('[', ":").replace(']', ""),
