@@ -1,11 +1,11 @@
 mod catch_all;
+mod logger;
 mod manifest;
 mod mode;
 mod payload;
 mod request;
 mod response;
 mod server;
-mod services;
 mod ssr;
 mod vite_reverse_proxy;
 mod vite_websocket_proxy;

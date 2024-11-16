@@ -14,9 +14,6 @@ include = [
 		"Cargo.toml"
 ]
 
-[lib]
-name = "tuono_lib"
-path = "src/lib.rs"
 
 [dependencies]
 ssr_rs = "0.7.0"
