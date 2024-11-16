@@ -12,7 +12,7 @@ fn create_struct_fn_arg() -> FnArg {
 }
 
 fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<ItemUse> {
-    if argument_names.len() > 0 {
+    if !argument_names.is_empty() {
         let use_item: ItemUse = parse_quote!(let ApplicationState { #argument_names } = state;);
         return Some(use_item);
     }
@@ -21,7 +21,7 @@ fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Opti
 }
 
 fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
-    if argument_names.len() > 0 {
+    if !argument_names.is_empty() {
         let local: Stmt = parse_quote!(
             use crate::tuono_main_state::ApplicationState;
         );
