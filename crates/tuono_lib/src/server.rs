@@ -14,12 +14,12 @@ const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
 
 pub struct Server {
-    router: Router<reqwest::Client>,
+    router: Router,
     mode: Mode,
 }
 
 impl Server {
-    pub fn init(router: Router<reqwest::Client>, mode: Mode) -> Server {
+    pub fn init(router: Router, mode: Mode) -> Server {
         Ssr::create_platform();
 
         GLOBAL_MODE.set(mode).unwrap();
@@ -34,8 +34,6 @@ impl Server {
     pub async fn start(&self) {
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
-        let fetch = reqwest::Client::new();
-
         if self.mode == Mode::Dev {
             println!("  Ready at: {}\n", "http://localhost:3000".blue().bold());
             let router = self
@@ -47,8 +45,7 @@ impl Server {
                 .fallback_service(
                     ServeDir::new(DEV_PUBLIC_DIR)
                         .fallback(get(catch_all).layer(LoggerLayer::new())),
-                )
-                .with_state(fetch);
+                );
 
             axum::serve(listener, router)
                 .await
@@ -65,8 +62,7 @@ impl Server {
                 .fallback_service(
                     ServeDir::new(PROD_PUBLIC_DIR)
                         .fallback(get(catch_all).layer(LoggerLayer::new())),
-                )
-                .with_state(fetch);
+                );
 
             axum::serve(listener, router)
                 .await

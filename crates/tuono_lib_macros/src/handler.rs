@@ -2,13 +2,33 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{parse2, parse_macro_input, FnArg, ItemFn, Pat, Type};
+use syn::{parse2, parse_macro_input, parse_quote, FnArg, ItemFn, ItemUse, Pat, Stmt};
 
-fn create_struct_fn_arg(arg_name: Pat, arg_type: Type) -> FnArg {
+fn create_struct_fn_arg() -> FnArg {
     parse2(quote! {
-        tuono_lib::axum::extract::State(#arg_name): tuono_lib::axum::extract::State<#arg_type>
+        tuono_lib::axum::extract::State(state): tuono_lib::axum::extract::State<ApplicationState>
     })
     .unwrap()
+}
+
+fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<ItemUse> {
+    if argument_names.len() > 0 {
+        let use_item: ItemUse = parse_quote!(let ApplicationState { #argument_names } = state;);
+        return Some(use_item);
+    }
+
+    None
+}
+
+fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
+    if argument_names.len() > 0 {
+        let local: Stmt = parse_quote!(
+            use crate::tuono_main_state::ApplicationState;
+        );
+        return Some(local);
+    }
+
+    None
 }
 
 fn params_argument() -> FnArg {
@@ -41,23 +61,33 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
             continue;
         }
 
+        if i == 1 {
+            axum_arguments.insert(1, create_struct_fn_arg())
+        }
+
         if let FnArg::Typed(pat_type) = arg {
             let index = i - 1;
             let argument_name = *pat_type.pat.clone();
-            let argument_type = *pat_type.ty.clone();
             argument_names.insert(index, argument_name.clone());
-            axum_arguments.insert(index, create_struct_fn_arg(argument_name, argument_type))
         }
     }
 
     axum_arguments.insert(axum_arguments.len(), request_argument());
 
+    let application_state_extractor = crate_application_state_extractor(argument_names.clone());
+    let application_state_import = import_main_application_state(argument_names.clone());
+
     quote! {
+        #application_state_import
+
         #item
 
         pub async fn route(
             #axum_arguments
         ) -> impl tuono_lib::axum::response::IntoResponse {
+
+            #application_state_extractor
+
            let pathname = request.uri();
            let headers = request.headers();
 
@@ -69,6 +99,9 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
         pub async fn api(
             #axum_arguments
         ) -> impl tuono_lib::axum::response::IntoResponse {
+
+            #application_state_extractor
+
            let pathname = request.uri();
            let headers = request.headers();
 
