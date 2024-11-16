@@ -1,0 +1,37 @@
+name: Install NodeJS Dependencies
+description: This is a composite GitHub Action that sets up pnpm, node and installs the project's dependencies.
+
+inputs:
+  node-version:
+    description: 'Explicit node version. Otherwise fallback reading `.nvmrc`. Use in conjunction with matrix'
+    required: false
+  registry-url:
+    description: 'https://github.com/actions/setup-node?tab=readme-ov-file#usage'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node.js (via input)
+      if: ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+        cache: 'pnpm'
+
+    - name: Setup Node.js (via .nvmrc)
+      if: ${{ !inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        registry-url: ${{ inputs.registry-url }}
+        cache: 'pnpm'
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile

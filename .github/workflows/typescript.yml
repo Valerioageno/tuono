@@ -13,25 +13,16 @@ on:
 jobs:
   build-and-test:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    name: Check build and test typescript
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        run: npm i -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install
+      - name: Install NodeJS Dependencies
+        uses: ./.github/actions/install-node-dependencies
 
       - name: Build project
         run: pnpm build
@@ -41,20 +32,16 @@ jobs:
 
   fmt-lint-and-types:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    name: Check format and lint typescript
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Install pnpm
-        run: npm i -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install
+      - name: Install NodeJS Dependencies
+        uses: ./.github/actions/install-node-dependencies
 
       - name: Check formatting
         run: pnpm format:check
