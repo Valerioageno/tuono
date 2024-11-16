@@ -1,8 +1,5 @@
 use colored::Colorize;
-use http::method::Method;
-
-use axum::http::Request;
-use http::Response;
+use http::{method::Method, Request, Response};
 use pin_project::pin_project;
 use std::fmt::Debug;
 use std::future::Future;
@@ -89,6 +86,10 @@ where
             Poll::Ready(res) => res,
             Poll::Pending => return Poll::Pending,
         };
+
+        if this.path.starts_with("/__tuono/data") {
+            return Poll::Ready(res);
+        }
 
         let status_code = res.as_ref().unwrap().status();
 

@@ -45,7 +45,10 @@ impl Server {
                 .layer(LoggerLayer::new())
                 .route("/vite-server/", get(vite_websocket_proxy))
                 .route("/vite-server/*path", get(vite_reverse_proxy))
-                .fallback_service(ServeDir::new(DEV_PUBLIC_DIR).fallback(get(catch_all)))
+                .fallback_service(
+                    ServeDir::new(DEV_PUBLIC_DIR)
+                        .fallback(get(catch_all).layer(LoggerLayer::new())),
+                )
                 .with_state(fetch);
 
             axum::serve(listener, router)
@@ -60,7 +63,10 @@ impl Server {
                 .router
                 .to_owned()
                 .layer(LoggerLayer::new())
-                .fallback_service(ServeDir::new(PROD_PUBLIC_DIR).fallback(get(catch_all)))
+                .fallback_service(
+                    ServeDir::new(PROD_PUBLIC_DIR)
+                        .fallback(get(catch_all).layer(LoggerLayer::new())),
+                )
                 .with_state(fetch);
 
             axum::serve(listener, router)
