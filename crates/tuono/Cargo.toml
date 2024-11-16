@@ -21,7 +21,7 @@ path = "src/lib.rs"
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive", "cargo"] }
-watchexec = "4.0.0"
+watchexec = "5.0.0"
 miette = "7.2.0"
 watchexec-signals = "3.0.0"
 tokio = { version = "1", features = ["full"] }
