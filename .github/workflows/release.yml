@@ -95,4 +95,3 @@ jobs:
           path: './crates/tuono'
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
-          no-verify: true

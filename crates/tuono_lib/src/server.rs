@@ -1,13 +1,12 @@
 use crate::manifest::load_manifest;
 use crate::mode::{Mode, GLOBAL_MODE};
-use crate::services::logger::LoggerLayer;
 use axum::routing::{get, Router};
 use colored::Colorize;
 use ssr_rs::Ssr;
 use tower_http::services::ServeDir;
 
 use crate::{
-    catch_all::catch_all, vite_reverse_proxy::vite_reverse_proxy,
+    catch_all::catch_all, logger::LoggerLayer, vite_reverse_proxy::vite_reverse_proxy,
     vite_websocket_proxy::vite_websocket_proxy,
 };
 
