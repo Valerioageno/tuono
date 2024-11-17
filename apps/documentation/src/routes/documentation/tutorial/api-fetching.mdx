@@ -68,7 +68,7 @@ Let's fix these in the next section.
 
 ## Application state
 
-Compared to the common Javascript runtimes Tuono is fast because only the features you need for your project will be loaded.
+Compared to the common Javascript runtimes, Tuono is fast because only the features you need for your project will be loaded.
 
 You can load them in the `ApplicationState` of your app inside the `./src/main.rs` file. This is the file that will be executed just once at the very beginning of your application.
 
@@ -98,7 +98,8 @@ serde = { version = "1.0.202", features = ["derive"] }
 ++ reqwest = "0.12.9" # the version might be different
 ```
 
-> The `Cargo.toml` is the manifest file of your application in which handling the Rust's dependencies (similarly as the `package.json` for Javascript).
+> The `Cargo.toml` is the manifest file of your application, in which you handle Rust's dependencies
+> (similarly as the package.json for Javascript).
 
 Now let's define the `ApplicationState` in the `./src/main.rs` file.
 
@@ -119,7 +120,7 @@ pub fn main() -> ApplicationState {
 }
 ```
 
-Now the `fetch: Client` argument is available in the above defined handler and the terminal should not complain anymore.
+Now the `fetch: Client` argument is available in the above defined handler, and the terminal should not complain anymore.
 Let's see in the next section how to show the fetched data on the browser.
 
 ## Handling the page UI
