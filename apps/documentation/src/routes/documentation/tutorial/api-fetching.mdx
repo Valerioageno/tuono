@@ -28,7 +28,7 @@ Clear the `index.rs` file and paste:
 ```rust
 // src/routes/index.rs
 use serde::{Deserialize, Serialize};
-use tuono_lib::reqwest::Client;
+use reqwest::Client;
 use tuono_lib::{Props, Request, Response};
 
 const ALL_POKEMON: &str = "https://pokeapi.co/api/v2/pokemon?limit=151";
@@ -56,9 +56,73 @@ async fn get_all_pokemons(_req: Request, fetch: Client) -> Response {
 }
 ```
 
-> The first argument is always the request `req: Request` which contains the request data like the query parameters and the headers.
-> The rest of the arguments are optional and they don't need to be specified
-> if they are not used. Enabled out of the box a [Reqwest](https://docs.rs/reqwest/latest/reqwest/) HTTP client.
+> The first argument is always the request `req: Request` which contains all the request's data like the query parameters and the HTTP headers.
+> The rest of the arguments represents the [ApplicationState](/documentation/application-state) and are optional.
+
+The terminal will complain now for two reasons:
+
+1. We don't have imported any `reqwest` crate
+2. The second argument `fetch: Client` has not been defined yet as global state.
+
+Let's fix these in the next section.
+
+## Application state
+
+Compared to the common Javascript runtimes Tuono is fast because only the features you need for your project will be loaded.
+
+You can load them in the `ApplicationState` of your app inside the `./src/main.rs` file. This is the file that will be executed just once at the very beginning of your application.
+
+> For the tutorial we will use [Reqwest](https://docs.rs/reqwest/latest/reqwest/) which is one of the most famous HTTP library.
+
+To install it just run in your terminal:
+
+```bash
+$ cargo add reqwest
+```
+
+A new entry has just been added to your `Cargo.toml` file.
+
+```diff
+[package]
+name = "tuono"
+version = "0.0.1"
+edition = "2021"
+
+[[bin]]
+name = "tuono"
+path = ".tuono/main.rs"
+
+[dependencies]
+tuono_lib = "0.14.0" # the version might be different
+serde = { version = "1.0.202", features = ["derive"] }
+++ reqwest = "0.12.9" # the version might be different
+```
+
+> The `Cargo.toml` is the manifest file of your application in which handling the Rust's dependencies (similarly as the `package.json` for Javascript).
+
+Now let's define the `ApplicationState` in the `./src/main.rs` file.
+
+```rs
+// Import here the just added reqwest library
+use reqwest::Client;
+
+#[derive(Clone)]
+// Extend this struct with the feature you will need for your application
+pub struct ApplicationState {
+    // This will be available to all your route handlers
+    pub fetch: Client,
+}
+
+pub fn main() -> ApplicationState {
+    let fetch = Client::new();
+    return ApplicationState { fetch };
+}
+```
+
+Now the `fetch: Client` argument is available in the above defined handler and the terminal should not complain anymore.
+Let's see in the next section how to show the fetched data on the browser.
+
+## Handling the page UI
 
 Now the Pokémon are correctly fetched and hydrated on the client side, so we can actually use them. Clear the `index.tsx` file and paste:
 
