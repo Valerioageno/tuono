@@ -14,6 +14,7 @@
     "docs:format": "turbo format --filter=documentation",
     "docs:format:check": "turbo format:check --filter=documentation",
     "docs:types": "turbo types --filter=documentation",
+    "repo:root:format": "prettier . !./apps/** !./assets/** !./benches/** !./crates !./examples !./packages/** --write",
     "check-all": "turbo build lint format:check types"
   },
   "author": "Valerio Ageno",
