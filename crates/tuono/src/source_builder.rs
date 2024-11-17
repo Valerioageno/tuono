@@ -42,12 +42,17 @@ const MODE: Mode = /*MODE*/;
 
 // MODULE_IMPORTS
 
+//MAIN_FILE_IMPORT//
+
 #[tokio::main]
 async fn main() {
     println!("\n  ⚡ Tuono v/*VERSION*/");
+
+    //MAIN_FILE_DEFINITION//
+
     let router = Router::new()
         // ROUTE_BUILDER
-        ;
+        //MAIN_FILE_USAGE//;
 
     Server::init(router, MODE).start().await
 }
@@ -131,7 +136,33 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
             &create_modules_declaration(&app.route_map),
         )
         .replace("/*VERSION*/", crate_version!())
-        .replace("/*MODE*/", mode.as_str());
+        .replace("/*MODE*/", mode.as_str())
+        .replace(
+            "//MAIN_FILE_IMPORT//",
+            if app.has_main_file {
+                r#"#[path="../src/main.rs"]
+                    mod tuono_main_state;
+                    "#
+            } else {
+                ""
+            },
+        )
+        .replace(
+            "//MAIN_FILE_DEFINITION//",
+            if app.has_main_file {
+                "let user_custom_state = tuono_main_state::main();"
+            } else {
+                ""
+            },
+        )
+        .replace(
+            "//MAIN_FILE_USAGE//",
+            if app.has_main_file {
+                ".with_state(user_custom_state)"
+            } else {
+                ""
+            },
+        );
 
     let has_server_handlers = app
         .route_map

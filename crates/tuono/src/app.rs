@@ -1,6 +1,9 @@
 use glob::glob;
 use glob::GlobError;
 use std::collections::{hash_map::Entry, HashMap};
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::BufReader;
 use std::path::PathBuf;
 use std::process::Child;
 use std::process::Command;
@@ -15,6 +18,15 @@ const IGNORE_FILES: [&str; 1] = ["__root"];
 pub struct App {
     pub route_map: HashMap<String, Route>,
     pub base_path: PathBuf,
+    pub has_main_file: bool,
+}
+
+fn has_main_file(base_path: PathBuf) -> std::io::Result<bool> {
+    let file = File::open(base_path.join("src/main.rs"))?;
+    let mut buf_reader = BufReader::new(file);
+    let mut contents = String::new();
+    buf_reader.read_to_string(&mut contents)?;
+    Ok(contents.contains("pub fn main"))
 }
 
 impl App {
@@ -23,7 +35,8 @@ impl App {
 
         let mut app = App {
             route_map: HashMap::new(),
-            base_path,
+            base_path: base_path.clone(),
+            has_main_file: has_main_file(base_path).unwrap_or(false),
         };
 
         app.collect_routes();

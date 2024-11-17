@@ -70,6 +70,12 @@ export default function Sidebar({ close }: { close: () => void }): JSX.Element {
       </SidebarLink>
       <SidebarLink href="/documentation/cli" label="CLI" onClick={close} />
       <SidebarLink
+        label="Application state"
+        href="/documentation/application-state"
+        onClick={close}
+      />
+
+      <SidebarLink
         label="Routing"
         href="/documentation/routing"
         onClick={close}
