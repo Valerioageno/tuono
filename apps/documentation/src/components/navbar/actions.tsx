@@ -12,10 +12,11 @@ import ThemeBtn from '../theme-btn'
 export default function Actions(): JSX.Element {
   return (
     <Flex gap={8}>
-      <Group gap={8} visibleFrom="sm">
+      <Group gap={8}>
         <Button
-          href="/documentation"
           component={Link}
+          href="/documentation"
+          visibleFrom="sm"
           size="compact-lg"
           rightSection={<IconBook />}
           autoContrast
@@ -36,7 +37,7 @@ export default function Actions(): JSX.Element {
           variant="default"
           size="lg"
           aria-label="Join the Tuono's community on Discord!"
-          href="https://discord.com/invite/sFNaHGkj"
+          href="https://discord.gg/BUvWmmRARx"
           target="_blank"
           component="a"
         >
