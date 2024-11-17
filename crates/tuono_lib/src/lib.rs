@@ -19,5 +19,4 @@ pub use tuono_lib_macros::handler;
 
 // Re-exports
 pub use axum;
-pub use reqwest;
 pub use tokio;

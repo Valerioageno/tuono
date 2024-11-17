@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{parse2, parse_macro_input, parse_quote, FnArg, ItemFn, ItemUse, Pat, Stmt};
+use syn::{parse2, parse_macro_input, parse_quote, FnArg, ItemFn, Pat, Stmt};
 
 fn create_struct_fn_arg() -> FnArg {
     parse2(quote! {
@@ -11,10 +11,12 @@ fn create_struct_fn_arg() -> FnArg {
     .unwrap()
 }
 
-fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<ItemUse> {
+fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
     if !argument_names.is_empty() {
-        let use_item: ItemUse = parse_quote!(let ApplicationState { #argument_names } = state;);
-        return Some(use_item);
+        let local: Stmt = parse_quote!(
+            use crate::tuono_main_state::ApplicationState;
+        );
+        return Some(local);
     }
 
     None
@@ -22,10 +24,8 @@ fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Opti
 
 fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
     if !argument_names.is_empty() {
-        let local: Stmt = parse_quote!(
-            use crate::tuono_main_state::ApplicationState;
-        );
-        return Some(local);
+        let use_item: Stmt = parse_quote!(let ApplicationState { #argument_names } = state;);
+        return Some(use_item);
     }
 
     None
