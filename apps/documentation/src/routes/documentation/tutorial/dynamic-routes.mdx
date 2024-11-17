@@ -32,7 +32,7 @@ Let’s first work on the server side file. Paste into the new `[pokemon].rs` fi
 ```rust
 // src/routes/pokemons/[pokemon].rs
 use serde::{Deserialize, Serialize};
-use tuono_lib::reqwest::Client;
+use reqwest::Client;
 use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
