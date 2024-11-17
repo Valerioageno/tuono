@@ -1,6 +1,6 @@
 // src/routes/pokemons/[pokemon].rs
+use reqwest::{Client, StatusCode};
 use serde::{Deserialize, Serialize};
-use tuono_lib::reqwest::{Client, StatusCode};
 use tuono_lib::{Props, Request, Response};
 
 const POKEMON_API: &str = "https://pokeapi.co/api/v2/pokemon";
