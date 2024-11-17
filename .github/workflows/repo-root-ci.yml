@@ -1,0 +1,31 @@
+name: Repo root CI
+# All workflows are triggered based on specific paths,
+# the root repository is something that is not applicable to rust nor typescript
+# so it has been moved in a standalone workflow
+
+on:
+  push:
+    paths:
+      - '.github/**'
+      - './*'
+  pull_request:
+    paths:
+      - '.github/**'
+      - './*'
+
+jobs:
+  build-and-test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    name: Check format
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install NodeJS Dependencies
+        uses: ./.github/actions/install-node-dependencies
+
+      - name: Test project
+        run: pnpm repo:root:format

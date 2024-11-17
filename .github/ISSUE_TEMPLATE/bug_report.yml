@@ -34,51 +34,51 @@ body:
       required: false
   - type: input
     id: tuono-version
-    attributes: 
+    attributes:
       label: Tuono version
-      placeholder: "[e.g. 0.4.0]"
+      placeholder: '[e.g. 0.4.0]'
     validations:
       required: false
   - type: input
     id: os-version
-    attributes: 
+    attributes:
       label: OS
-      placeholder: "[e.g. MacOS, Windows]"
+      placeholder: '[e.g. MacOS, Windows]'
     validations:
       required: false
   - type: input
     id: browser-version
-    attributes: 
+    attributes:
       label: Browser
-      placeholder: "[e.g. chrome, safari]"
+      placeholder: '[e.g. chrome, safari]'
     validations:
       required: false
   - type: input
     id: node-version
-    attributes: 
+    attributes:
       label: Node version
-      placeholder: "[e.g. 20.0.0]"
+      placeholder: '[e.g. 20.0.0]'
     validations:
       required: false
   - type: input
     id: rust-version
-    attributes: 
+    attributes:
       label: Rust version
-      placeholder: "[e.g. 1.79.0]"
+      placeholder: '[e.g. 1.79.0]'
     validations:
       required: false
   - type: input
     id: create-version
-    attributes: 
+    attributes:
       label: Crate version
-      placeholder: "[e.g. 1.78.0]"
+      placeholder: '[e.g. 1.78.0]'
     validations:
       required: false
   - type: input
     id: node-package-manager-version
-    attributes: 
+    attributes:
       label: Node Package Manger version
-      placeholder: "[e.g. pnpm: 9.5.0] "
+      placeholder: '[e.g. pnpm: 9.5.0] '
     validations:
       required: false
   - type: textarea
