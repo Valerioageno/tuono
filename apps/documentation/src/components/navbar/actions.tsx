@@ -37,7 +37,7 @@ export default function Actions(): JSX.Element {
           variant="default"
           size="lg"
           aria-label="Join the Tuono's community on Discord!"
-          href="https://discord.gg/BUvWmmRARx"
+          href="https://discord.com/invite/khQzPa654B"
           target="_blank"
           component="a"
         >
