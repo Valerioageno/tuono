@@ -15,7 +15,7 @@ pub use payload::Payload;
 pub use request::Request;
 pub use response::{Props, Response};
 pub use server::Server;
-pub use tuono_lib_macros::handler;
+pub use tuono_lib_macros::{api, handler};
 
 // Re-exports
 pub use axum;

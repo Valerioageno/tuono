@@ -41,8 +41,6 @@ impl App {
 
         app.collect_routes();
 
-        dbg!(&app);
-
         app
     }
 
