@@ -70,6 +70,7 @@ pub struct Route {
     path: String,
     pub is_dynamic: bool,
     pub axum_info: Option<AxumInfo>,
+    pub is_api: bool,
 }
 
 impl Route {
@@ -78,6 +79,7 @@ impl Route {
             path: cleaned_path.clone(),
             axum_info: None,
             is_dynamic: has_dynamic_path(&cleaned_path),
+            is_api: cleaned_path.starts_with("/api/"),
         }
     }
 
@@ -205,5 +207,16 @@ mod tests {
 
             assert_eq!(route.output_file_path(), PathBuf::from(html))
         }
+    }
+
+    #[test]
+    fn should_detect_api_route() {
+        let api_route = Route::new("/api/health_check.rs".to_string());
+
+        assert!(api_route.is_api);
+
+        let simple_route = Route::new("/health_check.rs".to_string());
+
+        assert!(!simple_route.is_api);
     }
 }
