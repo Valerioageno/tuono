@@ -3,7 +3,11 @@ import { AppShell } from '@mantine/core'
 
 import SidebarLink from './sidebar-link'
 
-export default function Sidebar({ close }: { close: () => void }): JSX.Element {
+interface SidebarProps {
+  close: () => void
+}
+
+export default function Sidebar({ close }: SidebarProps): JSX.Element {
   return (
     <AppShell.Navbar p="md">
       <SidebarLink

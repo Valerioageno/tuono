@@ -1,3 +1,5 @@
+import type { ComponentType as ReactComponentType } from 'react'
+
 export interface Segment {
   type: 'pathname' | 'param' | 'wildcard'
   value: string
@@ -17,6 +19,6 @@ export interface RouteProps {
   isLoading: boolean
 }
 
-export type RouteComponent = ((props: RouteProps) => JSX.Element) & {
+export type RouteComponent = ReactComponentType<RouteProps> & {
   preload: () => void
 }

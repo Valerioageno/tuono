@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import type { ComponentType as ReactComponentType } from 'react'
 
 import { trimPath, trimPathRight } from './utils'
 import type { Route } from './route'
@@ -12,7 +12,7 @@ interface CreateRouter {
 }
 
 interface RouteOptions {
-  component?: () => JSX.Element
+  component?: ReactComponentType
   hasHandler?: boolean
   routeTree?: RouteTree
 }
