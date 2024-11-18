@@ -85,10 +85,14 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
             route_declarations.push_str(&format!(
                 r#".route("{axum_route}", get({module_import}::route))"#
             ));
-            let slash = if axum_route.ends_with('/') { "" } else { "/" };
-            route_declarations.push_str(&format!(
-                r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
-            ));
+
+            if !route.is_api {
+                let slash = if axum_route.ends_with('/') { "" } else { "/" };
+
+                route_declarations.push_str(&format!(
+                        r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
+                ));
+            }
         }
     }
 
@@ -239,5 +243,19 @@ mod tests {
 
         let dev_bundle = generate_axum_source(&source_builder, Mode::Dev);
         assert!(dev_bundle.contains("use tuono_lib::axum::routing::get;"));
+    }
+
+    #[test]
+    fn should_ignore_the_api_data_import() {
+        let mut source_builder = App::new();
+
+        let route = Route::new(String::from("/api/health_check"));
+
+        source_builder
+            .route_map
+            .insert(String::from("/api/health_check.rs"), route);
+
+        let dev_bundle = generate_axum_source(&source_builder, Mode::Dev);
+        assert!(!dev_bundle.contains("/__tuono/data/api/health_check/data.json"));
     }
 }
