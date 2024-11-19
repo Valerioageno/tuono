@@ -1,5 +1,5 @@
 [Documentation](https://tuono.dev) | [Tutorial](https://tuono.dev/documentation/tutorial) |
-[✨Contributing](https://tuono.dev/documentation/contributing)
+[Discord](https://discord.com/invite/khQzPa654B) | [✨Contributing](https://tuono.dev/documentation/contributing)
 
 # Tuono
 
