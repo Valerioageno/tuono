@@ -8,7 +8,8 @@
 ![](https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg)
 ![](https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg)
 
-**Tuono is the fastest React framework out there**
+**Tuono is a full-stack web framework for building React applications using Rust as the backend with
+a strong focus on usability and performance.**
 
 Tuono (Italian word for "thunder", pronounced /2 Oh No/).
 Why Tuono? Just a badass name.
