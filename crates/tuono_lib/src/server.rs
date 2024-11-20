@@ -43,8 +43,8 @@ impl Server {
         let vite_addr = "0.0.0.0:3001";
 
         // Get the port from the address to be displayed in the console
-        let rust_port = extract_port(&rust_addr);
-        let vite_port = extract_port(&vite_addr);
+        let rust_port = extract_port(rust_addr);
+        let vite_port = extract_port(vite_addr);
 
         let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
         let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
