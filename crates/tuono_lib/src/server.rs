@@ -14,12 +14,10 @@ const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
 
 fn extract_port(addr: &str) -> &str {
-    addr.split(":")
-        .last()
-        .unwrap_or_else(|| {
-            eprintln!("  Error: Failed to extract port from address {}", addr);
-            std::process::exit(1);
-        })
+    addr.split(":").last().unwrap_or_else(|| {
+        eprintln!("  Error: Failed to extract port from address {}", addr);
+        std::process::exit(1);
+    })
 }
 
 pub struct Server {
@@ -59,11 +57,17 @@ impl Server {
                 self.serve(rust_listener).await;
             }
             (Err(_listener), _) | (_, Err(_listener)) => {
-                eprintln!("\n  Error: Failed to bind to either port {} or port {}.", rust_port, vite_port);
-                eprintln!("  Please ensure that ports {} and {} are not already in use by another process or application.", rust_port, vite_port);
+                eprintln!(
+                    "\n  Error: Failed to bind to either port {} or port {}.",
+                    rust_port, vite_port
+                );
+                eprintln!(
+                    "  Please ensure that ports {} and {} are not already in use by another process or application.", 
+                    rust_port, vite_port
+                );
 
                 std::process::exit(1);
-            }                            
+            }
         }
     }
 
