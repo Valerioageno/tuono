@@ -23,7 +23,7 @@ body {
 }
 
 main {
-  width: 673px;
+  max-width: 673px;
   margin: 20px auto;
 }
 

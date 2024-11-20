@@ -110,6 +110,75 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1(postcss@8.4.49)
 
+  examples/tuono-app:
+    dependencies:
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      tuono:
+        specifier: link:../../packages/tuono
+        version: link:../../packages/tuono
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.1
+      typescript:
+        specifier: ^5.4.5
+        version: 5.6.3
+
+  examples/tuono-tutorial:
+    dependencies:
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      tuono:
+        specifier: link:../../packages/tuono
+        version: link:../../packages/tuono
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.1
+      typescript:
+        specifier: ^5.4.5
+        version: 5.6.3
+
+  examples/with-mdx:
+    dependencies:
+      '@mdx-js/react':
+        specifier: ^3.0.1
+        version: 3.1.0(@types/react@18.3.12)(react@18.3.1)
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      tuono:
+        specifier: link:../../packages/tuono
+        version: link:../../packages/tuono
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.1
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.3
+
   packages/fs-router-vite-plugin:
     dependencies:
       '@babel/core':

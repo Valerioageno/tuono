@@ -7,8 +7,8 @@ members = [
 ]
 exclude = [
 		"apps/documentation",
-		"examples/mdx",
-		"examples/tuono",
-		"examples/tutorial",
+		"examples/wit-mdx",
+		"examples/tuono-app",
+		"examples/tuono-tutorial",
 		"benches/tuono"
 ]
