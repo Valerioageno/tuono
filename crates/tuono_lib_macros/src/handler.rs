@@ -1,51 +1,14 @@
+use crate::utils::{
+    crate_application_state_extractor, create_struct_fn_arg, import_main_application_state,
+    params_argument, request_argument,
+};
+
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{parse2, parse_macro_input, parse_quote, FnArg, ItemFn, Pat, Stmt};
+use syn::{parse_macro_input, FnArg, ItemFn, Pat};
 
-fn create_struct_fn_arg() -> FnArg {
-    parse2(quote! {
-        tuono_lib::axum::extract::State(state): tuono_lib::axum::extract::State<ApplicationState>
-    })
-    .unwrap()
-}
-
-fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
-    if !argument_names.is_empty() {
-        let local: Stmt = parse_quote!(
-            use crate::tuono_main_state::ApplicationState;
-        );
-        return Some(local);
-    }
-
-    None
-}
-
-fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
-    if !argument_names.is_empty() {
-        let use_item: Stmt = parse_quote!(let ApplicationState { #argument_names } = state;);
-        return Some(use_item);
-    }
-
-    None
-}
-
-fn params_argument() -> FnArg {
-    parse2(quote! {
-        tuono_lib::axum::extract::Path(params): tuono_lib::axum::extract::Path<
-            std::collections::HashMap<String, String>
-        >
-    })
-    .unwrap()
-}
-
-fn request_argument() -> FnArg {
-    parse2(quote! {
-            request: tuono_lib::axum::extract::Request
-    })
-    .unwrap()
-}
 pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemFn);
 

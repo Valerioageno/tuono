@@ -1,53 +1,45 @@
-use proc_macro::TokenStream;
+use std::fmt::Display;
+
+use crate::utils::{
+    crate_application_state_extractor, create_struct_fn_arg, import_main_application_state,
+    params_argument, request_argument,
+};
+use proc_macro::{Span, TokenStream};
 use quote::quote;
+use strum_macros::EnumString;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{parse2, parse_macro_input, parse_quote, FnArg, ItemFn, Pat, Stmt};
+use syn::{parse_macro_input, FnArg, Ident, ItemFn, Pat};
 
-fn create_struct_fn_arg() -> FnArg {
-    parse2(quote! {
-        tuono_lib::axum::extract::State(state): tuono_lib::axum::extract::State<ApplicationState>
-    })
-    .unwrap()
+#[derive(Debug, PartialEq, EnumString)]
+enum HttpMethods {
+    GET,
+    POST,
+    HEAD,
+    PATCH,
+    PUT,
+    DELETE,
+    OPTIONS,
+    TRACE,
+    CONNECT,
 }
 
-fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
-    if !argument_names.is_empty() {
-        let local: Stmt = parse_quote!(
-            use crate::tuono_main_state::ApplicationState;
-        );
-        return Some(local);
+impl Display for HttpMethods {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_string())
     }
-
-    None
 }
 
-fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
-    if !argument_names.is_empty() {
-        let use_item: Stmt = parse_quote!(let ApplicationState { #argument_names } = state;);
-        return Some(use_item);
-    }
-
-    None
-}
-
-fn params_argument() -> FnArg {
-    parse2(quote! {
-        tuono_lib::axum::extract::Path(params): tuono_lib::axum::extract::Path<
-            std::collections::HashMap<String, String>
-        >
-    })
-    .unwrap()
-}
-
-fn request_argument() -> FnArg {
-    parse2(quote! {
-            request: tuono_lib::axum::extract::Request
-    })
-    .unwrap()
-}
-pub fn api_core(_args: TokenStream, item: TokenStream) -> TokenStream {
+pub fn api_core(attrs: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemFn);
+    let http_method = parse_macro_input!(attrs as Ident)
+        .to_string()
+        .to_lowercase();
+
+    let api_fn_name = Ident::new(
+        &format!("{}__tuono_internal_api", http_method),
+        Span::call_site().into(),
+    );
 
     let fn_name = &item.sig.ident;
     let return_type = &item.sig.output;
@@ -83,7 +75,7 @@ pub fn api_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
         #item
 
-        pub async fn route(#axum_arguments)#return_type {
+        pub async fn #api_fn_name(#axum_arguments)#return_type {
 
             #application_state_extractor
 

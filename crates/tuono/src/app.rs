@@ -1,5 +1,7 @@
 use glob::glob;
 use glob::GlobError;
+use http::Method;
+use std::collections::hash_set::HashSet;
 use std::collections::{hash_map::Entry, HashMap};
 use std::fs::File;
 use std::io::prelude::*;
@@ -114,6 +116,24 @@ impl App {
             .stderr(Stdio::piped())
             .spawn()
             .expect("Failed to run the rust server")
+    }
+
+    pub fn get_used_http_methods(&self) -> HashSet<Method> {
+        let mut acc = HashSet::new();
+
+        for (_, route) in self.route_map.clone().into_iter() {
+            if route.axum_info.is_some() {
+                acc.insert(Method::GET);
+            }
+            if !route.is_api() {
+                continue;
+            }
+            for method in route.api_data.unwrap().methods.into_iter() {
+                acc.insert(method);
+            }
+        }
+
+        acc
     }
 }
 
