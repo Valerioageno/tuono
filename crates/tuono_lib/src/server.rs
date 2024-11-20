@@ -32,7 +32,15 @@ impl Server {
     }
 
     pub async fn start(&self) {
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+        let addr = "0.0.0.0:3000";
+        let listener = match tokio::net::TcpListener::bind(addr).await {
+            Ok(listener) => listener,
+            Err(e) => {
+                eprintln!("\n  Error: Failed to bind to address {}. {}", addr, e);
+                eprintln!("  Please ensure that port 3000 is not already in use by another process or application.");
+                std::process::exit(1);
+            }
+        };
 
         if self.mode == Mode::Dev {
             println!("  Ready at: {}\n", "http://localhost:3000".blue().bold());
