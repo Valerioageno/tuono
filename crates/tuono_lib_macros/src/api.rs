@@ -1,34 +1,12 @@
-use std::fmt::Display;
-
 use crate::utils::{
     crate_application_state_extractor, create_struct_fn_arg, import_main_application_state,
     params_argument, request_argument,
 };
 use proc_macro::{Span, TokenStream};
 use quote::quote;
-use strum_macros::EnumString;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
 use syn::{parse_macro_input, FnArg, Ident, ItemFn, Pat};
-
-#[derive(Debug, PartialEq, EnumString)]
-enum HttpMethods {
-    GET,
-    POST,
-    HEAD,
-    PATCH,
-    PUT,
-    DELETE,
-    OPTIONS,
-    TRACE,
-    CONNECT,
-}
-
-impl Display for HttpMethods {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
-    }
-}
 
 pub fn api_core(attrs: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemFn);

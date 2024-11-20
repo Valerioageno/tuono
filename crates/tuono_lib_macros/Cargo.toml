@@ -21,6 +21,3 @@ proc-marco = true
 [dependencies]
 syn = { version = "2.0.0", features = ["full"] }
 quote = "1.0"
-http = "1.1.0"
-strum_macros = "0.26.4"
-strum = "0.26.3"
