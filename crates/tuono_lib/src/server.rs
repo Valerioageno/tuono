@@ -13,6 +13,15 @@ use crate::{
 const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
 
+fn extract_port(addr: &str) -> &str {
+    addr.split(":")
+        .last()
+        .unwrap_or_else(|| {
+            eprintln!("  Error: Failed to extract port from address {}", addr);
+            std::process::exit(1);
+        })
+}
+
 pub struct Server {
     router: Router,
     mode: Mode,
@@ -36,12 +45,8 @@ impl Server {
         let vite_addr = "0.0.0.0:3001";
 
         // Get the port from the address to be displayed in the console
-        let rust_port = rust_addr.split(":")
-            .last()
-            .unwrap_or("unknown");
-        let vite_port = vite_addr.split(":")
-            .last()
-            .unwrap_or("unknown");
+        let rust_port = extract_port(&rust_addr);
+        let vite_port = extract_port(&vite_addr);
 
         let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
         let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
@@ -56,7 +61,7 @@ impl Server {
             (Err(_listener), _) | (_, Err(_listener)) => {
                 eprintln!("\n  Error: Failed to bind to either port {} or port {}.", rust_port, vite_port);
                 eprintln!("  Please ensure that ports {} and {} are not already in use by another process or application.", rust_port, vite_port);
-                
+
                 std::process::exit(1);
             }                            
         }
