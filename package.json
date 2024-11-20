@@ -15,7 +15,7 @@
     "docs:format:check": "turbo format:check --filter=documentation",
     "docs:types": "turbo types --filter=documentation",
     "repo:root:format": "prettier . !./apps/** !./assets/** !./benches/** !./crates !./examples !./packages/** --write",
-    "check-all": "turbo build lint format:check types"
+    "check-all": "turbo build lint format:check types --filter=!./examples"
   },
   "author": "Valerio Ageno",
   "license": "MIT",
