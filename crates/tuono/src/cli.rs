@@ -11,6 +11,9 @@ use crate::scaffold_project;
 use crate::source_builder::{bundle_axum_source, check_tuono_folder, create_client_entry_files};
 use crate::watch;
 
+const TUONO_PORT: u16 = 3000;
+const VITE_PORT: u16 = 3001;
+
 #[derive(Subcommand, Debug)]
 enum Actions {
     /// Start the development environment
@@ -47,10 +50,7 @@ fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
     Ok(())
 }
 
-fn check_ports(mode: Mode) -> std::io::Result<()> {
-    const TUONO_PORT: u16 = 3000;
-    const VITE_PORT: u16 = 3001;
-
+fn check_ports(mode: Mode) {
     let rust_listener = std::net::TcpListener::bind(format!("0.0.0.0:{TUONO_PORT}"));
 
     if let Err(_e) = rust_listener {
@@ -74,8 +74,6 @@ fn check_ports(mode: Mode) -> std::io::Result<()> {
             std::process::exit(1);
         }
     }
-
-    Ok(())
 }
 
 pub fn app() -> std::io::Result<()> {
@@ -83,7 +81,7 @@ pub fn app() -> std::io::Result<()> {
 
     match args.action {
         Actions::Dev => {
-            check_ports(Mode::Dev)?;
+            check_ports(Mode::Dev);
 
             init_tuono_folder(Mode::Dev)?;
 
@@ -102,7 +100,7 @@ pub fn app() -> std::io::Result<()> {
             app.build_react_prod();
 
             if ssg {
-                check_ports(Mode::Prod)?;
+                check_ports(Mode::Prod);
 
                 println!("SSG: generation started");
 
