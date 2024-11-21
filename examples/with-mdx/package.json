@@ -1,8 +1,9 @@
 {
-  "name": "tuono-tutorial",
-  "description": "The react/rust fullstack framework",
+  "name": "with-mdx",
+  "description": "Tuono example combined with mdx",
   "version": "0.0.1",
   "dependencies": {
+    "@mdx-js/react": "^3.0.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tuono": "link:../../packages/tuono"
@@ -10,6 +11,6 @@
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.3"
   }
 }

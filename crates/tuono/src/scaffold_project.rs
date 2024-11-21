@@ -42,7 +42,7 @@ pub fn create_new_project(folder_name: Option<String>, template: Option<String>)
     let folder = folder_name.unwrap_or(".".to_string());
 
     // In case of missing select the tuono example
-    let template = template.unwrap_or("tuono".to_string());
+    let template = template.unwrap_or("tuono-app".to_string());
 
     let client = blocking::Client::builder()
         .user_agent("")

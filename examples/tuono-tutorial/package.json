@@ -1,6 +1,6 @@
 {
-  "name": "tuono",
-  "description": "The react/rust fullstack framework",
+  "name": "tuono-tutorial",
+  "description": "The basic tutorial for tuono applications",
   "version": "0.0.1",
   "dependencies": {
     "react": "18.3.1",
