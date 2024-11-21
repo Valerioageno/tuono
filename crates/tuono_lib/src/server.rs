@@ -13,13 +13,6 @@ use crate::{
 const DEV_PUBLIC_DIR: &str = "public";
 const PROD_PUBLIC_DIR: &str = "out/client";
 
-fn extract_port(addr: &str) -> &str {
-    addr.split(":").last().unwrap_or_else(|| {
-        eprintln!("  Error: Failed to extract port from address {}", addr);
-        std::process::exit(1);
-    })
-}
-
 pub struct Server {
     router: Router,
     mode: Mode,
@@ -39,39 +32,8 @@ impl Server {
     }
 
     pub async fn start(&self) {
-        let rust_addr = "0.0.0.0:3000";
-        let vite_addr = "0.0.0.0:3001";
-
-        // Get the port from the address to be displayed in the console
-        let rust_port = extract_port(rust_addr);
-        let vite_port = extract_port(vite_addr);
-
-        let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
-        let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
-
-        match (rust_listener, vite_listener) {
-            (Ok(rust_listener), Ok(_vite_listener)) => {
-                println!("\n  Using port {} for Rust server.", rust_port.bold());
-                println!("  Using port {} for Vite server.", vite_port.bold());
-
-                self.serve(rust_listener).await;
-            }
-            (Err(_listener), _) | (_, Err(_listener)) => {
-                eprintln!(
-                    "\n  Error: Failed to bind to either port {} or port {}.",
-                    rust_port, vite_port
-                );
-                eprintln!(
-                    "  Please ensure that ports {} and {} are not already in use by another process or application.", 
-                    rust_port, vite_port
-                );
-
-                std::process::exit(1);
-            }
-        }
-    }
-
-    pub async fn serve(&self, listener: tokio::net::TcpListener) {
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+        
         if self.mode == Mode::Dev {
             println!("  Ready at: {}\n", "http://localhost:3000".blue().bold());
             let router = self

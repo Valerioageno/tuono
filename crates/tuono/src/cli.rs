@@ -47,15 +47,63 @@ fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn app() -> std::io::Result<()> {
+fn extract_port(addr: &str) -> &str {
+    addr.split(":").last().unwrap_or_else(|| {
+        eprintln!("  Error: Failed to extract port from address {}", addr);
+        std::process::exit(1);
+    })
+}
+
+async fn check_ports(mode: Mode) -> std::io::Result<()> {
+    println!("Checking ports...");
+    let rust_addr = "0.0.0.0:3000";
+    let rust_port = extract_port(rust_addr);
+    let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
+
+    if let Err(_) = rust_listener {
+        eprintln!("  Error: Failed to bind to port {}", rust_port);
+        eprintln!("  Please ensure that port {} is not already in use by another process or application.", rust_port);
+        std::process::exit(1);
+    }
+
+    if mode == Mode::Dev {
+        let vite_addr = "0.0.0.0:3001";
+        let vite_port = extract_port(vite_addr);
+        let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
+
+        if let Err(_) = vite_listener {
+            eprintln!("  Error: Failed to bind to port {}", vite_port);
+            eprintln!("  Please ensure that port {} is not already in use by another process or application.", vite_port);
+            std::process::exit(1);
+        }
+
+        println!("\n  Using port {} for Rust server.", rust_port.bold());
+        println!("  Using port {} for Vite server.", vite_port.bold());
+    } else {
+        println!("\n  Using port {} for Rust server.", rust_port.bold());
+    }
+
+    Ok(())
+}
+
+pub async fn app() -> std::io::Result<()> {
     let args = Args::parse();
 
     match args.action {
         Actions::Dev => {
+            check_ports(Mode::Dev).await?;
+            
             init_tuono_folder(Mode::Dev)?;
-            watch::watch().unwrap();
+
+            watch::watch().await.map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;
         }
         Actions::Build { ssg } => {
+            tokio::task::block_in_place(|| {
+                tokio::runtime::Handle::current().block_on(async {
+                    check_ports(Mode::Prod).await
+                })
+            })?;
+            
             init_tuono_folder(Mode::Prod)?;
             let app = App::new();
 
