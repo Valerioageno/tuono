@@ -56,14 +56,17 @@ fn extract_port(addr: &str) -> &str {
 
 async fn check_ports(mode: Mode) -> std::io::Result<()> {
     println!("\nChecking ports...");
-    
+
     let rust_addr = "0.0.0.0:3000";
     let rust_port = extract_port(rust_addr);
     let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
 
-    if let Err(_) = rust_listener {
+    if let Err(_e) = rust_listener {
         eprintln!("Error: Failed to bind to port {}", rust_port);
-        eprintln!("Please ensure that port {} is not already in use by another process or application.", rust_port);
+        eprintln!(
+            "Please ensure that port {} is not already in use by another process or application.",
+            rust_port
+        );
         std::process::exit(1);
     }
 
@@ -72,12 +75,12 @@ async fn check_ports(mode: Mode) -> std::io::Result<()> {
         let vite_port = extract_port(vite_addr);
         let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
 
-        if let Err(_) = vite_listener {
+        if let Err(_e) = vite_listener {
             eprintln!("Error: Failed to bind to port {}", vite_port);
             eprintln!("Please ensure that port {} is not already in use by another process or application.", vite_port);
             std::process::exit(1);
         }
-    } 
+    }
 
     Ok(())
 }
@@ -88,14 +91,14 @@ pub async fn app() -> std::io::Result<()> {
     match args.action {
         Actions::Dev => {
             check_ports(Mode::Dev).await?;
-            
+
             init_tuono_folder(Mode::Dev)?;
 
             watch::watch().await.unwrap();
         }
         Actions::Build { ssg } => {
             check_ports(Mode::Prod).await?;
-            
+
             init_tuono_folder(Mode::Prod)?;
             let app = App::new();
 

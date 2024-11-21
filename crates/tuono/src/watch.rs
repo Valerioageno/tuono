@@ -25,7 +25,7 @@ fn build_rust_src(port: u16) -> Job {
         program: Program::Exec {
             prog: "cargo".into(),
             args: vec![
-                "run".to_string(), 
+                "run".to_string(),
                 "-q".to_string(),
                 "--".to_string(),
                 format!("--port={}", port).to_string(),
