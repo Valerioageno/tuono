@@ -11,6 +11,9 @@ use crate::scaffold_project;
 use crate::source_builder::{bundle_axum_source, check_tuono_folder, create_client_entry_files};
 use crate::watch;
 
+const TUONO_PORT: u16 = 3000;
+const VITE_PORT: u16 = 3001;
+
 #[derive(Subcommand, Debug)]
 enum Actions {
     /// Start the development environment
@@ -47,12 +50,41 @@ fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
     Ok(())
 }
 
+fn check_ports(mode: Mode) {
+    let rust_listener = std::net::TcpListener::bind(format!("0.0.0.0:{TUONO_PORT}"));
+
+    if let Err(_e) = rust_listener {
+        eprintln!("Error: Failed to bind to port {}", TUONO_PORT);
+        eprintln!(
+            "Please ensure that port {} is not already in use by another process or application.",
+            TUONO_PORT
+        );
+        std::process::exit(1);
+    }
+
+    if mode == Mode::Dev {
+        let vite_listener = std::net::TcpListener::bind(format!("0.0.0.0:{VITE_PORT}"));
+
+        if let Err(_e) = vite_listener {
+            eprintln!("Error: Failed to bind to port {}", VITE_PORT);
+            eprintln!(
+                "Please ensure that port {} is not already in use by another process or application.",
+                VITE_PORT
+            );
+            std::process::exit(1);
+        }
+    }
+}
+
 pub fn app() -> std::io::Result<()> {
     let args = Args::parse();
 
     match args.action {
         Actions::Dev => {
+            check_ports(Mode::Dev);
+
             init_tuono_folder(Mode::Dev)?;
+
             watch::watch().unwrap();
         }
         Actions::Build { ssg } => {
@@ -68,6 +100,8 @@ pub fn app() -> std::io::Result<()> {
             app.build_react_prod();
 
             if ssg {
+                check_ports(Mode::Prod);
+
                 println!("SSG: generation started");
 
                 let static_dir = PathBuf::from("out/static");

@@ -77,7 +77,7 @@ pub async fn watch() -> Result<()> {
         if should_reload_rust_server {
             println!("  Reloading...");
             run_server.stop();
-            bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
+            bundle_axum_source(Mode::Dev).expect("Failed to bundle rust source");
             run_server.start();
         }
 
