@@ -1,17 +1,19 @@
 use fs_extra::dir::create_all;
+use http::Method;
 use regex::Regex;
 use reqwest::blocking::Client;
 use reqwest::Url;
 use std::fs::File;
 use std::io;
 use std::path::PathBuf;
+use std::str::FromStr;
 
 fn has_dynamic_path(route: &str) -> bool {
     let regex = Regex::new(r"\[(.*?)\]").expect("Failed to create the regex");
     regex.is_match(route)
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct AxumInfo {
     // Path for importing the module
     pub module_import: String,
@@ -65,11 +67,56 @@ impl AxumInfo {
 // TODO: to be extended with common scenarios
 const NO_HTML_EXTENSIONS: [&str; 1] = ["xml"];
 
-#[derive(Debug, PartialEq, Eq)]
+// TODO: Refine this function to catch
+// if the methods are commented.
+fn read_http_methods_from_file(path: &String) -> Vec<Method> {
+    let regex = Regex::new(r"tuono_lib::api\((.*?)\)]").expect("Failed to create API regex");
+
+    let file = fs_extra::file::read_to_string(path).expect("Failed to read API file");
+
+    regex
+        .find_iter(&file)
+        .map(|proc_macro| {
+            let http_method = proc_macro
+                .as_str()
+                // Extract just the element surrounded by the phrantesist.
+                .replace("tuono_lib::api(", "")
+                .replace(")]", "");
+            Method::from_str(http_method.as_str()).unwrap_or(Method::GET)
+        })
+        .collect::<Vec<Method>>()
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct ApiData {
+    pub methods: Vec<Method>,
+}
+
+impl ApiData {
+    pub fn new(path: &String) -> Option<Self> {
+        if !path.starts_with("/api/") {
+            return None;
+        }
+
+        let base_path = std::env::current_dir().expect("Failed to get the base_path");
+
+        let file_path = base_path
+            .join(format!("src/routes{path}.rs"))
+            .to_str()
+            .unwrap()
+            .to_string();
+        let methods = read_http_methods_from_file(&file_path);
+
+        Some(ApiData { methods })
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Route {
     path: String,
     pub is_dynamic: bool,
     pub axum_info: Option<AxumInfo>,
+    pub api_data: Option<ApiData>,
 }
 
 impl Route {
@@ -78,7 +125,12 @@ impl Route {
             path: cleaned_path.clone(),
             axum_info: None,
             is_dynamic: has_dynamic_path(&cleaned_path),
+            api_data: ApiData::new(&cleaned_path),
         }
+    }
+
+    pub fn is_api(&self) -> bool {
+        self.api_data.is_some()
     }
 
     pub fn update_axum_info(&mut self) {

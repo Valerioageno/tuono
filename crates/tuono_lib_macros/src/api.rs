@@ -2,17 +2,25 @@ use crate::utils::{
     crate_application_state_extractor, create_struct_fn_arg, import_main_application_state,
     params_argument, request_argument,
 };
-
-use proc_macro::TokenStream;
+use proc_macro::{Span, TokenStream};
 use quote::quote;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{parse_macro_input, FnArg, ItemFn, Pat};
+use syn::{parse_macro_input, FnArg, Ident, ItemFn, Pat};
 
-pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
+pub fn api_core(attrs: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as ItemFn);
+    let http_method = parse_macro_input!(attrs as Ident)
+        .to_string()
+        .to_lowercase();
+
+    let api_fn_name = Ident::new(
+        &format!("{}__tuono_internal_api", http_method),
+        Span::call_site().into(),
+    );
 
     let fn_name = &item.sig.ident;
+    let return_type = &item.sig.output;
 
     let mut argument_names: Punctuated<Pat, Comma> = Punctuated::new();
     let mut axum_arguments: Punctuated<FnArg, Comma> = Punctuated::new();
@@ -45,9 +53,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
         #item
 
-        pub async fn route(
-            #axum_arguments
-        ) -> impl tuono_lib::axum::response::IntoResponse {
+        pub async fn #api_fn_name(#axum_arguments)#return_type {
 
             #application_state_extractor
 
@@ -56,21 +62,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
            let req = tuono_lib::Request::new(pathname.to_owned(), headers.to_owned(), params);
 
-           #fn_name(req.clone(), #argument_names).await.render_to_string(req)
-        }
-
-        pub async fn api(
-            #axum_arguments
-        ) -> impl tuono_lib::axum::response::IntoResponse {
-
-            #application_state_extractor
-
-           let pathname = request.uri();
-           let headers = request.headers();
-
-           let req = tuono_lib::Request::new(pathname.to_owned(), headers.to_owned(), params);
-
-           #fn_name(req.clone(), #argument_names).await.json()
+           #fn_name(req.clone(), #argument_names).await
         }
     }
     .into()

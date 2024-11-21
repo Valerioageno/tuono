@@ -82,13 +82,23 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
                 module_import,
             } = axum_info.as_ref().unwrap();
 
-            route_declarations.push_str(&format!(
-                r#".route("{axum_route}", get({module_import}::route))"#
-            ));
-            let slash = if axum_route.ends_with('/') { "" } else { "/" };
-            route_declarations.push_str(&format!(
-                r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
-            ));
+            if !route.is_api() {
+                route_declarations.push_str(&format!(
+                    r#".route("{axum_route}", get({module_import}::route))"#
+                ));
+                let slash = if axum_route.ends_with('/') { "" } else { "/" };
+
+                route_declarations.push_str(&format!(
+                        r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
+                ));
+            } else {
+                for method in route.api_data.as_ref().unwrap().methods.clone() {
+                    let method = method.to_string().to_lowercase();
+                    route_declarations.push_str(&format!(
+                        r#".route("{axum_route}", {method}({module_import}::{method}__tuono_internal_api))"#
+                    ));
+                }
+            }
         }
     }
 
@@ -164,20 +174,16 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
             },
         );
 
-    let has_server_handlers = app
-        .route_map
-        .iter()
-        .filter(|(_, route)| route.axum_info.is_some())
-        .collect::<Vec<(&String, &Route)>>()
-        .is_empty();
+    let mut import_http_handler = String::new();
 
-    if !has_server_handlers {
-        return src.replace(
-            "// AXUM_GET_ROUTE_HANDLER",
-            "use tuono_lib::axum::routing::get;",
-        );
+    let used_http_methods = app.get_used_http_methods();
+
+    for method in used_http_methods.into_iter() {
+        let method = method.to_string().to_lowercase();
+        import_http_handler.push_str(&format!("use tuono_lib::axum::routing::{method};\n"))
     }
-    src
+
+    src.replace("// AXUM_GET_ROUTE_HANDLER", &import_http_handler)
 }
 
 pub fn check_tuono_folder() -> io::Result<()> {
