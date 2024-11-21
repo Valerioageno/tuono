@@ -68,6 +68,10 @@ pub fn create_new_project(folder_name: Option<String>, template: Option<String>)
     }
 
     if folder != "." {
+        if Path::new(&folder).exists() {
+            eprintln!("Error: Directory '{folder}' already exists");
+            return;
+        }
         create_dir(&folder).unwrap();
     }
 
