@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use watchexec_supervisor::command::{Command, Program};
 
-use miette::Result;
+use miette::{IntoDiagnostic, Result};
 use watchexec::Watchexec;
 use watchexec_signals::Signal;
 use watchexec_supervisor::job::{start_job, Job};
@@ -20,16 +20,11 @@ fn watch_react_src() -> Job {
     .0
 }
 
-fn build_rust_src(port: u16) -> Job {
+fn build_rust_src() -> Job {
     start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "cargo".into(),
-            args: vec![
-                "run".to_string(),
-                "-q".to_string(),
-                "--".to_string(),
-                format!("--port={}", port).to_string(),
-            ],
+            args: vec!["run".to_string(), "-q".to_string()],
         },
         options: Default::default(),
     }))
@@ -47,11 +42,11 @@ fn build_react_ssr_src() -> Job {
     .0
 }
 
+#[tokio::main]
 pub async fn watch() -> Result<()> {
     watch_react_src().start().await;
 
-    // TODO: custom Rust port
-    let run_server = build_rust_src(3000);
+    let run_server = build_rust_src();
 
     let build_ssr_bundle = build_react_ssr_src();
 
@@ -102,6 +97,6 @@ pub async fn watch() -> Result<()> {
     // watch the current directory
     wx.config.pathset(["./src"]);
 
-    let _ = wx.main().await;
+    let _ = wx.main().await.into_diagnostic()?;
     Ok(())
 }

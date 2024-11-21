@@ -47,37 +47,30 @@ fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
     Ok(())
 }
 
-fn extract_port(addr: &str) -> &str {
-    addr.split(":").last().unwrap_or_else(|| {
-        eprintln!("Error: Failed to extract port from address {}", addr);
-        std::process::exit(1);
-    })
-}
+fn check_ports(mode: Mode) -> std::io::Result<()> {
+    const TUONO_PORT: u16 = 3000;
+    const VITE_PORT: u16 = 3001;
 
-async fn check_ports(mode: Mode) -> std::io::Result<()> {
-    println!("\nChecking ports...");
-
-    let rust_addr = "0.0.0.0:3000";
-    let rust_port = extract_port(rust_addr);
-    let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
+    let rust_listener = std::net::TcpListener::bind(format!("0.0.0.0:{TUONO_PORT}"));
 
     if let Err(_e) = rust_listener {
-        eprintln!("Error: Failed to bind to port {}", rust_port);
+        eprintln!("Error: Failed to bind to port {}", TUONO_PORT);
         eprintln!(
             "Please ensure that port {} is not already in use by another process or application.",
-            rust_port
+            TUONO_PORT
         );
         std::process::exit(1);
     }
 
     if mode == Mode::Dev {
-        let vite_addr = "0.0.0.0:3001";
-        let vite_port = extract_port(vite_addr);
-        let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
+        let vite_listener = std::net::TcpListener::bind(format!("0.0.0.0:{VITE_PORT}"));
 
         if let Err(_e) = vite_listener {
-            eprintln!("Error: Failed to bind to port {}", vite_port);
-            eprintln!("Please ensure that port {} is not already in use by another process or application.", vite_port);
+            eprintln!("Error: Failed to bind to port {}", VITE_PORT);
+            eprintln!(
+                "Please ensure that port {} is not already in use by another process or application.",
+                VITE_PORT
+            );
             std::process::exit(1);
         }
     }
@@ -85,20 +78,18 @@ async fn check_ports(mode: Mode) -> std::io::Result<()> {
     Ok(())
 }
 
-pub async fn app() -> std::io::Result<()> {
+pub fn app() -> std::io::Result<()> {
     let args = Args::parse();
 
     match args.action {
         Actions::Dev => {
-            check_ports(Mode::Dev).await?;
+            check_ports(Mode::Dev)?;
 
             init_tuono_folder(Mode::Dev)?;
 
-            watch::watch().await.unwrap();
+            watch::watch().unwrap();
         }
         Actions::Build { ssg } => {
-            check_ports(Mode::Prod).await?;
-
             init_tuono_folder(Mode::Prod)?;
             let app = App::new();
 
@@ -111,6 +102,8 @@ pub async fn app() -> std::io::Result<()> {
             app.build_react_prod();
 
             if ssg {
+                check_ports(Mode::Prod)?;
+
                 println!("SSG: generation started");
 
                 let static_dir = PathBuf::from("out/static");
