@@ -49,21 +49,21 @@ fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
 
 fn extract_port(addr: &str) -> &str {
     addr.split(":").last().unwrap_or_else(|| {
-        eprintln!("  Error: Failed to extract port from address {}", addr);
+        eprintln!("Error: Failed to extract port from address {}", addr);
         std::process::exit(1);
     })
 }
 
 async fn check_ports(mode: Mode) -> std::io::Result<()> {
-    println!("Checking ports...");
+    println!("\nChecking ports...");
     
     let rust_addr = "0.0.0.0:3000";
     let rust_port = extract_port(rust_addr);
     let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;
 
     if let Err(_) = rust_listener {
-        eprintln!("  Error: Failed to bind to port {}", rust_port);
-        eprintln!("  Please ensure that port {} is not already in use by another process or application.", rust_port);
+        eprintln!("Error: Failed to bind to port {}", rust_port);
+        eprintln!("Please ensure that port {} is not already in use by another process or application.", rust_port);
         std::process::exit(1);
     }
 
@@ -73,16 +73,11 @@ async fn check_ports(mode: Mode) -> std::io::Result<()> {
         let vite_listener = tokio::net::TcpListener::bind(vite_addr).await;
 
         if let Err(_) = vite_listener {
-            eprintln!("  Error: Failed to bind to port {}", vite_port);
-            eprintln!("  Please ensure that port {} is not already in use by another process or application.", vite_port);
+            eprintln!("Error: Failed to bind to port {}", vite_port);
+            eprintln!("Please ensure that port {} is not already in use by another process or application.", vite_port);
             std::process::exit(1);
         }
-
-        println!("\n  Using port {} for Rust server.", rust_port);
-        println!("  Using port {} for Vite server.", vite_port);
-    } else {
-        println!("\n  Using port {} for Rust server.", rust_port);
-    }
+    } 
 
     Ok(())
 }

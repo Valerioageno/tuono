@@ -20,11 +20,16 @@ fn watch_react_src() -> Job {
     .0
 }
 
-fn build_rust_src() -> Job {
+fn build_rust_src(port: u16) -> Job {
     start_job(Arc::new(Command {
         program: Program::Exec {
             prog: "cargo".into(),
-            args: vec!["run".to_string(), "-q".to_string()],
+            args: vec![
+                "run".to_string(), 
+                "-q".to_string(),
+                "--".to_string(),
+                format!("--port={}", port).to_string(),
+            ],
         },
         options: Default::default(),
     }))
@@ -43,17 +48,18 @@ fn build_react_ssr_src() -> Job {
 }
 
 pub async fn watch() -> Result<()> {
-    // Start the React watcher
-    let react_watcher = watch_react_src();
-    react_watcher.start().await;
+    watch_react_src().start().await;
 
-    // Start the Rust server
-    let run_server = build_rust_src();
+    // TODO: custom Rust port
+    let run_server = build_rust_src(3000);
+
+    let build_ssr_bundle = build_react_ssr_src();
+
+    build_ssr_bundle.start().await;
+
     run_server.start().await;
 
-    // Start the SSR bundle builder
-    let build_ssr_bundle = build_react_ssr_src();
-    build_ssr_bundle.start().await;
+    build_ssr_bundle.to_wait().await;
 
     let wx = Watchexec::new(move |mut action| {
         let mut should_reload_ssr_bundle = false;
