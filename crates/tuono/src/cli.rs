@@ -56,6 +56,7 @@ fn extract_port(addr: &str) -> &str {
 
 async fn check_ports(mode: Mode) -> std::io::Result<()> {
     println!("Checking ports...");
+    
     let rust_addr = "0.0.0.0:3000";
     let rust_port = extract_port(rust_addr);
     let rust_listener = tokio::net::TcpListener::bind(rust_addr).await;

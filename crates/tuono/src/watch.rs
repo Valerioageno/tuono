@@ -1,7 +1,7 @@
 use std::sync::Arc;
 use watchexec_supervisor::command::{Command, Program};
 
-use miette::{IntoDiagnostic, Result};
+use miette::Result;
 use watchexec::Watchexec;
 use watchexec_signals::Signal;
 use watchexec_supervisor::job::{start_job, Job};
@@ -43,17 +43,17 @@ fn build_react_ssr_src() -> Job {
 }
 
 pub async fn watch() -> Result<()> {
-    watch_react_src().start().await;
+    // Start the React watcher
+    let react_watcher = watch_react_src();
+    react_watcher.start().await;
 
+    // Start the Rust server
     let run_server = build_rust_src();
-
-    let build_ssr_bundle = build_react_ssr_src();
-
-    build_ssr_bundle.start().await;
-
     run_server.start().await;
 
-    build_ssr_bundle.to_wait().await;
+    // Start the SSR bundle builder
+    let build_ssr_bundle = build_react_ssr_src();
+    build_ssr_bundle.start().await;
 
     let wx = Watchexec::new(move |mut action| {
         let mut should_reload_ssr_bundle = false;
@@ -76,7 +76,7 @@ pub async fn watch() -> Result<()> {
         if should_reload_rust_server {
             println!("  Reloading...");
             run_server.stop();
-            bundle_axum_source(Mode::Dev).expect("Failed to bunlde rust source");
+            bundle_axum_source(Mode::Dev).expect("Failed to bundle rust source");
             run_server.start();
         }
 
@@ -96,6 +96,6 @@ pub async fn watch() -> Result<()> {
     // watch the current directory
     wx.config.pathset(["./src"]);
 
-    let _ = wx.main().await.into_diagnostic()?;
+    let _ = wx.main().await;
     Ok(())
 }
