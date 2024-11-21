@@ -77,10 +77,10 @@ async fn check_ports(mode: Mode) -> std::io::Result<()> {
             std::process::exit(1);
         }
 
-        println!("\n  Using port {} for Rust server.", rust_port.bold());
-        println!("  Using port {} for Vite server.", vite_port.bold());
+        println!("\n  Using port {} for Rust server.", rust_port);
+        println!("  Using port {} for Vite server.", vite_port);
     } else {
-        println!("\n  Using port {} for Rust server.", rust_port.bold());
+        println!("\n  Using port {} for Rust server.", rust_port);
     }
 
     Ok(())
@@ -95,14 +95,10 @@ pub async fn app() -> std::io::Result<()> {
             
             init_tuono_folder(Mode::Dev)?;
 
-            watch::watch().await.map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))?;
+            watch::watch().await.unwrap();
         }
         Actions::Build { ssg } => {
-            tokio::task::block_in_place(|| {
-                tokio::runtime::Handle::current().block_on(async {
-                    check_ports(Mode::Prod).await
-                })
-            })?;
+            check_ports(Mode::Prod).await?;
             
             init_tuono_folder(Mode::Prod)?;
             let app = App::new();

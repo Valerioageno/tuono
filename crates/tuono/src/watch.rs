@@ -42,7 +42,6 @@ fn build_react_ssr_src() -> Job {
     .0
 }
 
-#[tokio::main]
 pub async fn watch() -> Result<()> {
     watch_react_src().start().await;
 

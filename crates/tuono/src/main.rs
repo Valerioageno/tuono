@@ -1,5 +1,6 @@
 use tuono::cli::app;
 
-fn main() {
-    app().expect("Failed to start the CLI")
+#[tokio::main]
+async fn main() {
+    app().await.expect("Failed to start the CLI")
 }
