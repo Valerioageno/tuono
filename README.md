@@ -52,9 +52,6 @@ Tuono runs the server without any intermediary runtime. This enables impressive 
 
 ## Getting started
 
-As already mentioned above, I strongly suggest you take a look at the
-[tutorial](https://tuono.dev/documentation/tutorial).
-
 Tuono is the CLI that provides all the needed commands to handle the full-stack project.
 To download it is required [cargo](https://doc.rust-lang.org/cargo/), which is the [rust](https://www.rust-lang.org/)
 package manager.
@@ -66,7 +63,7 @@ To list all the available commands, run `tuono -h`
 To create a new project, run `tuono new [NAME]` (optionally, you can pass the `--template` (or `-t`) flag - check the
 [examples](https://github.com/Valerioageno/tuono/tree/main/examples) folder).
 
-Then, to run the local development environment, run it inside the project folder `tuono dev`
+Then, to run the local development environment, install the JS dependencies (`npm install`) and run inside the project folder `tuono dev`
 
 Finally, when the project is ready to be deployed, just run `tuono build` to create the final React assets
 and to set the server project in `production` mode.
