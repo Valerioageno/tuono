@@ -63,11 +63,17 @@ pub fn create_new_project(folder_name: Option<String>, template: Option<String>)
         .collect::<Vec<&GithubFile>>();
 
     if new_project_files.is_empty() {
-        println!("Template not found: {template}");
-        return;
+        eprintln!("Error: Template '{template}' not found");
+        println!("Hint: you can view the available templates at https://github.com/Valerioageno/tuono/tree/main/examples");
+        std::process::exit(1);
     }
 
     if folder != "." {
+        if Path::new(&folder).exists() {
+            eprintln!("Error: Directory '{folder}' already exists");
+            println!("Hint: you can scaffold a tuono project within an existing folder with 'cd {folder} && tuono new .'");
+            std::process::exit(1);
+        }
         create_dir(&folder).unwrap();
     }
 
