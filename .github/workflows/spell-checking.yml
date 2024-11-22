@@ -1,20 +1,23 @@
 name: Spell Checker
 
-on: [pull_request]
+on:
+  pull_request:
 
 jobs:
   spell_checking:
-    name: runner / LanguageTools
+    name: LanguageTool
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: reviewdog/action-languagetool@v1
+      - name: Review dog languagetool
+        uses: reviewdog/action-languagetool@v1
         with:
-          github_token: ${{ secrets.REVIEWDOG_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
-          reporter: 'github-pr-review'
+          reporter: 'github-pr-check'
           # Change reporter level if you need.
           level: 'error'
           patterns: '**/*.md **/*.txt **/*.mdx'
