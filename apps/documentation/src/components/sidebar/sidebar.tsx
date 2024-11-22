@@ -90,12 +90,19 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
           onClick={close}
         />
       </SidebarLink>
+
       <SidebarLink
         label="Contributing"
         href="/documentation/contributing"
-        onClick={close}
         leftSection="✨"
-      />
+        onClick={close}
+      >
+        <SidebarLink
+          href="/documentation/contributing/local-development"
+          label="Local development"
+          onClick={close}
+        />
+      </SidebarLink>
     </AppShell.Navbar>
   )
 }
