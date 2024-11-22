@@ -17,16 +17,7 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 # Local development
 
-Thanks for your interest! In this page, you find the instructions to set up the `tuono`!
-
-## Quick setup
-
-```sh
-git clone https://github.com/<your-name-here>/tuono
-cd tuono
-pnpm i
-pnpm run check-all
-```
+Thanks for your interest! In this page, you find the instructions to set up `tuono` on your local environment!
 
 ## Setup
 
@@ -67,7 +58,7 @@ You can see which version of yarn we use by checking the `packageManager` field 
 
 ### Pre-flight checks
 
-Check that everything is working properly run:
+To check that everything is working properly run:
 
 ```sh
 turbo run check-all
@@ -82,7 +73,7 @@ cargo build
    turbo run dev
    ```
 
-1. In another shell run
+2. In another shell run
 
    ```sh
    cargo build
@@ -94,7 +85,7 @@ cargo build
    cargo watch -x build -w crates/
    ```
 
-1. You can now use the binary inside `/target/debug/tuono` in another folder on your local machine
+3. You can now use the binary inside `/target/debug/tuono` in another folder on your local machine
 
    > Consider to add an alias to your shell setup file
    >
