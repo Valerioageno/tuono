@@ -17,7 +17,7 @@ import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
 
 # Local development
 
-Thanks for your interest! In this page you find the instructions to setup the `tuono`!
+Thanks for your interest! In this page, you find the instructions to set up the `tuono`!
 
 ## Quick setup
 
@@ -32,7 +32,7 @@ pnpm run check-all
 
 ### Fork and clone repository
 
-After [forking the repo on Github](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo):
+After [forking the repo on GitHub](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo):
 
 ```sh
 git clone https://github.com/<your-name-here>/tuono
@@ -44,7 +44,7 @@ cd tuono
 Install the Rust programming language tool chain (`rust` and `cargo`).
 Follows instructions in the official [docs](https://rustup.rs/)
 
-### NodeJS - runtime
+### NodeJS — runtime
 
 Install `NodeJS`.
 You can follow the instructions from the [Node official site](https://nodejs.org/en/download/package-manager)
@@ -59,7 +59,7 @@ You can follow the instructions from the [Node official site](https://nodejs.org
 >
 > to simply pickup the correct version!
 
-### NodeJS - package manager
+### NodeJS — package manager
 
 We use [`pnpm`](https://pnpm.io) as `NodeJS` package manager.
 
@@ -67,7 +67,7 @@ You can see which version of yarn we use by checking the `packageManager` field 
 
 ### Pre-flight checks
 
-To check that everting is working correctly run:
+Check that everything is working properly run:
 
 ```sh
 turbo run check-all
@@ -86,6 +86,12 @@ cargo build
 
    ```sh
    cargo build
+   ```
+
+   To automatically rebuild crates on code change, consider using `cargo-watch` crate
+
+   ```sh
+   cargo watch -x build -w crates/
    ```
 
 1. You can now use the binary inside `/target/debug/tuono` in another folder on your local machine
