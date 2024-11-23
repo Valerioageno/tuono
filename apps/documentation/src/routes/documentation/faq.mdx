@@ -1,0 +1,45 @@
+import MetaTags from '../../components/meta-tags'
+
+<MetaTags
+  title="Tuono - FAQ"
+  canonical="https://tuono.dev/documentation/faq"
+  description="Find answers to common questions about using tuono"
+/>
+
+import Breadcrumbs, { Element } from '../../components/breadcrumbs'
+
+<Breadcrumbs breadcrumbs={[{ label: 'FAQ' }]} />
+
+# FAQ
+
+Welcome to the FAQ section! Here, you'll find answers to common questions about using `tuono`
+
+> If you don't see your question answered, feel free to reach use in the dedicated [Discord #support channel](https://discord.com/channels/1307411506735874208/1307692152037572678).
+
+---
+
+> This section is still early development. Consider [contributing](/documentation/contributing) to make it better!
+
+import {
+  AccordionGroup,
+  AccordionItem,
+  AccordionItemControl,
+  AccordionItemPanel,
+} from '../../components/accordion/accordion'
+
+<AccordionGroup variant="contained">
+  <AccordionItem value="tuono-command-not-found">
+    <AccordionItemControl>
+      I installed tuono via cargo but I get `tuono: command not found`
+    </AccordionItemControl>
+    <AccordionItemPanel>
+      You have to add cargo binaries to your `PATH` environment variable
+
+      In a unix-like environ it should be
+      ```text
+      /Users/you-username/.cargo/bin
+      ```
+    </AccordionItemPanel>
+
+  </AccordionItem>
+</AccordionGroup>
