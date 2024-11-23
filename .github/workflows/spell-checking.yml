@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          # Keep this value in order to show the error comments
+          # also on edited files.
+          fetch-depth: 2
 
       # If the workflow is triggered by a push use check reporter
       #
@@ -55,7 +59,7 @@ jobs:
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
           reporter: ${{ steps.reporter.outputs.name }}
           # Change reporter level if you need.
-          level: 'error'
+          level: 'warning'
           patterns: '**/*.md **/*.txt **/*.mdx'
           # enabled_categories: "STYLE,PLAIN_ENGLISH,WHITESPACE_RULE,EN_QUOTES,DASH_RULE,WORD_CONTAINS_UNDERSCORE,UPPERCASE_SENTENCE_START,ARROWS,COMMA_PARENTHESIS_WHITESPACE,UNLIKELY_OPENING_PUNCTUATION,SENTENCE_WHITESPACE,EN_UNPAIRED_BRACKETS,PHRASE_REPETITION,PUNCTUATION_PARAGRAPH_END"
           disabled_categories: ''
