@@ -1,0 +1,113 @@
+import MetaTags from '../../../components/meta-tags'
+
+<MetaTags
+  title="Tuono - Contributing - Local development"
+  canonical="https://tuono.dev/documentation/contributing/local-development"
+  description="Contribute to Tuono. Learn here how to setup the repository for local development"
+/>
+
+import Breadcrumbs, { Element } from '../../../components/breadcrumbs'
+
+<Breadcrumbs
+  breadcrumbs={[
+    { label: '✨ Contributing', href: '/documentation/contributing' },
+    { label: 'Local development' },
+  ]}
+/>
+
+# Local development
+
+Thanks for your interest! In this page, you find the instructions to set up `tuono` on your local environment!
+
+## Setup
+
+### Fork and clone repository
+
+After [forking the repo on GitHub](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo):
+
+```sh
+git clone https://github.com/<your-name-here>/tuono
+cd tuono
+```
+
+### Rust tool chain
+
+Install the Rust programming language tool chain (`rust` and `cargo`).
+Follows instructions in the official [docs](https://rustup.rs/)
+
+### Node.js — runtime
+
+Install `Node.js`.
+You can follow the instructions from the [Node official site](https://nodejs.org/en/download/package-manager)
+
+> 💡 This project has a `.nvmrc` file to specify the node version used in development.
+>
+> Consider to use [nvm](https://github.com/nvm-sh/nvm) so you can run
+>
+> ```sh
+> nvm use
+> ```
+>
+> to simply pick up the correct version!
+
+### Node.js — package manager
+
+We use [`pnpm`](https://pnpm.io) as Node.js package manager.
+
+You can see which version of yarn we use by checking the `packageManager` field in the root `package.json`.
+
+### Pre-flight checks
+
+To check that everything is working properly, run:
+
+```sh
+turbo run check-all
+cargo build
+```
+
+## Tuono development
+
+1. Start tuono frontend build using
+
+   ```sh
+   turbo run dev
+   ```
+
+2. In another terminal run
+
+   ```sh
+   cargo build
+   ```
+
+   To automatically rebuild crates on code change, consider using `cargo-watch` crate
+
+   ```sh
+   cargo watch -x build -w crates/
+   ```
+
+3. You can now use the binary inside `/target/debug/tuono` in another folder on your local machine
+
+   > Consider adding an alias to your shell setup file
+   >
+   > ```sh
+   > alias t="/path-to-repo/target/debug/tuono"
+   > ```
+
+## Documentation development
+
+1. Change the current working directory to the documentation folder:
+
+   ```sh
+   cd apps/documentation
+   ```
+
+2. Run
+
+   ```sh
+   tuono dev
+   ```
+
+3. Open the localhost URL.
+
+> On the documentation remember that `tuono` `npm` package is installed from the registry and
+> it is not linked to the repository.
