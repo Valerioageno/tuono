@@ -35,9 +35,9 @@ cd tuono
 Install the Rust programming language tool chain (`rust` and `cargo`).
 Follows instructions in the official [docs](https://rustup.rs/)
 
-### NodeJS — runtime
+### Node.js — runtime
 
-Install `NodeJS`.
+Install `Node.js`.
 You can follow the instructions from the [Node official site](https://nodejs.org/en/download/package-manager)
 
 > 💡 This project has a `.nvmrc` file to specify the node version used in development.
@@ -48,17 +48,17 @@ You can follow the instructions from the [Node official site](https://nodejs.org
 > nvm use
 > ```
 >
-> to simply pickup the correct version!
+> to simply pick up the correct version!
 
-### NodeJS — package manager
+### Node.js — package manager
 
-We use [`pnpm`](https://pnpm.io) as `NodeJS` package manager.
+We use [`pnpm`](https://pnpm.io) as Node.js package manager.
 
 You can see which version of yarn we use by checking the `packageManager` field in the root `package.json`.
 
 ### Pre-flight checks
 
-To check that everything is working properly run:
+To check that everything is working properly, run:
 
 ```sh
 turbo run check-all
@@ -73,7 +73,7 @@ cargo build
    turbo run dev
    ```
 
-2. In another shell run
+2. In another terminal run
 
    ```sh
    cargo build
@@ -87,7 +87,7 @@ cargo build
 
 3. You can now use the binary inside `/target/debug/tuono` in another folder on your local machine
 
-   > Consider to add an alias to your shell setup file
+   > Consider adding an alias to your shell setup file
    >
    > ```sh
    > alias t="/path-to-repo/target/debug/tuono"
@@ -95,7 +95,7 @@ cargo build
 
 ## Documentation development
 
-1. Change the current working directory to the docs folder:
+1. Change the current working directory to the documentation folder:
 
    ```sh
    cd apps/documentation
