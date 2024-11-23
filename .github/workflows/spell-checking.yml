@@ -1,6 +1,10 @@
 name: Spell Checker
 
 on:
+  push:
+    branches:
+      - main
+
   pull_request:
 
 jobs:
@@ -8,19 +12,51 @@ jobs:
     name: LanguageTool
     runs-on: ubuntu-latest
 
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # If the workflow is triggered by a push use check reporter
+      #
+      # If the workflow is triggered by a PR coming from the
+      # same repository, the author has write access so we can
+      # use pr-review reporter since the GITHUB_TOKEN will have review
+      # write permissions
+      #
+      # Otherwise use annotation reporter that do not require any
+      # particular permission
+      #
+      # Why this?
+      # https://github.com/Valerioageno/tuono/pull/137#pullrequestreview-2455455272
+      - name: Set reporter
+        id: reporter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          FROM_MAIN_REPO: ${{ github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name }}
+        run: |
+          echo "EVENT_NAME: $EVENT_NAME FROM_MAIN_REPO: $FROM_MAIN_REPO"
+          if [ "$EVENT_NAME" == 'push' ]; then
+            echo "name=github-check" >> $GITHUB_OUTPUT
+          elif [ "$FROM_MAIN_REPO" == 'true' ]; then
+            echo "name=github-pr-review" >> $GITHUB_OUTPUT
+          else
+            echo "name=github-pr-annotations" >> $GITHUB_OUTPUT
+          fi
 
       - name: Review dog languagetool
         uses: reviewdog/action-languagetool@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
-          reporter: 'github-pr-check'
+          reporter: ${{ steps.reporter.outputs.name }}
           # Change reporter level if you need.
           level: 'error'
           patterns: '**/*.md **/*.txt **/*.mdx'
-          #enabled_categories: 'STYLE,PLAIN_ENGLISH,WHITESPACE_RULE,EN_QUOTES,DASH_RULE,WORD_CONTAINS_UNDERSCORE,UPPERCASE_SENTENCE_START,ARROWS,COMMA_PARENTHESIS_WHITESPACE,UNLIKELY_OPENING_PUNCTUATION,SENTENCE_WHITESPACE,EN_UNPAIRED_BRACKETS,PHRASE_REPETITION,PUNCTUATION_PARAGRAPH_END'
+          # enabled_categories: "STYLE,PLAIN_ENGLISH,WHITESPACE_RULE,EN_QUOTES,DASH_RULE,WORD_CONTAINS_UNDERSCORE,UPPERCASE_SENTENCE_START,ARROWS,COMMA_PARENTHESIS_WHITESPACE,UNLIKELY_OPENING_PUNCTUATION,SENTENCE_WHITESPACE,EN_UNPAIRED_BRACKETS,PHRASE_REPETITION,PUNCTUATION_PARAGRAPH_END"
           disabled_categories: ''
           disabled_rules: ''
