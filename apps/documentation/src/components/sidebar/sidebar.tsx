@@ -91,12 +91,8 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
         />
       </SidebarLink>
 
-      <SidebarLink
-        label="FAQ"
-        href="/documentation/faq"
-        onClick={close}
-        leftSection="❔"
-      />
+      <SidebarLink label="FAQ" href="/documentation/faq" onClick={close} />
+
       <SidebarLink
         label="Contributing"
         href="/documentation/contributing"
