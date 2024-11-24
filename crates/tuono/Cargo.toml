@@ -21,7 +21,7 @@ path = "src/lib.rs"
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive", "cargo"] }
-trycmd = "0.15.8"
+tempfile = "3.14.0"
 watchexec = "5.0.0"
 miette = "7.2.0"
 watchexec-signals = "4.0.0"
