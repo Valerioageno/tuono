@@ -1,0 +1,31 @@
+```console
+$ tuono new testing_tuono
+Success! 🎉
+
+Go to the project directory:
+cd testing_tuono/
+
+Install the dependencies:
+npm install
+
+Run the local environment:
+tuono dev
+
+$ cd testing_tuono/
+$ npm install
+(node:93114) ExperimentalWarning: CommonJS module /usr/lib/node_modules/npm/node_modules/debug/src/node.js is loading ES Module /usr/lib/node_modules/npm/node_modules/supports-color/index.js using require().
+Support for loading ES Module in require() is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+added 207 packages, and audited 208 packages in 1m
+
+101 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+$ tuono build
+Build successfully finished
+
+
+```
