@@ -35,7 +35,7 @@ export function routePathToVariable(routePath: string): string {
 
 export function multiSortBy<T>(
   arr: T[],
-  accessors: ((item: T) => any)[] = [(d): any => d],
+  accessors: ((item: T) => unknown)[] = [(d): unknown => d],
 ): T[] {
   return arr
     .map((d, i) => [d, i] as const)
@@ -55,7 +55,7 @@ export function multiSortBy<T>(
           continue
         }
 
-        return ao > bo ? 1 : -1
+        return (ao as number) > (bo as number) ? 1 : -1
       }
 
       return ai - bi
@@ -81,8 +81,8 @@ export function removeTrailingUnderscores(s?: string): string | undefined {
 /**
  * Removes all segments from a given path that start with an underscore ('_').
  *
- * @param {string} routePath - The path from which to remove segments. Defaults to '/'.
- * @returns {string} The path with all underscore-prefixed segments removed.
+ * @param routePath - The path from which to remove segments. Defaults to '/'.
+ * @returns The path with all underscore-prefixed segments removed.
  * @example
  * removeLayoutSegments('/workspace/_auth/foo') // '/workspace/foo'
  */
@@ -101,8 +101,9 @@ export function trimPathLeft(pathToTrim: string): string {
 }
 
 export function removeLastSlash(str: string): string {
-  if (str.length > 1 && str.endsWith('/'))
+  if (str.length > 1 && str.endsWith('/')) {
     return str.substring(0, str.length - 1)
+  }
   return str
 }
 

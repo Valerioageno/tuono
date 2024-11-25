@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
-    "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
+    "lint": "eslint ./src -c ../../eslint.config.js",
     "format": "prettier -u --write --ignore-unknown '**/*'",
     "format:check": "prettier --check --ignore-unknown '**/*'",
     "types": "tsc --noEmit",

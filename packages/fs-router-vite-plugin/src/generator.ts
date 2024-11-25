@@ -1,8 +1,8 @@
 import * as fsp from 'fs/promises'
 import path from 'path'
+
 import { buildRouteConfig } from './build-route-config'
 import { hasParentRoute } from './has-parent-route'
-
 import {
   cleanPath,
   determineNodePath,
@@ -130,7 +130,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   // Loop over the flat list of routeNodes and
   // build up a tree based on the routeNodes' routePath
-  const handleNode = async (node: RouteNode): Promise<void> => {
+  const handleNode = (node: RouteNode): void => {
     const parentRoute = hasParentRoute(routeNodes, node, node.routePath)
 
     if (parentRoute) node.parent = parentRoute
@@ -149,7 +149,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
   }
 
   for (const node of preRouteNodes) {
-    await handleNode(node)
+    handleNode(node)
   }
 
   const routeConfigChildrenText = buildRouteConfig(routeNodes)
@@ -237,7 +237,8 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   const routeTreeContent = await fsp
     .readFile(path.resolve(config.generatedRouteTree), 'utf-8')
-    .catch((err: any) => {
+    .catch((e) => {
+      const err = e as Error & { code?: string }
       if (err.code === 'ENOENT') {
         return undefined
       }

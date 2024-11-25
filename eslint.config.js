@@ -3,7 +3,16 @@ import tseslint from 'typescript-eslint'
 import eslintPluginImport from 'eslint-plugin-import'
 
 export default tseslint.config(
-  { ignores: ['**/build', '**/dist'] },
+  {
+    ignores: [
+      // === shared config ===
+      '**/build',
+      '**/dist',
+
+      // === packages ===
+      'packages/fs-router-vite-plugin/tests/generator/**',
+    ],
+  },
   {
     linterOptions: {
       reportUnusedDisableDirectives: 'error',
