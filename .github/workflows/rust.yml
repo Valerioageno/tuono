@@ -17,7 +17,6 @@ env:
 
 jobs:
   build_and_test:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: Build and test rust crates
 
     strategy:
@@ -43,7 +42,6 @@ jobs:
       - run: cargo test --verbose
 
   lint_and_fmt:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: Check format and lint rust crates
     runs-on: ubuntu-latest
 

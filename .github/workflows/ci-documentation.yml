@@ -14,10 +14,9 @@ on:
 
 jobs:
   build:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: Check build
-    timeout-minutes: 15
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -36,9 +35,8 @@ jobs:
         working-directory: ./apps/documentation
         run: tuono build --static
 
-  fmt-lint-and-types:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
-    name: Check format and lint
+  code_check:
+    name: Check format, lint and types
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
