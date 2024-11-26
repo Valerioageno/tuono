@@ -9,6 +9,16 @@ use std::path::PathBuf;
 /// update the SSR result without reloading the whole server.
 pub struct Js;
 
+#[cfg(target_os = "windows")]
+const PROD_BUNDLE_PATH: &str = ".\\out\\server\\prod-server.js";
+#[cfg(target_os = "windows")]
+const DEV_BUNDLE_PATH: &str = ".\\.tuono\\server\\dev-server.js";
+
+#[cfg(not(target_os = "windows"))]
+const PROD_BUNDLE_PATH: &str = "./out/server/prod-server.js";
+#[cfg(not(target_os = "windows"))]
+const DEV_BUNDLE_PATH: &str = "./.tuono/server/dev-server.js";
+
 impl Js {
     pub fn render_to_string(payload: Option<&str>) -> Result<String, SsrError> {
         let mode = GLOBAL_MODE.get().expect("Failed to get GLOBAL_MODE");
@@ -27,7 +37,7 @@ impl ProdJs {
     thread_local! {
         pub static SSR: RefCell<Ssr<'static, 'static>> = RefCell::new(
                 Ssr::from(
-                    read_to_string(PathBuf::from("./out/server/prod-server.js")).expect("Server bundle not found"), ""
+                    read_to_string(PathBuf::from(PROD_BUNDLE_PATH)).expect("Server bundle not found"), ""
                     ).unwrap()
                 )
     }
@@ -38,8 +48,7 @@ struct DevJs;
 impl DevJs {
     pub fn render_to_string(params: Option<&str>) -> Result<String, SsrError> {
         Ssr::from(
-            read_to_string(PathBuf::from("./.tuono/server/dev-server.js"))
-                .expect("Server bundle not found"),
+            read_to_string(PathBuf::from(DEV_BUNDLE_PATH)).expect("Server bundle not found"),
             "",
         )
         .unwrap()

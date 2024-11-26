@@ -9,10 +9,20 @@ use watchexec_supervisor::job::{start_job, Job};
 use crate::mode::Mode;
 use crate::source_builder::bundle_axum_source;
 
+#[cfg(target_os = "windows")]
+const DEV_WATCH_BIN_SRC: &str = "node_modules\\.bin\\tuono-dev-watch.cmd";
+#[cfg(target_os = "windows")]
+const DEV_SSR_BIN_SRC: &str = "node_modules\\.bin\\tuono-dev-ssr.cmd";
+
+#[cfg(not(target_os = "windows"))]
+const DEV_WATCH_BIN_SRC: &str = "node_modules/.bin/tuono-dev-watch";
+#[cfg(not(target_os = "windows"))]
+const DEV_SSR_BIN_SRC: &str = "node_modules/.bin/tuono-dev-ssr";
+
 fn watch_react_src() -> Job {
     start_job(Arc::new(Command {
         program: Program::Exec {
-            prog: "node_modules/.bin/tuono-dev-watch".into(),
+            prog: DEV_WATCH_BIN_SRC.into(),
             args: vec![],
         },
         options: Default::default(),
@@ -34,7 +44,7 @@ fn build_rust_src() -> Job {
 fn build_react_ssr_src() -> Job {
     start_job(Arc::new(Command {
         program: Program::Exec {
-            prog: "node_modules/.bin/tuono-dev-ssr".into(),
+            prog: DEV_SSR_BIN_SRC.into(),
             args: vec![],
         },
         options: Default::default(),
