@@ -1,11 +1,14 @@
 name: Publish on npm and crates
+
 on:
   release:
     types: [published]
 
 jobs:
-  publish-on-npm-dry-run:
+  publish_npm_dry_run:
+    name: NPM publish (dry run)
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,8 +26,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-on-crates-dry-run:
+  publish_crates_dry_run:
+    name: Crates publish (dry run)
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,9 +46,11 @@ jobs:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           check-repo: true
 
-  publish-on-npm:
-    needs: [publish-on-crates-dry-run, publish-on-npm-dry-run]
+  publish_npm:
+    name: NPM publish
+    needs: [publish_npm_dry_run, publish_crates_dry_run]
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,9 +71,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  publish-on-crates:
-    needs: [publish-on-crates-dry-run, publish-on-npm-dry-run]
+  publish_crates:
+    name: Crates publish
+    needs: [publish_npm_dry_run, publish_crates_dry_run]
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
