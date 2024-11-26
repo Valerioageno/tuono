@@ -18,9 +18,13 @@ const IGNORE_FILES: [&str; 1] = ["__root"];
 
 #[cfg(target_os = "windows")]
 const ROUTES_FOLDER_PATH: &str = "\\src\\routes";
+#[cfg(target_os = "windows")]
+const BUILD_JS_SCRIPT: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
 
 #[cfg(not(target_os = "windows"))]
 const ROUTES_FOLDER_PATH: &str = "/src/routes";
+#[cfg(not(target_os = "windows"))]
+const BUILD_JS_SCRIPT: &str = "./node_modules/.bin/tuono-build-prod";
 
 #[derive(Debug)]
 pub struct App {
@@ -128,7 +132,7 @@ impl App {
     }
 
     pub fn build_react_prod(&self) {
-        Command::new("./node_modules/.bin/tuono-build-prod")
+        Command::new(BUILD_JS_SCRIPT)
             .output()
             .expect("Failed to build the react source");
     }
