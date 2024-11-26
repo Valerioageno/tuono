@@ -28,4 +28,4 @@ jobs:
         uses: ./.github/actions/install-node-dependencies
 
       - name: Test project
-        run: pnpm repo:root:format
+        run: pnpm repo:root:format:check
