@@ -150,7 +150,7 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
         .replace(
             "//MAIN_FILE_IMPORT//",
             if app.has_main_file {
-                r#"#[path="../src/main.rs"]
+                r#"#[path="../src/app.rs"]
                     mod tuono_main_state;
                     "#
             } else {

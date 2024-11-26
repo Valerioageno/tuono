@@ -24,7 +24,7 @@ pub struct App {
 }
 
 fn has_main_file(base_path: PathBuf) -> std::io::Result<bool> {
-    let file = File::open(base_path.join("src/main.rs"))?;
+    let file = File::open(base_path.join("src/app.rs"))?;
     let mut buf_reader = BufReader::new(file);
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents)?;
