@@ -20,10 +20,10 @@ const IGNORE_FILES: [&str; 1] = ["__root"];
 pub struct App {
     pub route_map: HashMap<String, Route>,
     pub base_path: PathBuf,
-    pub has_main_file: bool,
+    pub has_app_state: bool,
 }
 
-fn has_main_file(base_path: PathBuf) -> std::io::Result<bool> {
+fn has_app_state(base_path: PathBuf) -> std::io::Result<bool> {
     let file = File::open(base_path.join("src/app.rs"))?;
     let mut buf_reader = BufReader::new(file);
     let mut contents = String::new();
@@ -38,7 +38,7 @@ impl App {
         let mut app = App {
             route_map: HashMap::new(),
             base_path: base_path.clone(),
-            has_main_file: has_main_file(base_path).unwrap_or(false),
+            has_app_state: has_app_state(base_path).unwrap_or(false),
         };
 
         app.collect_routes();
