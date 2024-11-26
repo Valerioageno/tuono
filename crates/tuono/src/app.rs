@@ -16,6 +16,12 @@ use crate::route::Route;
 const IGNORE_EXTENSIONS: [&str; 3] = ["css", "scss", "sass"];
 const IGNORE_FILES: [&str; 1] = ["__root"];
 
+#[cfg(target_os = "windows")]
+const ROUTES_FOLDER_PATH: &str = "\\src\\routes";
+
+#[cfg(not(target_os = "windows"))]
+const ROUTES_FOLDER_PATH: &str = "/src/routes";
+
 #[derive(Debug)]
 pub struct App {
     pub route_map: HashMap<String, Route>,
@@ -72,11 +78,14 @@ impl App {
 
     fn collect_route(&mut self, path_buf: Result<PathBuf, GlobError>) {
         let entry = path_buf.unwrap();
+
         let base_path_str = self.base_path.to_str().unwrap();
         let path = entry
             .to_str()
             .unwrap()
-            .replace(&format!("{base_path_str}/src/routes"), "")
+            .replace(&format!("{base_path_str}{ROUTES_FOLDER_PATH}"), "")
+            // Cleanup windows paths
+            .replace("\\", "/")
             .replace(".rs", "")
             .replace(".mdx", "")
             .replace(".tsx", "");
