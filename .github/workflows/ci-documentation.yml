@@ -2,6 +2,8 @@ name: Documentation Website CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '.github/**'
       - 'apps/documentation/**'

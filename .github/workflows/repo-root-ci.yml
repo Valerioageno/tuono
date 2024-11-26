@@ -5,6 +5,8 @@ name: Repo root CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '.github/**'
       - './*'
