@@ -23,7 +23,7 @@ pub fn import_main_application_state(argument_names: Punctuated<Pat, Comma>) -> 
 
 pub fn crate_application_state_extractor(argument_names: Punctuated<Pat, Comma>) -> Option<Stmt> {
     if !argument_names.is_empty() {
-        let use_item: Stmt = parse_quote!(let ApplicationState { #argument_names } = state;);
+        let use_item: Stmt = parse_quote!(let ApplicationState { #argument_names, .. } = state;);
         return Some(use_item);
     }
 
