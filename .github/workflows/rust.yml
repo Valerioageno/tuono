@@ -17,7 +17,7 @@ env:
 
 jobs:
   build_and_test:
-    name: Build and test rust crates
+    name: Build and test crates on ${{ matrix.os }} with rust ${{ matrix.toolchain }}
 
     strategy:
       fail-fast: true
@@ -27,9 +27,15 @@ jobs:
           - 'macos-latest'
           - 'windows-latest'
         toolchain:
-          - stable
-          - beta
-          - nightly
+          - 'stable'
+
+        # Test `beta` and `nightly` toolchains only on `ubuntu`
+        # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow#expanding-or-adding-matrix-configurations
+        include:
+          - toolchain: 'beta'
+            os: 'ubuntu-latest'
+          - toolchain: 'nightly'
+            os: 'ubuntu-latest'
 
     runs-on: ${{ matrix.os }}
 
