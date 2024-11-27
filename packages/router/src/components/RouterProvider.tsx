@@ -5,17 +5,11 @@ import { initRouterStore } from '../hooks/useRouterStore'
 import type { ServerProps } from '../types'
 import { getRouterContext } from './RouterContext'
 import { Matches } from './Matches'
-
-type Router = any
+import type { Router } from '../router'
 
 interface RouterContextProviderProps {
   router: Router
   children: ReactNode
-}
-
-interface RouterProviderProps {
-  router: Router
-  serverProps?: ServerProps
 }
 
 function RouterContextProvider({
@@ -27,7 +21,11 @@ function RouterContextProvider({
   router.update({
     ...router.options,
     ...rest,
+    // @ts-expect-error router options do not have context as property and I was unable to find any usage of it,
+    //  so is this spread required?
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     context: {
+      // @ts-expect-error see previous
       ...router.options.context,
     },
   })
@@ -39,6 +37,11 @@ function RouterContextProvider({
       <routerContext.Provider value={router}>{children}</routerContext.Provider>
     </React.Suspense>
   )
+}
+
+interface RouterProviderProps {
+  router: Router
+  serverProps?: ServerProps
 }
 
 export function RouterProvider({

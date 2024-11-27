@@ -5,15 +5,9 @@ import { fromUrlToParsedLocation } from '../utils/from-url-to-parsed-location'
 
 const isServer = typeof document === 'undefined'
 
-interface UseServerSidePropsReturn {
-  data: any
+interface UseServerSidePropsReturn<TData> {
+  data: TData
   isLoading: boolean
-}
-
-declare global {
-  interface Window {
-    __TUONO_SSR_PROPS__: any
-  }
 }
 
 interface TuonoApi {
@@ -26,7 +20,7 @@ interface TuonoApi {
 const fetchClientSideData = async (): Promise<TuonoApi> => {
   const slash = location.pathname.endsWith('/') ? '' : '/'
   const res = await fetch(`/__tuono/data${location.pathname}${slash}data.json`)
-  const data: TuonoApi = await res.json()
+  const data = (await res.json()) as TuonoApi
   return data
 }
 
@@ -40,7 +34,7 @@ export function useServerSideProps<T>(
   route: Route,
   // User defined props
   serverSideProps: T,
-): UseServerSidePropsReturn {
+): UseServerSidePropsReturn<T> {
   const isFirstRendering = useRef<boolean>(true)
   const [location, updateLocation] = useRouterStore((st) => [
     st.location,
@@ -48,15 +42,15 @@ export function useServerSideProps<T>(
   ])
   const [isLoading, setIsLoading] = useState<boolean>(
     // Force loading if has handler
-    route.options.hasHandler &&
+    !!route.options.hasHandler &&
       // Avoid loading on the server
       !isServer &&
       // Avoid loading if first rendering
       !isFirstRendering.current,
   )
 
-  const [data, setData] = useState<any>(
-    serverSideProps ?? window.__TUONO_SSR_PROPS__?.props,
+  const [data, setData] = useState<T | undefined>(
+    (serverSideProps ?? window.__TUONO_SSR_PROPS__?.props) as T,
   )
 
   useEffect(() => {
@@ -68,6 +62,8 @@ export function useServerSideProps<T>(
     }
     // After client side routing load again the remote data
     if (route.options.hasHandler) {
+      // The error management is already handled inside the IIFE
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       ;(async (): Promise<void> => {
         setIsLoading(true)
         try {
@@ -86,7 +82,7 @@ export function useServerSideProps<T>(
             updateLocation(parsedLocation)
             return
           }
-          setData(response.data)
+          setData(response.data as T)
         } catch (error) {
           throw Error('Failed loading Server Side Data', { cause: error })
         } finally {
@@ -101,5 +97,5 @@ export function useServerSideProps<T>(
     }
   }, [location.pathname])
 
-  return { isLoading, data }
+  return { isLoading, data: data as T }
 }

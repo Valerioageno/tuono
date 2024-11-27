@@ -4,9 +4,9 @@ import { RouteMatch } from './RouteMatch'
 import NotFound from './NotFound'
 import useRoute from '../hooks/useRoute'
 
-interface MatchesProps {
+interface MatchesProps<TServerSideProps = unknown> {
   // user defined props
-  serverSideProps: any
+  serverSideProps: TServerSideProps
 }
 
 export function Matches({ serverSideProps }: MatchesProps): React.JSX.Element {

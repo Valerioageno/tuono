@@ -5,17 +5,17 @@ export interface Segment {
   value: string
 }
 
-export interface ServerProps {
+export interface ServerProps<TProps = unknown> {
   router: {
     href: string
     pathname: string
     searchStr: string
   }
-  props: any
+  props: TProps
 }
 
-export interface RouteProps {
-  data: any
+export interface RouteProps<TData = unknown> {
+  data: TData
   isLoading: boolean
 }
 
