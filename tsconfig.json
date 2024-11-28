@@ -1,28 +1,39 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    // Typechecking
+    "strict": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "checkJs": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "module": "ES2022",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
     "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "noUncheckedIndexedAccess": true,
+
+    // Modules
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2020"
-  },
-  "include": [],
-  "exclude": ["node_modules"]
+
+    // Emit
+    "noEmit": true,
+    "declaration": true,
+
+    // JavaScript Support
+    "allowJs": true,
+    "checkJs": true,
+
+    // Interop Constraints
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Language and Environment
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+
+    // Completeness
+    "skipLibCheck": true
+  }
 }
