@@ -17,7 +17,11 @@ fn test_tuono_build_success() {
 
     let test_result = std::panic::catch_unwind(|| {
         let mut test_tuono_build = Command::cargo_bin("tuono").unwrap();
-        test_tuono_build.arg("build").arg("--no-js-emit").assert().success();
+        test_tuono_build
+            .arg("build")
+            .arg("--no-js-emit")
+            .assert()
+            .success();
 
         let temp_main_rs_path = temp_path.join(".tuono/main.rs");
         assert!(
