@@ -4,8 +4,9 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import type { HelmetServerState } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider, createRouter } from 'tuono-router'
+import type { createRoute } from 'tuono-router'
 
-type RouteTree = any
+type RouteTree = ReturnType<typeof createRoute>
 type Mode = 'Dev' | 'Prod'
 
 const TUONO_DEV_SERVER_PORT = 3000
@@ -37,17 +38,20 @@ function generateJsScripts(jsBundles: string[], mode: Mode): string {
 
 export function serverSideRendering(routeTree: RouteTree) {
   return function render(payload: string | undefined): string {
-    const props = payload ? JSON.parse(payload) : {}
+    const serverProps = (payload ? JSON.parse(payload) : {}) as Record<
+      string,
+      unknown
+    >
 
-    const mode = props.mode as Mode
-    const jsBundles = props.jsBundles as string[]
-    const cssBundles = props.cssBundles as string[]
+    const mode = serverProps.mode as Mode
+    const jsBundles = serverProps.jsBundles as string[]
+    const cssBundles = serverProps.cssBundles as string[]
     const router = createRouter({ routeTree }) // Render the app
 
     const helmetContext = {}
     const app = renderToString(
       <HelmetProvider context={helmetContext}>
-        <RouterProvider router={router} serverProps={props} />
+        <RouterProvider router={router} serverProps={serverProps as never} />
       </HelmetProvider>,
     )
 

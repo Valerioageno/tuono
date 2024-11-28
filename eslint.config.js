@@ -11,6 +11,8 @@ export default tseslint.config(
 
       // === packages ===
       'packages/fs-router-vite-plugin/tests/generator/**',
+
+      'packages/tuono/bin/**',
     ],
   },
   {
