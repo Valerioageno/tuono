@@ -123,7 +123,7 @@ fn create_modules_declaration(routes: &HashMap<String, Route>) -> String {
     route_declarations
 }
 
-pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
+pub fn bundle_axum_source(mode: Mode) -> io::Result<App> {
     let base_path = std::env::current_dir().unwrap();
 
     let app = App::new();
@@ -132,7 +132,7 @@ pub fn bundle_axum_source(mode: Mode) -> io::Result<()> {
 
     create_main_file(&base_path, &bundled_file);
 
-    Ok(())
+    Ok(app)
 }
 
 fn generate_axum_source(app: &App, mode: Mode) -> String {
@@ -149,8 +149,8 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
         .replace("/*MODE*/", mode.as_str())
         .replace(
             "//MAIN_FILE_IMPORT//",
-            if app.has_main_file {
-                r#"#[path="../src/main.rs"]
+            if app.has_app_state {
+                r#"#[path="../src/app.rs"]
                     mod tuono_main_state;
                     "#
             } else {
@@ -159,7 +159,7 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
         )
         .replace(
             "//MAIN_FILE_DEFINITION//",
-            if app.has_main_file {
+            if app.has_app_state {
                 "let user_custom_state = tuono_main_state::main();"
             } else {
                 ""
@@ -167,7 +167,7 @@ fn generate_axum_source(app: &App, mode: Mode) -> String {
         )
         .replace(
             "//MAIN_FILE_USAGE//",
-            if app.has_main_file {
+            if app.has_app_state {
                 ".with_state(user_custom_state)"
             } else {
                 ""

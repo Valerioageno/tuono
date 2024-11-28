@@ -70,7 +70,7 @@ Let's fix these in the next section.
 
 Compared to the common Javascript runtimes, Tuono is fast because only the features you need for your project will be loaded.
 
-You can load them in the `ApplicationState` of your app inside the `./src/main.rs` file. This is the file that will be executed just once at the very beginning of your application.
+You can load them in the `ApplicationState` of your app inside the `./src/app.rs` file. This is the file that will be executed just once at the very beginning of your application.
 
 > For the tutorial we will use [Reqwest](https://docs.rs/reqwest/latest/reqwest/) which is one of the most famous HTTP library.
 
@@ -101,7 +101,7 @@ serde = { version = "1.0.202", features = ["derive"] }
 > The `Cargo.toml` is the manifest file of your application, in which you handle Rust's dependencies
 > (similarly as the package.json for Javascript).
 
-Now let's define the `ApplicationState` in the `./src/main.rs` file.
+Now let's define the `ApplicationState` in the `./src/app.rs` file.
 
 ```rs
 // Import here the just added reqwest library

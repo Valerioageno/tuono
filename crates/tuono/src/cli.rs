@@ -23,6 +23,10 @@ enum Actions {
         #[arg(short, long = "static")]
         /// Statically generate the website HTML
         ssg: bool,
+
+        #[arg(short, long)]
+        /// Prevent to export the js assets
+        no_js_emit: bool,
     },
     /// Scaffold a new project
     New {
@@ -42,12 +46,12 @@ struct Args {
     action: Actions,
 }
 
-fn init_tuono_folder(mode: Mode) -> std::io::Result<()> {
+fn init_tuono_folder(mode: Mode) -> std::io::Result<App> {
     check_tuono_folder()?;
-    bundle_axum_source(mode)?;
+    let app = bundle_axum_source(mode)?;
     create_client_entry_files()?;
 
-    Ok(())
+    Ok(app)
 }
 
 fn check_ports(mode: Mode) {
@@ -83,13 +87,17 @@ pub fn app() -> std::io::Result<()> {
         Actions::Dev => {
             check_ports(Mode::Dev);
 
-            init_tuono_folder(Mode::Dev)?;
+            let _ = init_tuono_folder(Mode::Dev)?;
 
             watch::watch().unwrap();
         }
-        Actions::Build { ssg } => {
-            init_tuono_folder(Mode::Prod)?;
-            let app = App::new();
+        Actions::Build { ssg, no_js_emit } => {
+            let app = init_tuono_folder(Mode::Prod)?;
+
+            if no_js_emit {
+                println!("Rust build successfully finished");
+                return Ok(());
+            }
 
             if ssg && app.has_dynamic_routes() {
                 // TODO: allow dynamic routes static generation

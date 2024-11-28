@@ -16,15 +16,25 @@ use crate::route::Route;
 const IGNORE_EXTENSIONS: [&str; 3] = ["css", "scss", "sass"];
 const IGNORE_FILES: [&str; 1] = ["__root"];
 
+#[cfg(target_os = "windows")]
+const ROUTES_FOLDER_PATH: &str = "\\src\\routes";
+#[cfg(target_os = "windows")]
+const BUILD_JS_SCRIPT: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
+
+#[cfg(not(target_os = "windows"))]
+const ROUTES_FOLDER_PATH: &str = "/src/routes";
+#[cfg(not(target_os = "windows"))]
+const BUILD_JS_SCRIPT: &str = "./node_modules/.bin/tuono-build-prod";
+
 #[derive(Debug)]
 pub struct App {
     pub route_map: HashMap<String, Route>,
     pub base_path: PathBuf,
-    pub has_main_file: bool,
+    pub has_app_state: bool,
 }
 
-fn has_main_file(base_path: PathBuf) -> std::io::Result<bool> {
-    let file = File::open(base_path.join("src/main.rs"))?;
+fn has_app_state(base_path: PathBuf) -> std::io::Result<bool> {
+    let file = File::open(base_path.join("src/app.rs"))?;
     let mut buf_reader = BufReader::new(file);
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents)?;
@@ -33,12 +43,12 @@ fn has_main_file(base_path: PathBuf) -> std::io::Result<bool> {
 
 impl App {
     pub fn new() -> Self {
-        let base_path = std::env::current_dir().unwrap();
+        let base_path = std::env::current_dir().expect("Failed to read current_dir");
 
         let mut app = App {
             route_map: HashMap::new(),
             base_path: base_path.clone(),
-            has_main_file: has_main_file(base_path).unwrap_or(false),
+            has_app_state: has_app_state(base_path).unwrap_or(false),
         };
 
         app.collect_routes();
@@ -47,18 +57,31 @@ impl App {
     }
 
     fn collect_routes(&mut self) {
-        glob(self.base_path.join("src/routes/**/*.*").to_str().unwrap())
-            .expect("Failed to read glob pattern")
-            .for_each(|entry| {
-                if self.should_collect_route(&entry) {
-                    self.collect_route(entry)
-                }
-            })
+        glob(
+            self.base_path
+                .join("src/routes/**/*.*")
+                .to_str()
+                .expect("Failed to glob routes folder"),
+        )
+        .expect("Failed to read glob pattern")
+        .for_each(|entry| {
+            if self.should_collect_route(&entry) {
+                self.collect_route(entry)
+            }
+        })
     }
 
     fn should_collect_route(&self, entry: &Result<PathBuf, GlobError>) -> bool {
-        let file_extension = entry.as_ref().unwrap().extension().unwrap();
-        let file_name = entry.as_ref().unwrap().file_stem().unwrap();
+        let file_extension = entry
+            .as_ref()
+            .unwrap()
+            .extension()
+            .expect("Failed to read file extension");
+        let file_name = entry
+            .as_ref()
+            .unwrap()
+            .file_stem()
+            .expect("Failed to read file name");
 
         if IGNORE_EXTENSIONS.iter().any(|val| val == &file_extension) {
             return false;
@@ -71,17 +94,23 @@ impl App {
     }
 
     fn collect_route(&mut self, path_buf: Result<PathBuf, GlobError>) {
-        let entry = path_buf.unwrap();
-        let base_path_str = self.base_path.to_str().unwrap();
+        let entry = path_buf.expect("Failed to read glob path");
+
+        let base_path_str = self
+            .base_path
+            .to_str()
+            .expect("Failed to read as str base_path");
         let path = entry
             .to_str()
-            .unwrap()
-            .replace(&format!("{base_path_str}/src/routes"), "")
+            .expect("Failed to read entry as str")
+            .replace(&format!("{base_path_str}{ROUTES_FOLDER_PATH}"), "")
+            // Cleanup windows paths
+            .replace("\\", "/")
             .replace(".rs", "")
             .replace(".mdx", "")
             .replace(".tsx", "");
 
-        if entry.extension().unwrap() == "rs" {
+        if entry.extension().expect("failed to read entry extension") == "rs" {
             if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
                 let mut route = Route::new(path);
                 route.update_axum_info();
@@ -103,7 +132,7 @@ impl App {
     }
 
     pub fn build_react_prod(&self) {
-        Command::new("./node_modules/.bin/tuono-build-prod")
+        Command::new(BUILD_JS_SCRIPT)
             .output()
             .expect("Failed to build the react source");
     }
@@ -145,8 +174,27 @@ mod tests {
     #[test]
     fn should_collect_routes() {
         let mut app = App::new();
-        app.base_path = "/home/user/Documents/tuono".into();
+        #[cfg(target_os = "windows")]
+        let base_path = "\\home\\user\\Documents\\tuono";
 
+        #[cfg(not(target_os = "windows"))]
+        let base_path = "/home/user/Documents/tuono";
+
+        app.base_path = base_path.into();
+
+        #[cfg(target_os = "windows")]
+        let routes = [
+            "\\home\\user\\Documents\\tuono\\src\\routes\\about.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\index.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\index.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\[post].rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\handle-this.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\handle-this\\[post].rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\UPPERCASE.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\sitemap.xml.rs",
+        ];
+
+        #[cfg(not(target_os = "windows"))]
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.rs",
             "/home/user/Documents/tuono/src/routes/index.rs",
@@ -193,8 +241,25 @@ mod tests {
     #[test]
     fn should_create_multi_level_axum_paths() {
         let mut app = App::new();
-        app.base_path = "/home/user/Documents/tuono".into();
 
+        #[cfg(target_os = "windows")]
+        let base_path = "\\home\\user\\Documents\\tuono";
+
+        #[cfg(not(target_os = "windows"))]
+        let base_path = "/home/user/Documents/tuono";
+
+        app.base_path = base_path.into();
+
+        #[cfg(target_os = "windows")]
+        let routes = [
+            "\\home\\user\\Documents\\tuono\\src\\routes\\about.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\index.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\index.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\any-post.rs",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\posts\\[post].rs",
+        ];
+
+        #[cfg(not(target_os = "windows"))]
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.rs",
             "/home/user/Documents/tuono/src/routes/index.rs",
@@ -219,7 +284,7 @@ mod tests {
             assert_eq!(
                 app.route_map
                     .get(path)
-                    .unwrap()
+                    .expect("Failed to get route path")
                     .axum_info
                     .as_ref()
                     .unwrap()
@@ -271,8 +336,23 @@ mod tests {
     #[test]
     fn should_correctly_parse_routes_with_server_handler() {
         let mut app = App::new();
-        app.base_path = "/home/user/Documents/tuono".into();
 
+        #[cfg(target_os = "windows")]
+        let base_path = "\\home\\user\\Documents\\tuono";
+
+        #[cfg(not(target_os = "windows"))]
+        let base_path = "/home/user/Documents/tuono";
+
+        app.base_path = base_path.into();
+
+        #[cfg(target_os = "windows")]
+        let routes = [
+            "\\home\\user\\Documents\\tuono\\src\\routes\\about.rs",
+            "\\home\\user\\Documents/tuono\\src\\routes\\about.tsx",
+            "\\home\\user\\Documents\\tuono\\src\\routes\\index.tsx",
+        ];
+
+        #[cfg(not(target_os = "windows"))]
         let routes = [
             "/home/user/Documents/tuono/src/routes/about.rs",
             "/home/user/Documents/tuono/src/routes/about.tsx",
@@ -289,9 +369,19 @@ mod tests {
             .into_iter()
             .for_each(|(path, expected_has_server_handler)| {
                 if expected_has_server_handler {
-                    assert!(app.route_map.get(path).unwrap().axum_info.is_some())
+                    assert!(app
+                        .route_map
+                        .get(path)
+                        .expect("Failed to get route path")
+                        .axum_info
+                        .is_some())
                 } else {
-                    assert!(app.route_map.get(path).unwrap().axum_info.is_none())
+                    assert!(app
+                        .route_map
+                        .get(path)
+                        .expect("Failed to get route path")
+                        .axum_info
+                        .is_none())
                 }
             })
     }

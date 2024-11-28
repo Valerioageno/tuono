@@ -2,6 +2,8 @@ name: Typescript CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '.github/**'
       - 'packages/**'
@@ -11,11 +13,19 @@ on:
       - 'packages/**'
 
 jobs:
-  build-and-test:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+  build_and_test:
     name: Check build and test
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - 'ubuntu-latest'
+          - 'macos-latest'
+          - 'windows-latest'
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -30,8 +40,7 @@ jobs:
       - name: Test project
         run: pnpm test
 
-  fmt-lint-and-types:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+  lint_and_fmt:
     name: Check format and lint
     runs-on: ubuntu-latest
     timeout-minutes: 15

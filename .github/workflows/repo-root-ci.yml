@@ -5,6 +5,8 @@ name: Repo root CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '.github/**'
       - './*'
@@ -15,10 +17,9 @@ on:
 
 jobs:
   build-and-test:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     name: Check format
-    timeout-minutes: 15
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -28,4 +29,4 @@ jobs:
         uses: ./.github/actions/install-node-dependencies
 
       - name: Test project
-        run: pnpm repo:root:format
+        run: pnpm repo:root:format:check
