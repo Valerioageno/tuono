@@ -5,6 +5,7 @@ export const loadConfig = async (): Promise<TuonoConfig> => {
     const configFile = await import(`${process.cwd()}/.tuono/config/config.js`)
     return configFile.default
   } catch {
+    console.error('Failed to load tuono.config.ts')
     return {}
   }
 }
