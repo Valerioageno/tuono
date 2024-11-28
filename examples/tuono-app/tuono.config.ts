@@ -1,8 +1,11 @@
 import type { TuonoConfig } from 'tuono/config'
+import { path } from 'tuono/config'
 
 const config: TuonoConfig = {
 	vite: {
-		alias: { 'my-alias': 'my-alias' },
+		alias: {
+			'@': path.join(__dirname, './src'),
+		},
 	},
 }
 
