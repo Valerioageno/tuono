@@ -21,10 +21,16 @@ const ROUTES_FOLDER_PATH: &str = "\\src\\routes";
 #[cfg(target_os = "windows")]
 const BUILD_JS_SCRIPT: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
 
+#[cfg(target_os = "windows")]
+const BUILD_TUONO_CONFIG: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
+
 #[cfg(not(target_os = "windows"))]
 const ROUTES_FOLDER_PATH: &str = "/src/routes";
 #[cfg(not(target_os = "windows"))]
 const BUILD_JS_SCRIPT: &str = "./node_modules/.bin/tuono-build-prod";
+
+#[cfg(not(target_os = "windows"))]
+const BUILD_TUONO_CONFIG: &str = "./node_modules/.bin/tuono-build-config";
 
 #[derive(Debug)]
 pub struct App {
@@ -147,6 +153,13 @@ impl App {
             .expect("Failed to run the rust server")
     }
 
+    pub fn build_tuono_config(&self) -> Result<std::process::Output, std::io::Error> {
+        Command::new(BUILD_TUONO_CONFIG)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .output()
+    }
     pub fn get_used_http_methods(&self) -> HashSet<Method> {
         let mut acc = HashSet::new();
 

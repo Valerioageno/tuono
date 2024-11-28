@@ -87,7 +87,9 @@ pub fn app() -> std::io::Result<()> {
         Actions::Dev => {
             check_ports(Mode::Dev);
 
-            let _ = init_tuono_folder(Mode::Dev)?;
+            let app = init_tuono_folder(Mode::Dev)?;
+            app.build_tuono_config()
+                .expect("Failed to build tuono.config.ts");
 
             watch::watch().unwrap();
         }
@@ -104,6 +106,9 @@ pub fn app() -> std::io::Result<()> {
                 println!("Cannot statically build dynamic routes");
                 return Ok(());
             }
+
+            app.build_tuono_config()
+                .expect("Failed to build tuono.config.ts");
 
             app.build_react_prod();
 
