@@ -88,6 +88,7 @@ const developmentCSRWatch = () => {
 const buildProd = () => {
   blockingAsync(async () => {
     const config = await loadConfig()
+
     await build(
       mergeConfig(BASE_CONFIG, {
         resolve: {
@@ -145,9 +146,7 @@ const buildConfig = () => {
         rollupOptions: {
           input: './tuono.config.ts',
           output: {
-            entryFileNames: 'config.js',
-            name: 'config',
-            format: 'cjs',
+            entryFileNames: 'config.mjs',
           },
         },
       },
