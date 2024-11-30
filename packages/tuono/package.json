@@ -9,7 +9,9 @@
     "lint": "eslint --ext .ts,.tsx ./src -c ../../.eslintrc",
     "format": "prettier -u --write --ignore-unknown '**/*'",
     "format:check": "prettier --check --ignore-unknown '**/*'",
-    "types": "tsc --noEmit"
+    "types": "tsc --noEmit",
+    "test:watch": "vitest",
+    "test": "vitest run"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",
