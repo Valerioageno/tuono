@@ -22,7 +22,7 @@ const ROUTES_FOLDER_PATH: &str = "\\src\\routes";
 const BUILD_JS_SCRIPT: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
 
 #[cfg(target_os = "windows")]
-const BUILD_TUONO_CONFIG: &str = ".\\node_modules\\.bin\\tuono-build-prod.cmd";
+const BUILD_TUONO_CONFIG: &str = ".\\node_modules\\.bin\\tuono-build-config.cmd";
 
 #[cfg(not(target_os = "windows"))]
 const ROUTES_FOLDER_PATH: &str = "/src/routes";
