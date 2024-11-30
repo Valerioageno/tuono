@@ -7,9 +7,9 @@ use std::io::{self, prelude::*};
 use std::path::{Path, PathBuf};
 
 const GITHUB_TUONO_REPO_URL: &str =
-    "https://api.github.com/repos/Valerioageno/tuono/git/trees/main?recursive=1";
+    "https://api.github.com/repos/tuono-labs/tuono/git/trees/main?recursive=1";
 
-const GITHUB_RAW_CONTENT_URL: &str = "https://raw.githubusercontent.com/Valerioageno/tuono/main/";
+const GITHUB_RAW_CONTENT_URL: &str = "https://raw.githubusercontent.com/tuono-labs/tuono/main/";
 
 #[derive(Deserialize, Debug)]
 enum GithubFileType {
@@ -64,7 +64,7 @@ pub fn create_new_project(folder_name: Option<String>, template: Option<String>)
 
     if new_project_files.is_empty() {
         eprintln!("Error: Template '{template}' not found");
-        println!("Hint: you can view the available templates at https://github.com/Valerioageno/tuono/tree/main/examples");
+        println!("Hint: you can view the available templates at https://github.com/tuono-labs/tuono/tree/main/examples");
         std::process::exit(1);
     }
 
