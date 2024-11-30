@@ -9,6 +9,7 @@ import {
   CONFIG_FOLDER_NAME,
   CONFIG_FILE_NAME,
 } from './constants'
+import { pathToFileURL } from 'url'
 
 /**
  *  Normalize vite alias option:
@@ -78,12 +79,12 @@ export const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
 export const loadConfig = async (): Promise<TuonoConfig> => {
   try {
     const configFile = await import(
-      path.join(
+      pathToFileURL(path.join(
         process.cwd(),
         DOT_TUONO_FOLDER_NAME,
         CONFIG_FOLDER_NAME,
         CONFIG_FILE_NAME,
-      )
+      )).href
     )
 
     return normalizeConfig(configFile.default)
