@@ -11,6 +11,11 @@
     "format:check": "prettier --check --ignore-unknown '**/*'",
     "types": "tsc --noEmit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuono-labs/tuono.git",
+    "directory": "packages/tuono"
+  },
   "type": "module",
   "types": "dist/esm/index.d.ts",
   "main": "dist/cjs/index.cjs",

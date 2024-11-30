@@ -13,6 +13,11 @@
     "test:watch": "vitest",
     "test": "vitest run"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuono-labs/tuono.git",
+    "directory": "packages/router"
+  },
   "keywords": [],
   "author": "Valerio Ageno",
   "license": "MIT",
