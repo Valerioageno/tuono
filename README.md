@@ -3,10 +3,10 @@
 
 # Tuono
 
-<img align="right" src="https://raw.githubusercontent.com/Valerioageno/tuono/main/assets/logo.png" width="160px">
+<img align="right" src="https://raw.githubusercontent.com/tuono-labs/tuono/main/assets/logo.png" width="160px">
 
-![](https://github.com/Valerioageno/tuono/actions/workflows/rust.yml/badge.svg)
-![](https://github.com/Valerioageno/tuono/actions/workflows/typescript.yml/badge.svg)
+![](https://github.com/tuono-labs/tuono/actions/workflows/rust.yml/badge.svg)
+![](https://github.com/tuono-labs/tuono/actions/workflows/typescript.yml/badge.svg)
 
 **Tuono is a full-stack web framework for building React applications using Rust as the backend with
 a strong focus on usability and performance.**
@@ -48,7 +48,7 @@ by Tuono based on the files defined within the `./src/routes` directory.
 The Tuono API tries to stick as much as possible to the Next.js one (or at least takes a huge inspiration
 from it). The major difference is the backend system. While Next.js relies entirely on Node/Deno/Bun,
 Tuono runs the server without any intermediary runtime. This enables impressive performance improvements
-(check the benchmarks [here](https://github.com/Valerioageno/tuono/tree/main/benches)).
+(check the benchmarks [here](https://github.com/tuono-labs/tuono/tree/main/benches)).
 
 ## Getting started
 
@@ -61,7 +61,7 @@ Then run `cargo install tuono`.
 To list all the available commands, run `tuono -h`
 
 To create a new project, run `tuono new [NAME]` (optionally, you can pass the `--template` (or `-t`) flag - check the
-[examples](https://github.com/Valerioageno/tuono/tree/main/examples) folder).
+[examples](https://github.com/tuono-labs/tuono/tree/main/examples) folder).
 
 Then, to run the local development environment, install the JS dependencies (`npm install`) and run inside the project folder `tuono dev`
 

@@ -27,7 +27,7 @@ export default function Actions(): JSX.Element {
           variant="default"
           size="lg"
           aria-label="Check the project on github"
-          href="https://github.com/Valerioageno/tuono"
+          href="https://github.com/tuono-labs/tuono"
           target="_blank"
           component="a"
         >
