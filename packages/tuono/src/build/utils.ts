@@ -79,12 +79,14 @@ export const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
 export const loadConfig = async (): Promise<TuonoConfig> => {
   try {
     const configFile = await import(
-      pathToFileURL(path.join(
-        process.cwd(),
-        DOT_TUONO_FOLDER_NAME,
-        CONFIG_FOLDER_NAME,
-        CONFIG_FILE_NAME,
-      )).href
+      pathToFileURL(
+        path.join(
+          process.cwd(),
+          DOT_TUONO_FOLDER_NAME,
+          CONFIG_FOLDER_NAME,
+          CONFIG_FILE_NAME,
+        ),
+      ).href
     )
 
     return normalizeConfig(configFile.default)
