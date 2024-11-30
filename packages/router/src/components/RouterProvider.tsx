@@ -1,11 +1,13 @@
 import React from 'react'
 import type { ReactNode, JSX } from 'react'
+
 import { useListenBrowserUrlUpdates } from '../hooks/useListenBrowserUrlUpdates'
 import { initRouterStore } from '../hooks/useRouterStore'
 import type { ServerProps } from '../types'
+import type { Router } from '../router'
+
 import { getRouterContext } from './RouterContext'
 import { Matches } from './Matches'
-import type { Router } from '../router'
 
 interface RouterContextProviderProps {
   router: Router

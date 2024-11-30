@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { hasParentRoute } from './has-parent-route'
 
 const routes = [

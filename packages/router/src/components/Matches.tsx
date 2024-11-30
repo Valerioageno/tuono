@@ -1,8 +1,10 @@
 import * as React from 'react'
+
 import { useRouterStore } from '../hooks/useRouterStore'
+import useRoute from '../hooks/useRoute'
+
 import { RouteMatch } from './RouteMatch'
 import NotFound from './NotFound'
-import useRoute from '../hooks/useRoute'
 
 interface MatchesProps<TServerSideProps = unknown> {
   // user defined props

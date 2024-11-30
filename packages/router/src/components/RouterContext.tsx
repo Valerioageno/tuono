@@ -1,4 +1,5 @@
 import React from 'react'
+
 import type { Router } from '../router'
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { buildRouteConfig } from './build-route-config'
 
 const routes = [

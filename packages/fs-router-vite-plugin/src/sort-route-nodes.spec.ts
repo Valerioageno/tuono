@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { sortRouteNodes } from './sort-route-nodes'
 
 const routes = [

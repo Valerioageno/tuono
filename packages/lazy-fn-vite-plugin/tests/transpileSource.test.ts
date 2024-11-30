@@ -1,5 +1,6 @@
 import { it, expect, describe } from 'vitest'
 import type { Plugin } from 'vite'
+
 import { LazyLoadingPlugin } from '../src'
 
 const SOURCE_CODE = `

@@ -1,4 +1,5 @@
 import type { Route } from '../route'
+
 import { useInternalRouter } from './useInternalRouter'
 
 const DYNAMIC_PATH_REGEX = /\[(.*?)\]/

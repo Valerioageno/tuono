@@ -1,18 +1,22 @@
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
+// @ts-expect-error no types are available for this plugin
 import eslintPluginImport from 'eslint-plugin-import'
 
 export default tseslint.config(
   {
     ignores: [
-      // === shared config ===
+      // #region shared
       '**/build',
       '**/dist',
+      '**/vite.config.ts.timestamp**',
+      // #endregion shared
 
-      // === packages ===
+      // #region package-specific
       'packages/fs-router-vite-plugin/tests/generator/**',
 
       'packages/tuono/bin/**',
+      // #endregion package-specific
     ],
   },
   {
@@ -43,6 +47,7 @@ export default tseslint.config(
       },
     },
     rules: {
+      // #region @typescript-eslint
       '@typescript-eslint/array-type': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/no-empty-object-type': 'error',
@@ -81,17 +86,21 @@ export default tseslint.config(
         'error',
         { ignoreParameters: true },
       ],
+      // #endregion @typescript-eslint
+
+      // #region import
       'import/default': 'error',
       'import/export': 'error',
       'import/namespace': 'error',
       'import/newline-after-import': 'error',
       'import/no-cycle': 'error',
-      'import/no-duplicates': 'off',
+      'import/no-duplicates': 'error',
       'import/no-named-as-default-member': 'error',
       'import/no-unused-modules': 'error',
       'import/order': [
-        'off',
+        'error',
         {
+          'newlines-between': 'always-and-inside-groups',
           groups: [
             'builtin',
             'external',
@@ -100,10 +109,16 @@ export default tseslint.config(
             'sibling',
             'index',
             'object',
-            'type',
           ],
         },
       ],
+      // #endregion import
+
+      // #region misc
+      /**
+       * @todo some of this might be removed.
+       *       They are handled by other plugin and / or typescript
+       */
       'no-case-declarations': 'error',
       'no-empty': 'error',
       'no-prototype-builtins': 'error',

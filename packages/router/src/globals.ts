@@ -1,4 +1,5 @@
 import type React from 'react'
+
 import type { Router } from './router'
 
 declare global {

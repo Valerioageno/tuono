@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import { RouteMatch } from './RouteMatch'
+
 import { cleanup, render, screen } from '@testing-library/react'
+
 import type { Route } from '../route'
+
+import { RouteMatch } from './RouteMatch'
 import '@testing-library/jest-dom'
 
 interface Props {

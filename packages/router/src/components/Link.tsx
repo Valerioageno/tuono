@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { useRouter } from '../hooks/useRouter'
-import type { AnchorHTMLAttributes, MouseEvent } from 'react'
-import useRoute from '../hooks/useRoute'
+import type { AnchorHTMLAttributes } from 'react'
 import { useInView } from 'react-intersection-observer'
+
+import { useRouter } from '../hooks/useRouter'
+import useRoute from '../hooks/useRoute'
 
 interface TuonoLinkProps {
   /**
@@ -28,7 +29,7 @@ export default function Link(
     triggerOnce: true,
   })
 
-  const handleTransition = (e: MouseEvent<HTMLAnchorElement>): void => {
+  const handleTransition: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault()
     props.onClick?.(e)
 

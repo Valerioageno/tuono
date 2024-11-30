@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+
 import type { Route } from '../route'
-import { useRouterStore } from './useRouterStore'
 import { fromUrlToParsedLocation } from '../utils/from-url-to-parsed-location'
+
+import { useRouterStore } from './useRouterStore'
 
 const isServer = typeof document === 'undefined'
 

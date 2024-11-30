@@ -1,6 +1,8 @@
 import * as fsp from 'fs/promises'
 import path from 'path'
 
+import { format } from 'prettier'
+
 import { buildRouteConfig } from './build-route-config'
 import { hasParentRoute } from './has-parent-route'
 import {
@@ -19,7 +21,6 @@ import {
 import type { Config, RouteNode } from './types'
 import { ROUTES_FOLDER, ROOT_PATH_ID, GENERATED_ROUTE_TREE } from './constants'
 
-import { format } from 'prettier'
 import { sortRouteNodes } from './sort-route-nodes'
 import isDefaultExported from './utils/is-default-exported'
 
