@@ -1,8 +1,11 @@
-import { build, createServer, InlineConfig } from 'vite'
+import { build, createServer, InlineConfig, mergeConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import ViteFsRouter from 'tuono-fs-router-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 import mdx from '@mdx-js/rollup'
+import { loadConfig, blockingAsync } from './utils'
+
+const VITE_PORT = 3001
 
 const BASE_CONFIG: InlineConfig = {
   root: '.tuono',
@@ -22,91 +25,133 @@ const BASE_CONFIG: InlineConfig = {
   ],
 }
 
-const VITE_PORT = 3001
-
-export function developmentSSRBundle() {
-  ;(async () => {
-    await build({
-      ...BASE_CONFIG,
-      build: {
-        ssr: true,
-        minify: false,
-        outDir: 'server',
-        emptyOutDir: true,
-        rollupOptions: {
-          input: './.tuono/server-main.tsx',
-          // Silent all logs
-          onLog() {},
-          output: {
-            entryFileNames: 'dev-server.js',
-            format: 'iife',
+const developmentSSRBundle = () => {
+  blockingAsync(async () => {
+    const config = await loadConfig()
+    await build(
+      mergeConfig(BASE_CONFIG, {
+        resolve: {
+          alias: config.vite?.alias || {},
+        },
+        build: {
+          ssr: true,
+          minify: false,
+          outDir: 'server',
+          emptyOutDir: true,
+          rollupOptions: {
+            input: './.tuono/server-main.tsx',
+            // Silent all logs
+            onLog() {},
+            output: {
+              entryFileNames: 'dev-server.js',
+              format: 'iife',
+            },
           },
         },
-      },
-      ssr: {
-        target: 'webworker',
-        noExternal: true,
-      },
-    })
-  })()
+        ssr: {
+          target: 'webworker',
+          noExternal: true,
+        },
+      }),
+    )
+  })
 }
 
-export function developmentCSRWatch() {
-  ;(async () => {
-    const server = await createServer({
-      ...BASE_CONFIG,
-      // Entry point for the development vite proxy
-      base: '/vite-server/',
-
-      server: {
-        port: VITE_PORT,
-        strictPort: true,
-      },
-      build: {
-        manifest: true,
-        emptyOutDir: true,
-        rollupOptions: {
-          input: './.tuono/client-main.tsx',
+const developmentCSRWatch = () => {
+  blockingAsync(async () => {
+    const config = await loadConfig()
+    const server = await createServer(
+      mergeConfig(BASE_CONFIG, {
+        resolve: {
+          alias: config.vite?.alias || {},
         },
-      },
-    })
+        // Entry point for the development vite proxy
+        base: '/vite-server/',
+
+        server: {
+          port: VITE_PORT,
+          strictPort: true,
+        },
+        build: {
+          manifest: true,
+          emptyOutDir: true,
+          rollupOptions: {
+            input: './.tuono/client-main.tsx',
+          },
+        },
+      }),
+    )
     await server.listen()
-  })()
+  })
 }
 
-export function buildProd() {
-  ;(async () => {
-    await build({
-      ...BASE_CONFIG,
-      build: {
-        manifest: true,
-        emptyOutDir: true,
-        outDir: '../out/client',
-        rollupOptions: {
-          input: './.tuono/client-main.tsx',
-        },
-      },
-    })
+const buildProd = () => {
+  blockingAsync(async () => {
+    const config = await loadConfig()
 
+    await build(
+      mergeConfig(BASE_CONFIG, {
+        resolve: {
+          alias: config.vite?.alias || {},
+        },
+        build: {
+          manifest: true,
+          emptyOutDir: true,
+          outDir: '../out/client',
+          rollupOptions: {
+            input: './.tuono/client-main.tsx',
+          },
+        },
+      }),
+    )
+
+    await build(
+      mergeConfig(BASE_CONFIG, {
+        resolve: {
+          alias: config.vite?.alias || {},
+        },
+        build: {
+          ssr: true,
+          minify: true,
+          outDir: '../out/server',
+          emptyOutDir: true,
+          rollupOptions: {
+            input: './.tuono/server-main.tsx',
+            output: {
+              entryFileNames: 'prod-server.js',
+              format: 'iife',
+            },
+          },
+        },
+        ssr: {
+          target: 'webworker',
+          noExternal: true,
+        },
+      }),
+    )
+  })
+}
+
+const buildConfig = () => {
+  blockingAsync(async () => {
     await build({
-      ...BASE_CONFIG,
+      root: '.tuono',
+      logLevel: 'silent',
+      cacheDir: 'cache',
+      envDir: '../',
       build: {
         ssr: true,
-        minify: true,
-        outDir: '../out/server',
+        outDir: 'config',
         emptyOutDir: true,
         rollupOptions: {
-          input: './.tuono/server-main.tsx',
+          input: './tuono.config.ts',
           output: {
-            entryFileNames: 'prod-server.js',
-            format: 'iife',
+            entryFileNames: 'config.mjs',
           },
         },
       },
-      ssr: {
-        target: 'webworker',
-        noExternal: true,
-      },
     })
-  })()
+  })
 }
+
+export { buildProd, buildConfig, developmentCSRWatch, developmentSSRBundle }

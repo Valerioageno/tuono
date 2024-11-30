@@ -2,7 +2,7 @@
 import type { JSX } from 'react'
 import { Head, type TuonoProps } from 'tuono'
 
-import PokemonLink from '../components/PokemonLink'
+import PokemonLink from '@/components/PokemonLink'
 
 interface Pokemon {
   name: string

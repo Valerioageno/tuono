@@ -1,7 +1,7 @@
 import type { JSX } from 'react'
 import { Head, type TuonoProps } from 'tuono'
 
-import PokemonView from '../../components/PokemonView'
+import PokemonView from '@/components/PokemonView'
 
 interface Pokemon {
   name: string
