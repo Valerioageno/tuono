@@ -1,55 +1,68 @@
-import type { AliasOptions } from 'vite'
-import type { TuonoConfig } from '../config'
 import path from 'path'
 
-const DOT_TUONO = '.tuono'
-const CONFIG_FOLDER = 'config'
-const CONFIG_FILE = 'config.mjs'
+import type { AliasOptions } from 'vite'
+
+import type { TuonoConfig } from '../config'
+
+import {
+  DOT_TUONO_FOLDER_NAME,
+  CONFIG_FOLDER_NAME,
+  CONFIG_FILE_NAME,
+} from './constants'
 
 /**
- * Sanitize the vite alias:
- * - If the path is a relative path transfrorm it to absolute applying the tuono root folder
- * - If the path is absolute remove the ".tuono/config/" path from it
+ *  Normalize vite alias option:
+ * - If the path is relative, transform it to absolute, prepending the tuono root folder
+ * - If the path is absolute, remove the ".tuono/config/" path from it
  */
-const cleanAliasPath = (filePath: string): string => {
+const normalizeAliasPath = (filePath: string): string => {
   if (path.isAbsolute(filePath)) {
-    return filePath.replace(path.join(DOT_TUONO, CONFIG_FOLDER), '')
-  } else {
-    return path.join(process.cwd(), filePath)
+    return filePath.replace(
+      path.join(DOT_TUONO_FOLDER_NAME, CONFIG_FOLDER_NAME),
+      '',
+    )
   }
+
+  return path.join(process.cwd(), filePath)
 }
 
 /**
- * Iterator over the config.vite.alias entry
+ * From a given vite aliasOptions apply {@link normalizeAliasPath} for each alias.
+ *
+ * The config is bundled by `vite` and emitted inside {@link DOT_TUONO_FOLDER_NAME}/{@link CONFIG_FOLDER_NAME}.
+ * According to this, we have to ensure that the aliases provided by the user are updated to refer to the right folders.
+ *
+ * @see https://github.com/Valerioageno/tuono/pull/153#issuecomment-2508142877
  */
-const sanitizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
+const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
   if (!alias) return
 
   if (Array.isArray(alias)) {
     return alias.map(({ find, replacement }) => ({
       find,
-      replacement: cleanAliasPath(replacement),
+      replacement: normalizeAliasPath(replacement),
     }))
   }
+
   if (typeof alias === 'object') {
-    let object: AliasOptions = {}
+    let normalizedAlias: AliasOptions = {}
     for (let [key, value] of Object.entries(alias)) {
-      object[key] = cleanAliasPath(value)
+      normalizedAlias[key] = normalizeAliasPath(value)
     }
-    return object
+    return normalizedAlias
   }
 
   return alias
 }
 
 /**
- * Wrapper function to sanitize the tuono.config.ts file
+ * Wrapper function to normalize the tuono.config.ts file
  */
-const sanitizeConfig = (config: TuonoConfig): TuonoConfig => {
+const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
   return {
     ...config,
     vite: {
-      alias: sanitizeViteAlias(config?.vite?.alias),
+      alias: normalizeViteAlias(config?.vite?.alias),
     },
   }
 }
@@ -57,9 +70,14 @@ const sanitizeConfig = (config: TuonoConfig): TuonoConfig => {
 export const loadConfig = async (): Promise<TuonoConfig> => {
   try {
     const configFile = await import(
-      path.join(process.cwd(), DOT_TUONO, CONFIG_FOLDER, CONFIG_FILE)
+      path.join(
+        process.cwd(),
+        DOT_TUONO_FOLDER_NAME,
+        CONFIG_FOLDER_NAME,
+        CONFIG_FILE_NAME,
+      )
     )
-    return sanitizeConfig(configFile.default)
+    return normalizeConfig(configFile.default)
   } catch (err) {
     console.error('Failed to load tuono.config.ts')
     console.error(err)
