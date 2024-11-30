@@ -7,12 +7,12 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Head, useRouter } from 'tuono'
-import Navbar from '../components/navbar'
+import Navbar from '@/components/navbar'
 
 import '@mantine/core/styles.css'
 import '@mantine/code-highlight/styles.css'
 
-import Sidebar from '../components/sidebar'
+import Sidebar from '@/components/sidebar'
 
 interface RootRouteProps {
   children: ReactNode
