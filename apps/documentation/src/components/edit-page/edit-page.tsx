@@ -4,7 +4,7 @@ import { IconEdit } from '@tabler/icons-react'
 import { useRouter } from 'tuono'
 
 const GITHUB_URL =
-  'https://github.com/Valerioageno/tuono/tree/main/apps/documentation/src/routes'
+  'https://github.com/tuono-labs/tuono/tree/main/apps/documentation/src/routes'
 
 export default function EditPage(): JSX.Element {
   const { pathname } = useRouter()
