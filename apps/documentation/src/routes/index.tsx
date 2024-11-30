@@ -1,7 +1,7 @@
 import type { JSX } from 'react'
 
-import Hero from '../components/hero'
-import MetaTags from '../components/meta-tags'
+import Hero from '@/components/hero'
+import MetaTags from '@/components/meta-tags'
 
 export default function IndexPage(): JSX.Element {
   return (

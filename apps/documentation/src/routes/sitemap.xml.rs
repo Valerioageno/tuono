@@ -1,8 +1,7 @@
-use tuono_lib::reqwest::StatusCode;
-use tuono_lib::{Request, Response};
-use tuono_lib::axum::http::{header, HeaderMap};
 use glob::glob;
 use time::OffsetDateTime;
+use tuono_lib::axum::http::{header, HeaderMap, StatusCode};
+use tuono_lib::{Request, Response};
 
 const FILE_TO_EXCLUDE: [&str; 2] = ["sitemap.xml", "__root"];
 
@@ -14,11 +13,17 @@ const SITEMAP: &str = r#"<?xml version="1.0" encoding="UTF-8"?>
 fn load_routes() -> Vec<String> {
     let mut paths: Vec<String> = vec![];
 
-    for entry in glob("./src/routes/**/*").expect("Failed to glob src/routes folder").flatten() {
+    for entry in glob("./src/routes/**/*")
+        .expect("Failed to glob src/routes folder")
+        .flatten()
+    {
         if !entry.is_dir() {
             let path = clean_path(format!("/{}", entry.to_string_lossy()));
 
-            if !FILE_TO_EXCLUDE.iter().any(|exclude|  path.ends_with(exclude)) {
+            if !FILE_TO_EXCLUDE
+                .iter()
+                .any(|exclude| path.ends_with(exclude))
+            {
                 paths.push(path)
             }
         }
@@ -51,11 +56,16 @@ async fn generate_sitemap(_req: Request) -> Response {
             url.pop();
         }
 
-        sitemaps.push_str(
-            &format!(r#"<url><loc>{}</loc><lastmod>{}</lastmod></url>"#,url, OffsetDateTime::now_utc().date())
-        )
+        sitemaps.push_str(&format!(
+            r#"<url><loc>{}</loc><lastmod>{}</lastmod></url>"#,
+            url,
+            OffsetDateTime::now_utc().date()
+        ))
     }
 
-    Response::Custom((StatusCode::OK, headers, SITEMAP.replace("[PLACEHOLDER]", &sitemaps)))
+    Response::Custom((
+        StatusCode::OK,
+        headers,
+        SITEMAP.replace("[PLACEHOLDER]", &sitemaps),
+    ))
 }
-

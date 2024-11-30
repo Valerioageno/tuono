@@ -1,8 +1,8 @@
 import type { ReactNode, JSX } from 'react'
 import { AppShell, Container } from '@mantine/core'
 
-import MdxProvider from '../../components/mdx-provider'
-import EditPage from '../../components/edit-page'
+import MdxProvider from '@/components/mdx-provider'
+import EditPage from '@/components/edit-page'
 
 interface RootRouteProps {
   children: ReactNode
