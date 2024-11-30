@@ -12,18 +12,23 @@ import {
 
 /**
  *  Normalize vite alias option:
- * - If the path is relative, transform it to absolute, prepending the tuono root folder
+ * - If the path starts with `src` folder, transform it to absolute, prepending the tuono root folder
  * - If the path is absolute, remove the ".tuono/config/" path from it
+ * - Otherwise leave the path untouched
  */
-const normalizeAliasPath = (filePath: string): string => {
-  if (path.isAbsolute(filePath)) {
-    return filePath.replace(
+const normalizeAliasPath = (aliasPath: string): string => {
+  if (aliasPath.startsWith('./src') || aliasPath.startsWith('src')) {
+    return path.join(process.cwd(), aliasPath)
+  }
+
+  if (path.isAbsolute(aliasPath)) {
+    return aliasPath.replace(
       path.join(DOT_TUONO_FOLDER_NAME, CONFIG_FOLDER_NAME),
       '',
     )
   }
 
-  return path.join(process.cwd(), filePath)
+  return aliasPath
 }
 
 /**
@@ -38,8 +43,8 @@ const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
   if (!alias) return
 
   if (Array.isArray(alias)) {
-    return alias.map(({ find, replacement }) => ({
-      find,
+    return alias.map(({ replacement, ...userAliasDefinition }) => ({
+      ...userAliasDefinition,
       replacement: normalizeAliasPath(replacement),
     }))
   }
@@ -57,10 +62,13 @@ const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
 
 /**
  * Wrapper function to normalize the tuono.config.ts file
+ *
+ * @warning Exported for unit test.
+ *          There is no easy way to mock the module export and change it in every test
+ *          and also testing the error
  */
-const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
+export const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
   return {
-    ...config,
     vite: {
       alias: normalizeViteAlias(config?.vite?.alias),
     },
@@ -77,6 +85,7 @@ export const loadConfig = async (): Promise<TuonoConfig> => {
         CONFIG_FILE_NAME,
       )
     )
+
     return normalizeConfig(configFile.default)
   } catch (err) {
     console.error('Failed to load tuono.config.ts')
