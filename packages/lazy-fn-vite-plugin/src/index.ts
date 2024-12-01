@@ -1,22 +1,20 @@
-import type { Plugin } from 'vite'
 import * as babel from '@babel/core'
-import type { PluginItem } from '@babel/core'
-import { isTuonoDynamicFnImported } from './utils'
-
-import {
-  TUONO_MAIN_PACKAGE,
-  TUONO_DYNAMIC_FN_ID,
-  TUONO_LAZY_FN_ID,
-} from './constants'
-
 import * as t from '@babel/types'
-
+import type { Plugin } from 'vite'
+import type { PluginItem } from '@babel/core'
 import type {
   Identifier,
   CallExpression,
   ArrowFunctionExpression,
   StringLiteral,
 } from '@babel/types'
+
+import {
+  TUONO_MAIN_PACKAGE,
+  TUONO_DYNAMIC_FN_ID,
+  TUONO_LAZY_FN_ID,
+} from './constants'
+import { isTuonoDynamicFnImported } from './utils'
 
 /**
  * [SERVER build]

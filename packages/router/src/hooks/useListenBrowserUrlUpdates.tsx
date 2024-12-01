@@ -1,5 +1,6 @@
-import { useRouterStore } from './useRouterStore'
 import { useEffect } from 'react'
+
+import { useRouterStore } from './useRouterStore'
 
 /**
  * This hook is meant to handle just browser related location updates
@@ -8,8 +9,9 @@ import { useEffect } from 'react'
 export const useListenBrowserUrlUpdates = (): void => {
   const updateLocation = useRouterStore((st) => st.updateLocation)
 
-  const updateLocationOnPopStateChange = ({ target }: any): void => {
-    const { pathname, hash, href, search } = target.location
+  const updateLocationOnPopStateChange = ({ target }: PopStateEvent): void => {
+    const { pathname, hash, href, search } = (target as typeof window).location
+
     updateLocation({
       pathname,
       hash,
@@ -18,8 +20,10 @@ export const useListenBrowserUrlUpdates = (): void => {
       search: Object.fromEntries(new URLSearchParams(search)),
     })
   }
+
   useEffect(() => {
     window.addEventListener('popstate', updateLocationOnPopStateChange)
+
     return (): void => {
       window.removeEventListener('popstate', updateLocationOnPopStateChange)
     }

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { hasParentRoute } from './has-parent-route'
 
 const routes = [
@@ -70,7 +71,7 @@ const dynamicRoute = {
   cleanedPath: '/posts/[post]',
 }
 
-describe('hasParentRoute works', async () => {
+describe('hasParentRoute works', () => {
   it('Should detect parent route', () => {
     const parentRoute = hasParentRoute(routes, myPost, myPost.path)
     expect(parentRoute).toStrictEqual(parent)

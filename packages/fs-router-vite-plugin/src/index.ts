@@ -1,8 +1,8 @@
-import { routeGenerator } from './generator'
-
 import { normalize } from 'path'
 
 import type { Plugin } from 'vite'
+
+import { routeGenerator } from './generator'
 
 const ROUTES_DIRECTORY_PATH = './src/routes'
 

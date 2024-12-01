@@ -1,9 +1,10 @@
 import React from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from 'tuono-router'
+import type { createRoute } from 'tuono-router'
 import { HelmetProvider } from 'react-helmet-async'
 
-type RouteTree = any
+type RouteTree = ReturnType<typeof createRoute>
 
 export function hydrate(routeTree: RouteTree): void {
   // Create a new router instance

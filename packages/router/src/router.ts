@@ -3,15 +3,15 @@ import type { ComponentType as ReactComponentType } from 'react'
 import { trimPath, trimPathRight } from './utils'
 import type { Route } from './route'
 
-type RouteTree = any
+type RouteTree = Route
 
-interface CreateRouter {
+interface CreateRouterOptions {
   routeTree: RouteTree
   basePath?: string
-  options?: RouteOptions
+  options?: RouterOptions
 }
 
-interface RouteOptions {
+interface RouterOptions {
   component?: ReactComponentType
   hasHandler?: boolean
   routeTree?: RouteTree
@@ -19,32 +19,39 @@ interface RouteOptions {
 
 export type RouterType = any
 
-export function createRouter(options: CreateRouter): Router {
+export function createRouter(options: CreateRouterOptions): Router {
   return new Router(options)
 }
 
 export class Router {
-  options?: RouteOptions
+  options?: RouterOptions
   basePath = '/'
-  routeTree: any
+  routeTree?: RouteTree
+
+  /** Not used */
   history: any
+
   isServer = typeof document === 'undefined'
+
   routesById: Record<string, Route> = {}
-  // Not used
+
+  /** Not used */
   routesByPath: Record<string, Route> = {}
+
+  /** Not used */
   flatRoutes: any
 
-  constructor(options: CreateRouter) {
+  constructor(options: CreateRouterOptions) {
     this.update({
       ...options,
     })
 
     if (!this.isServer) {
-      ;(window as any).__TSR__ROUTER__ = this
+      window.__TUONO__ROUTER__ = this
     }
   }
 
-  update = (newOptions: CreateRouter): void => {
+  update = (newOptions: CreateRouterOptions): void => {
     this.options = {
       ...this.options,
       ...newOptions,
@@ -82,7 +89,7 @@ export class Router {
       })
     }
 
-    recurseRoutes([this.routeTree])
+    recurseRoutes([this.routeTree as Route])
   }
 
   #updateBasePath = (basePath?: string): void => {

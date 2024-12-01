@@ -1,11 +1,10 @@
 import { afterEach, describe, expect, test, vi } from 'vitest'
-import useRoute from './useRoute'
 import { cleanup } from '@testing-library/react'
 
+import useRoute from './useRoute'
+
 describe('Test useRoute fn', () => {
-  afterEach(() => {
-    cleanup()
-  })
+  afterEach(cleanup)
 
   test('match routes by ids', () => {
     vi.mock('./useInternalRouter.tsx', () => ({

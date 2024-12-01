@@ -1,7 +1,9 @@
 import * as React from 'react'
+
+import { useInternalRouter } from '../hooks/useInternalRouter'
+
 import { RouteMatch } from './RouteMatch'
 import Link from './Link'
-import { useInternalRouter } from '../hooks/useInternalRouter'
 
 export default function NotFound(): React.JSX.Element {
   const router = useInternalRouter()

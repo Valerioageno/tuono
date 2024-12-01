@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { buildRouteConfig } from './build-route-config'
 
 const routes = [
@@ -61,11 +62,11 @@ const routes = [
   },
 ]
 
-describe('buildRouteConfig works', async () => {
+describe('buildRouteConfig works', () => {
   it('Should build the correct config', () => {
-    const expectedConfig =
-      'PostsMyPostRoute,PostsIndexRoute,PostspostIndexRoute'
     const config = buildRouteConfig(routes)
-    expect(config).toStrictEqual(expectedConfig)
+    expect(config).toStrictEqual(
+      'PostsMyPostRoute,PostsIndexRoute,PostspostIndexRoute',
+    )
   })
 })

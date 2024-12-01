@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { sortRouteNodes } from './sort-route-nodes'
 
 const routes = [
@@ -106,7 +107,7 @@ const expectedSorting = [
   },
 ]
 
-describe('sortRouteNodes works', async () => {
+describe('sortRouteNodes works', () => {
   it('Should correctly sort the nodes', () => {
     const sorted = sortRouteNodes(routes)
     expect(sorted).toStrictEqual(expectedSorting)

@@ -3,35 +3,41 @@ import type { RouteComponent } from './types'
 import { trimPathLeft, joinPaths } from './utils'
 
 interface RouteOptions {
+  id?: string
   isRoot?: boolean
   getParentRoute?: () => Route
   path?: string
   component: RouteComponent
+  hasHandler?: boolean
 }
 
 export function createRoute(options: RouteOptions): Route {
   return new Route(options)
 }
 
-export const rootRouteId = '__root__'
+const rootRouteId = '__root__'
 
 export class Route {
-  parentRoute!: any
+  options: RouteOptions
+
   id?: string
-  fullPath!: string
+  isRoot: boolean
   path?: string
-  options: any
+  fullPath!: string
 
   children?: Route[]
+  parentRoute!: any
+  /** @todo check if this is required */
   router: RouterType
-  isRoot: boolean
   originalIndex?: number
   component: RouteComponent
+
+  '$$typeof': symbol
 
   constructor(options: RouteOptions) {
     this.isRoot = options.isRoot ?? typeof options.getParentRoute !== 'function'
     this.options = options
-    ;(this as any).$$typeof = Symbol.for('react.memo')
+    this.$$typeof = Symbol.for('react.memo')
 
     this.component = options.component
   }
@@ -39,9 +45,9 @@ export class Route {
   init = (originalIndex: number): void => {
     this.originalIndex = originalIndex
 
-    const isRoot = !this.options?.path && !this.options?.id
+    const isRoot = !this.options.path && !this.options.id
 
-    this.parentRoute = this.options?.getParentRoute?.()
+    this.parentRoute = this.options.getParentRoute?.()
 
     if (isRoot) {
       this.path = rootRouteId
@@ -54,7 +60,7 @@ export class Route {
       path = trimPathLeft(path)
     }
 
-    const customId = this.options?.id || path
+    const customId = this.options.id || path
 
     // Strip the parentId prefix from the first level of children
     let id = isRoot ? rootRouteId : joinPaths([customId])

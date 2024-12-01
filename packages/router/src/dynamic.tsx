@@ -1,5 +1,6 @@
 import * as React from 'react'
 import type { ReactElement, ComponentType } from 'react'
+
 import type { RouteComponent } from './types'
 
 type ImportFn = () => Promise<{ default: React.ComponentType<any> }>

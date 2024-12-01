@@ -1,5 +1,7 @@
 import fs from 'fs/promises'
+
 import { describe, it, expect } from 'vitest'
+
 import { routeGenerator } from '../src/generator'
 
 describe('generator works', async () => {

@@ -1,11 +1,12 @@
 import * as React from 'react'
+
 import type { Route } from '../route'
 import { useServerSideProps } from '../hooks/useServerSideProps'
 
-interface MatchProps {
+interface RouteMatchProps<TServerSideProps = unknown> {
   route: Route
   // User defined server side props
-  serverSideProps: any
+  serverSideProps: TServerSideProps
 }
 
 /**
@@ -16,7 +17,7 @@ interface MatchProps {
 export const RouteMatch = ({
   route,
   serverSideProps,
-}: MatchProps): React.JSX.Element => {
+}: RouteMatchProps): React.JSX.Element => {
   const { data, isLoading } = useServerSideProps(route, serverSideProps)
 
   const routes = React.useMemo(() => loadParentComponents(route), [route.id])
@@ -28,18 +29,18 @@ export const RouteMatch = ({
   )
 }
 
-interface TraverseRootComponentsProps {
+interface ParentProps<TData = unknown> {
+  children: React.ReactNode
+  data: TData
+  isLoading: boolean
+}
+
+interface TraverseRootComponentsProps<TData = unknown> {
   routes: Route[]
-  data: any
+  data: TData
   isLoading: boolean
   children?: React.ReactNode
   index?: number
-}
-
-interface ParentProps {
-  children: React.ReactNode
-  data: any
-  isLoading: boolean
 }
 
 /*
@@ -84,7 +85,7 @@ const TraverseRootComponents = React.memo(
 )
 
 const loadParentComponents = (route: Route, loader: Route[] = []): Route[] => {
-  const parentComponent = route.options?.getParentRoute?.()
+  const parentComponent = route.options.getParentRoute?.() as Route
 
   loader.push(parentComponent)
 
