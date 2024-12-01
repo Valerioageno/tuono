@@ -3,8 +3,9 @@
   "description": "The react/rust fullstack framework documentation",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "eslint --ext .ts,.tsx ./src -c .eslintrc",
+    "lint": "eslint .",
     "format": "prettier -u --write --ignore-unknown './src/**/*'",
     "format:check": "prettier --check --ignore-unknown './src/**/*'",
     "types": "tsc --noEmit"

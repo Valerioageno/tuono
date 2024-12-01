@@ -8,6 +8,7 @@ export default function MdxTitle(props: TitleProps): JSX.Element {
       data-order={props.order}
       mt={20}
       {...props}
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       id={String(props.children ?? '')
         .toLowerCase()
         .replaceAll(' ', '-')}

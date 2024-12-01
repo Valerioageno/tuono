@@ -9,6 +9,7 @@ export default tseslint.config(
       // #region shared
       '**/build',
       '**/dist',
+      '**/.tuono',
       '**/vite.config.ts.timestamp**',
       // #endregion shared
 
@@ -126,6 +127,14 @@ export default tseslint.config(
       'no-shadow': 'error',
       'no-undef': 'off',
       'sort-imports': 'off',
+    },
+  },
+  {
+    files: ['apps/documentation/**'],
+    settings: {
+      'import/resolver': {
+        typescript: 'apps/documentation/tsconfig.json',
+      },
     },
   },
 )
