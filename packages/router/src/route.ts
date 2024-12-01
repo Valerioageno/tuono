@@ -1,4 +1,3 @@
-import type { RouterType } from './router'
 import type { RouteComponent } from './types'
 import { trimPathLeft, joinPaths } from './utils'
 
@@ -26,9 +25,7 @@ export class Route {
   fullPath!: string
 
   children?: Route[]
-  parentRoute!: any
-  /** @todo check if this is required */
-  router: RouterType
+  parentRoute?: Route
   originalIndex?: number
   component: RouteComponent
 
