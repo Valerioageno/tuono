@@ -47,7 +47,7 @@ export class Router {
     })
 
     if (!this.isServer) {
-      window.__TSR__ROUTER__ = this
+      window.__TUONO__ROUTER__ = this
     }
   }
 
