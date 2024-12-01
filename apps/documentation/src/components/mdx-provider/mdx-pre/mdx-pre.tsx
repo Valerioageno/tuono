@@ -1,10 +1,17 @@
 import type { JSX } from 'react'
 import { CodeHighlight } from '@mantine/code-highlight'
+
 import styles from './mdx-pre.module.css'
 
 interface PreProps {
-  children: any
+  children: {
+    props: {
+      children: string
+      className?: string
+    }
+  }
 }
+
 export default function MdxPre({ children }: PreProps): JSX.Element {
   return (
     <CodeHighlight

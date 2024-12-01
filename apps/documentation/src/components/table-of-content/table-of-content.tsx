@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter, Link } from 'tuono'
 import { IconList } from '@tabler/icons-react'
 import { Box, rem, ScrollArea, Text } from '@mantine/core'
+
 import { getHeadings, type Heading } from './get-headings'
 import classes from './table-of-content.module.css'
 

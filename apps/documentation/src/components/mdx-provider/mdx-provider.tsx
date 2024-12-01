@@ -1,8 +1,7 @@
-import type { JSX } from 'react'
+import type { JSX, ReactNode } from 'react'
 import { MDXProvider } from '@mdx-js/react'
 
 import MdxLink from './mdx-link'
-import type { ReactNode } from 'react'
 import MdxPre from './mdx-pre'
 import MdxQuote from './mdx-quote'
 import MdxCode from './mdx-code'
