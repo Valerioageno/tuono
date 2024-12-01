@@ -17,20 +17,9 @@ interface RouterContextProviderProps {
 function RouterContextProvider({
   router,
   children,
-  ...rest
 }: RouterContextProviderProps): JSX.Element {
   // Allow the router to update options on the router instance
-  router.update({
-    ...router.options,
-    ...rest,
-    // @ts-expect-error router options do not have context as property and I was unable to find any usage of it,
-    //  so is this spread required?
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    context: {
-      // @ts-expect-error see previous
-      ...router.options.context,
-    },
-  })
+  router.update({ ...router.options } as Parameters<typeof router.update>[0])
 
   const routerContext = getRouterContext()
 

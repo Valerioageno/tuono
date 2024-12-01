@@ -28,18 +28,11 @@ export class Router {
   basePath = '/'
   routeTree?: RouteTree
 
-  /** Not used */
-  history: any
-
   isServer = typeof document === 'undefined'
 
   routesById: Record<string, Route> = {}
 
-  /** Not used */
   routesByPath: Record<string, Route> = {}
-
-  /** Not used */
-  flatRoutes: any
 
   constructor(options: CreateRouterOptions) {
     this.update({
