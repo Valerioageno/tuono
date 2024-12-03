@@ -7,8 +7,12 @@
 ## Contributions
 
 Any feature contribution or suggestion is strongly appreciated.
-Since the current project size, there isn't yet a defined way to start a discussion. Consider [opening a new issue](https://github.com/tuono-labs/tuono/issues/new/choose)
-or to reach me using my email address, [valerioageno@yahoo.it](mailto:valerioageno@ahoo.it). I'm also available on Twitter (X); DM @valerioageno.
+
+We are currently managing the tasks' prioritization in the [Road to V1](https://github.com/orgs/tuono-labs/projects/2) project. You can pick any task that you see in the `ready` column that is not already assigned.
+
+If you want to contribute on something that is in the `backlog` column, or it hasn't been scoped yet, please drop a message in the [#general](https://discord.com/invite/khQzPa654B) discord channel so we can all have visibility of it.
+
+Consider [opening a new issue](https://github.com/tuono-labs/tuono/issues/new/choose) if you find a bug.
 
 ## Bugs
 
