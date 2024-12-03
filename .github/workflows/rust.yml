@@ -3,13 +3,15 @@ name: Rust CI
 on:
   push:
     branches:
-      - main
+      - 'main'
     paths:
       - '.github/**'
+      - 'Cargo.toml'
       - 'crates/**'
   pull_request:
     paths:
       - '.github/**'
+      - 'Cargo.toml'
       - 'crates/**'
 
 env:
