@@ -1,13 +1,17 @@
 import type { ReactNode, JSX } from 'react'
+
 import {
   ColorSchemeScript,
   createTheme,
   MantineProvider,
   AppShell,
+  Container,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { Head, useRouter } from 'tuono'
+import { Head } from 'tuono'
 
+import EditPage from '@/components/edit-page'
+import MdxProvider from '@/components/mdx-provider'
 import Navbar from '@/components/navbar'
 import Sidebar from '@/components/sidebar'
 
@@ -61,8 +65,6 @@ const theme = createTheme({
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
   const [opened, { toggle }] = useDisclosure()
 
-  const { pathname } = useRouter()
-
   return (
     <>
       <Head>
@@ -98,8 +100,13 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
           }}
         >
           <Navbar opened={opened} toggle={toggle} />
-          {pathname.startsWith('/documentation') && <Sidebar close={toggle} />}
-          {children}
+          <Sidebar close={toggle} />
+          <AppShell.Main>
+            <Container id="mdx-root" component="article" size="md" p={20}>
+              <MdxProvider>{children}</MdxProvider>
+              <EditPage />
+            </Container>
+          </AppShell.Main>
         </AppShell>
       </MantineProvider>
     </>
