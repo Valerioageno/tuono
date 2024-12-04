@@ -1,14 +1,12 @@
 .link {
-	border-radius: 8px;
-	margin-top: 0.25rem;
-	line-height: 1rem;
-	font-weight: 500;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+  line-height: 1rem;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
 .link span {
-	font-size: 14px;
-}
-
-.sublink span {
-	color: gray;
+  font-size: 14px !important;
+  color: var(--mantine-color-sidebar-gray);
 }

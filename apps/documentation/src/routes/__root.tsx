@@ -3,6 +3,7 @@ import type { ReactNode, JSX } from 'react'
 import {
   ColorSchemeScript,
   createTheme,
+  CSSVariablesResolver,
   MantineProvider,
   AppShell,
   Container,
@@ -60,6 +61,20 @@ const theme = createTheme({
       },
     },
   },
+  other: {
+    sidebarGrayLight: '#343a40',
+    sidebarGrayDark: '#adb5bd',
+  },
+})
+
+const resolver: CSSVariablesResolver = (theme) => ({
+  variables: {},
+  light: {
+    '--mantine-color-sidebar-gray': theme.other.sidebarGrayLight,
+  },
+  dark: {
+    '--mantine-color-sidebar-gray': theme.other.sidebarGrayDark,
+  },
 })
 
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
@@ -77,7 +92,7 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <ColorSchemeScript />
-      <MantineProvider theme={theme}>
+      <MantineProvider theme={theme} cssVariablesResolver={resolver}>
         <AppShell
           layout="alt"
           header={{ height: 60 }}

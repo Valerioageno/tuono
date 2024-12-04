@@ -7,6 +7,7 @@ import {
   Title,
   Button,
   ScrollArea,
+  Text,
 } from '@mantine/core'
 
 import SidebarLink from './sidebar-link'
@@ -107,6 +108,9 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
           />
         </SidebarLink>
         <Divider my="md" />
+        <Text size="xs" fw={700} fz={12} pl={12} py={5}>
+          Overview
+        </Text>
         <SidebarLink label="Routing" href="#required-for-focus">
           <SidebarLink
             href="/documentation/routing/intro"
@@ -152,6 +156,30 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
             onClick={close}
           />
         </SidebarLink>
+        <Divider my="md" />
+        <Text size="xs" fw={700} fz={12} pl={12} py={5}>
+          API reference
+        </Text>
+        <SidebarLink label="Components" href="#required-for-focus">
+          <SidebarLink
+            href="/documentation/routing/intro"
+            label="Head"
+            onClick={close}
+          />
+        </SidebarLink>
+        <SidebarLink label="Hooks" href="#required-for-focus">
+          <SidebarLink
+            href="/documentation/routing/intro"
+            label="Head"
+            onClick={close}
+          />
+        </SidebarLink>
+        <SidebarLink
+          href="/documentation/routing/intro"
+          label="tuono.config.ts"
+          onClick={close}
+        />
+        <Divider my="md" />
         <SidebarLink
           label="Contributing"
           href="#required-for-focus"
@@ -165,21 +193,6 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
           <SidebarLink
             href="/documentation/contributing/local-development"
             label="Local development"
-            onClick={close}
-          />
-        </SidebarLink>
-        <Divider my="md" />
-        <SidebarLink label="Components" href="#required-for-focus">
-          <SidebarLink
-            href="/documentation/routing/intro"
-            label="Head"
-            onClick={close}
-          />
-        </SidebarLink>
-        <SidebarLink label="Hooks" href="#required-for-focus">
-          <SidebarLink
-            href="/documentation/routing/intro"
-            label="Head"
             onClick={close}
           />
         </SidebarLink>

@@ -1,5 +1,6 @@
 import type { JSX, ReactNode } from 'react'
 import { NavLink, type NavLinkProps } from '@mantine/core'
+import clsx from 'clsx'
 import { Link, useRouter } from 'tuono'
 import { IconChevronRight } from '@tabler/icons-react'
 
@@ -17,9 +18,11 @@ export default function SidebarLink(
 ): JSX.Element {
   const { pathname } = useRouter()
 
+  const isActive = pathname === props.href
+
   const internalProps = {
-    active: pathname === props.href,
-    className: styles.link,
+    active: isActive,
+    className: clsx(styles.link),
     rightSection: props.children && (
       <IconChevronRight
         size="1.2rem"
