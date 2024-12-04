@@ -22,7 +22,7 @@ export default function SidebarLink(
 
   const internalProps = {
     active: isActive,
-    className: clsx(styles.link),
+    className: clsx(styles.link, isActive && styles.active),
     rightSection: props.children && (
       <IconChevronRight
         size="1.2rem"
