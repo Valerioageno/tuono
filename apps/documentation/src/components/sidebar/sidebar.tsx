@@ -107,7 +107,7 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
             onClick={close}
           />
         </SidebarLink>
-        <Divider my="md" />
+        <Divider my="md" mx={10} />
         <Text size="xs" fw={700} fz={12} pl={12} py={5}>
           Overview
         </Text>
@@ -156,7 +156,7 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
             onClick={close}
           />
         </SidebarLink>
-        <Divider my="md" />
+        <Divider my="md" mx={10} />
         <Text size="xs" fw={700} fz={12} pl={12} py={5}>
           API reference
         </Text>
@@ -179,7 +179,7 @@ export default function Sidebar({ close }: SidebarProps): JSX.Element {
           label="tuono.config.ts"
           onClick={close}
         />
-        <Divider my="md" />
+        <Divider my="md" mx={10} />
         <SidebarLink
           label="Contributing"
           href="#required-for-focus"
