@@ -15,8 +15,7 @@ include = [
 ]
 
 [lib]
-crate_type = ["proc-macro"]
-proc-marco = true
+proc-macro = true
 
 [dependencies]
 syn = { version = "2.0.0", features = ["full"] }
