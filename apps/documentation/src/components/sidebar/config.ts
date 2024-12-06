@@ -41,11 +41,6 @@ export const sidebarElements: SidebarElements[] = [
         label: 'Development setup',
         href: '/documentation/tutorial/development-setup',
       },
-      {
-        type: 'element',
-        label: 'CLI',
-        href: '/documentation/cli',
-      },
     ],
   },
   {
@@ -114,13 +109,38 @@ export const sidebarElements: SidebarElements[] = [
     children: [
       {
         type: 'element',
-        label: 'Project structure',
-        href: '/documentation/routing/intro',
+        label: 'Defining routes',
+        href: '/documentation/routing/defining-routes',
       },
       {
         type: 'element',
-        label: 'Application state',
-        href: '/documentation/application-state',
+        label: 'Pages',
+        href: '/documentation/routing/pages',
+      },
+      {
+        type: 'element',
+        label: 'Loading state',
+        href: '/documentation/routing/loading-state',
+      },
+      {
+        type: 'element',
+        label: 'Dynamic routes',
+        href: '/documentation/routing/dynamic-routes',
+      },
+      {
+        type: 'element',
+        label: 'Layouts',
+        href: '/documentation/routing/layouts',
+      },
+      {
+        type: 'element',
+        label: 'Link and navigation',
+        href: '/documentation/routing/link-and-navigation',
+      },
+      {
+        type: 'element',
+        label: 'Redirecting',
+        href: '/documentation/routing/redirecting',
       },
     ],
   },
@@ -210,9 +230,20 @@ export const sidebarElements: SidebarElements[] = [
   },
   {
     type: 'element',
+    label: 'CLI',
+    href: '/documentation/cli',
+  },
+  {
+    type: 'element',
+    label: 'Application state',
+    href: '/documentation/application-state',
+  },
+  {
+    type: 'element',
     label: 'tuono.config.ts',
     href: '/documentation/configuration',
   },
+
   { type: 'divider' },
   {
     type: 'element',
