@@ -38,8 +38,8 @@ export const sidebarElements: SidebarElements[] = [
       },
       {
         type: 'element',
-        label: 'Development setup',
-        href: '/documentation/tutorial/development-setup',
+        label: 'How is tuono different?',
+        href: '/documentation/how-is-tuono-different',
       },
     ],
   },
