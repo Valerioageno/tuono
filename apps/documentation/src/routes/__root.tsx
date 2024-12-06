@@ -3,11 +3,11 @@ import type { ReactNode, JSX } from 'react'
 import {
   ColorSchemeScript,
   createTheme,
-  CSSVariablesResolver,
   MantineProvider,
   AppShell,
   Container,
 } from '@mantine/core'
+import type { CSSVariablesResolver } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Head } from 'tuono'
 
@@ -69,15 +69,17 @@ const theme = createTheme({
   },
 })
 
-const resolver: CSSVariablesResolver = (theme) => ({
+const resolver: CSSVariablesResolver = (th) => ({
   variables: {},
   light: {
-    '--mantine-color-sidebar-gray': theme.other.sidebarGrayLight,
-    '--mantine-color-sidebar-text-hover': theme.other.sidebarTextHoverLight,
+    '--mantine-color-sidebar-gray': th.other.sidebarGrayLight as string,
+    '--mantine-color-sidebar-text-hover': th.other
+      .sidebarTextHoverLight as string,
   },
   dark: {
-    '--mantine-color-sidebar-gray': theme.other.sidebarGrayDark,
-    '--mantine-color-sidebar-text-hover': theme.other.sidebarTextHoverDark,
+    '--mantine-color-sidebar-gray': th.other.sidebarGrayDark as string,
+    '--mantine-color-sidebar-text-hover': th.other
+      .sidebarTextHoverDark as string,
   },
 })
 

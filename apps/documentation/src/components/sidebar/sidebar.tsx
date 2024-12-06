@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { sidebarElements } from './config'
+
 import {
   AppShell,
   Badge,
@@ -11,9 +11,11 @@ import {
   Text,
 } from '@mantine/core'
 
-import SidebarLink from './sidebar-link'
 import { IconX } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
+
+import { sidebarElements } from './config'
+import SidebarLink from './sidebar-link'
 
 interface SidebarProps {
   close: () => void
@@ -62,35 +64,33 @@ function SidebarElements({ close }: SidebarProps): JSX.Element {
             />
           )
         }
-        if (el.type === 'element') {
-          if (el.children?.length) {
-            return (
-              <SidebarLink
-                href={el.href}
-                label={el.label}
-                key={i}
-                leftSection={el.leftIcon}
-              >
-                {el.children.map((child, index) => (
-                  <SidebarLink
-                    href={child.href}
-                    label={child.label}
-                    key={index}
-                    onClick={close}
-                  />
-                ))}
-              </SidebarLink>
-            )
-          }
+        if (el.children?.length) {
           return (
             <SidebarLink
               href={el.href}
               label={el.label}
-              onClick={close}
               key={i}
-            />
+              leftSection={el.leftIcon}
+            >
+              {el.children.map((child, index) => (
+                <SidebarLink
+                  href={child.href}
+                  label={child.label}
+                  key={index}
+                  onClick={close}
+                />
+              ))}
+            </SidebarLink>
           )
         }
+        return (
+          <SidebarLink
+            href={el.href}
+            label={el.label}
+            onClick={close}
+            key={i}
+          />
+        )
       })}
     </AppShell.Section>
   )
