@@ -133,6 +133,8 @@ pub fn app() -> std::io::Result<()> {
                 )
                 .expect("Failed to clone assets into static output folder");
 
+                // the process is killed below so we don't really need to use wait() function
+                #[allow(clippy::zombie_processes)]
                 let mut rust_server = app.run_rust_server();
 
                 let reqwest = reqwest::blocking::Client::builder()
@@ -144,7 +146,8 @@ pub fn app() -> std::io::Result<()> {
                 let mut is_server_ready = false;
 
                 while !is_server_ready {
-                    if reqwest.get("http://localhost:3000").send().is_ok() {
+                    let server_url = format!("http://localhost:{}", TUONO_PORT);
+                    if reqwest.get(server_url).send().is_ok() {
                         is_server_ready = true
                     }
                     // TODO: add maximum tries
