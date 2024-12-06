@@ -34,10 +34,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: actions-rs/toolchain@v1
+      - name: Setup rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          toolchain: stable
-          override: true
+          toolchain: 'stable'
 
       - uses: katyo/publish-crates@v2
         with:
@@ -80,10 +80,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: actions-rs/toolchain@v1
+      - name: Setup rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          toolchain: stable
-          override: true
+          toolchain: 'stable'
 
       - uses: katyo/publish-crates@v2
         with:
