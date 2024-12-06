@@ -19,4 +19,5 @@ pub use tuono_lib_macros::{api, handler};
 
 // Re-exports
 pub use axum;
+pub use axum_extra::extract::cookie;
 pub use tokio;
