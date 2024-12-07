@@ -1,6 +1,7 @@
 use fs_extra::dir::create_all;
 use std::env;
 use std::fs::File;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 use tempfile::{tempdir, TempDir};
 
@@ -35,6 +36,19 @@ impl TempTuonoProject {
         )
         .expect("Failed to create parent route directory");
         File::create(path).expect("Failed to create the route file");
+    }
+
+    pub fn add_api<'a>(&self, path: &'a str, content: &'a str) {
+        let path = PathBuf::from(path);
+        create_all(
+            path.parent().expect("Route path does not have any parent"),
+            false,
+        )
+        .expect("Failed to create parent route directory");
+
+        let mut file = File::create(path).expect("Failed to create the route file");
+        file.write_all(content.as_bytes())
+            .expect("Failed to write into API file");
     }
 }
 
