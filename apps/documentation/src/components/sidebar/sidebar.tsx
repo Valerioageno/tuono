@@ -21,7 +21,7 @@ interface SidebarProps {
   close: () => void
 }
 
-function SidebarHeader(): JSX.Element {
+function SidebarHeader({ close }: SidebarProps): JSX.Element {
   const isSm = useMediaQuery('(min-width: 48em)')
   return (
     <AppShell.Section>
@@ -99,7 +99,7 @@ function SidebarElements({ close }: SidebarProps): JSX.Element {
 export default function Sidebar({ close }: SidebarProps): JSX.Element {
   return (
     <AppShell.Navbar p="md">
-      <SidebarHeader />
+      <SidebarHeader close={close} />
       <SidebarElements close={close} />
     </AppShell.Navbar>
   )
