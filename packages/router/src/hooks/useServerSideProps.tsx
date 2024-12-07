@@ -20,8 +20,7 @@ interface TuonoApi {
 }
 
 const fetchClientSideData = async (): Promise<TuonoApi> => {
-  const slash = location.pathname.endsWith('/') ? '' : '/'
-  const res = await fetch(`/__tuono/data${location.pathname}${slash}data.json`)
+  const res = await fetch(`/__tuono/data${location.pathname}`)
   const data = (await res.json()) as TuonoApi
   return data
 }

@@ -163,8 +163,7 @@ impl Route {
 
         // Saving also the server response
         if self.axum_info.is_some() {
-            let data_file_path =
-                PathBuf::from(&format!("out/static/__tuono/data{}/data.json", path));
+            let data_file_path = PathBuf::from(&format!("out/static/__tuono/data{path}"));
 
             let data_parent_dir = data_file_path.parent().unwrap();
 
@@ -173,11 +172,11 @@ impl Route {
                     .expect("Failed to create data parent directories");
             }
 
-            let base = Url::parse("http://localhost:3000/__tuono/data/data.json").unwrap();
+            let base = Url::parse("http://localhost:3000/__tuono/data").unwrap();
 
             let path = if path == "/" { "" } else { path };
 
-            let pathname = &format!("/__tuono/data{path}/data.json");
+            let pathname = &format!("/__tuono/data{path}");
 
             let url = base
                 .join(pathname)
