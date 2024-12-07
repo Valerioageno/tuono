@@ -22,12 +22,12 @@ pub struct AxumInfo {
 }
 
 impl AxumInfo {
-    pub fn new(path: String) -> Self {
+    pub fn new(route: &Route) -> Self {
         // Remove first slash
-        let mut module = path.chars();
+        let mut module = route.path.chars();
         module.next();
 
-        let axum_route = path.replace("/index", "");
+        let axum_route = route.path.replace("/index", "");
 
         let module_import = module
             .as_str()
@@ -44,7 +44,7 @@ impl AxumInfo {
             };
         }
 
-        if has_dynamic_path(&path) {
+        if route.is_dynamic {
             return AxumInfo {
                 module_import: module
                     .as_str()
@@ -52,8 +52,12 @@ impl AxumInfo {
                     .replace('/', "_")
                     .replace('-', "_hyphen_")
                     .replace('[', "dyn_")
+                    .replace("...", "_catch_all_")
                     .replace(']', ""),
-                axum_route: axum_route.replace('[', ":").replace(']', ""),
+                axum_route: axum_route
+                    .replace("[...", "*")
+                    .replace('[', ":")
+                    .replace(']', ""),
             };
         }
 
@@ -134,7 +138,7 @@ impl Route {
     }
 
     pub fn update_axum_info(&mut self) {
-        self.axum_info = Some(AxumInfo::new(self.path.clone()))
+        self.axum_info = Some(AxumInfo::new(self))
     }
 
     pub fn save_ssg_file(&self, reqwest: &Client) {
@@ -229,12 +233,12 @@ mod tests {
 
     #[test]
     fn should_correctly_create_the_axum_infos() {
-        let info = AxumInfo::new("/index".to_string());
+        let info = AxumInfo::new(&Route::new("/index".to_string()));
 
         assert_eq!(info.axum_route, "/");
         assert_eq!(info.module_import, "index");
 
-        let dyn_info = AxumInfo::new("/[posts]".to_string());
+        let dyn_info = AxumInfo::new(&Route::new("/[posts]".to_string()));
 
         assert_eq!(dyn_info.axum_route, "/:posts");
         assert_eq!(dyn_info.module_import, "dyn_posts");
