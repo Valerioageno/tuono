@@ -129,3 +129,32 @@ impl Response {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_update_the_props_status_and_cookie() {
+        let mut props = Props::new("{}");
+        props.status(StatusCode::NOT_FOUND);
+        props.add_cookie(Cookie::new("test", "cookie"));
+        assert_eq!(props.http_code, StatusCode::NOT_FOUND);
+        assert_eq!(
+            props.cookies.get("test").unwrap(),
+            &Cookie::new("test", "cookie")
+        );
+    }
+
+    #[test]
+    fn should_add_a_cookie_jar() {
+        let mut props = Props::new("{}");
+        props.status(StatusCode::NOT_FOUND);
+        props.add_cookie(Cookie::new("test", "cookie"));
+        assert_eq!(props.http_code, StatusCode::NOT_FOUND);
+        assert_eq!(
+            props.cookies.get("test").unwrap(),
+            &Cookie::new("test", "cookie")
+        );
+    }
+}
