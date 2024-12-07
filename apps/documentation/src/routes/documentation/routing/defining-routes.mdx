@@ -11,4 +11,91 @@ import Breadcrumbs, { Element } from '@/components/breadcrumbs'
 
 # Defining routes
 
-Todo
+Tuono has a file-system based router built on the concept of routes.
+
+When a file is added to the `src/routes` directory, it's automatically available as a route.
+
+In Tuono, a page is a [React Component](https://react.dev/learn/your-first-component) exported from a `.tsx` file in the `src/routes` directory.
+Each page is associated with a route based on its file name.
+
+Every page is rendered server side by default.
+
+Example:
+If you create `src/routes/about.tsx` that exports a React component like:
+
+```
+export default function About() {
+  return <div>About</div>
+}
+```
+
+The `About` component will be rendered when loading `/about` route.
+
+## Index routes
+
+The router will automatically route files named `index` to the root of the directory.
+
+- `src/routes/index.tsx` → `/`
+- `src/routes/blog/index.tsx`→ `/blog`
+
+## Nested routes
+
+You can also create a nested folder structure, and files will still be routed in the same way.
+
+- `src/routes/blog/first-post.tsx` → `/blog/first-post`
+- `src/routes/dashboard/settings/username.tsx` → `/dashboard/settings/username`
+
+## Pages with Dynamic Routes
+
+Tuono supports pages with dynamic routes segments.
+For example, if you create a file called `src/routes/posts/[id].tsx`,
+then it will be accessible at `posts/1`, `posts/2`, etc.
+
+## The Root route (Layout components)
+
+Tuono allows you to have a layout component to wrap all the routes included within the same folder.
+To define such component you will have to create a `__root.tsx` file (is allowed only a single `__root` file per folder).
+
+This file won't generate any route.
+
+### Layout component for all routes
+
+A file created in this location will wrap all project route.
+
+```tsx
+// src/routes/__root.tsx
+export default function RootLayout({ children }) {
+  return <main>{children}</main>
+}
+```
+
+### Layout component for specific routes
+
+A file created in this location will wrap **only** the routes defined within the `src/routes/posts` folder.
+
+```tsx
+// src/routes/posts/__root.tsx
+export default function PostRootLayout({ children }) {
+  return <article>{children}</article>
+}
+```
+
+Referring to the two examples above consider that:
+
+- `/posts/examples-post` → will be wrapped by:
+
+```tsx
+<RootLayout>
+  <PostRootLayout>
+    <ExamplePost />
+  </PostRootLayout>
+</RootLayout>
+```
+
+- `/about` → will be wrapped by:
+
+```tsx
+<RootLayout>
+  <About />
+</RootLayout>
+```
