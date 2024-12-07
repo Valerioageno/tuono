@@ -23,9 +23,13 @@ Every page is rendered server side by default.
 Example:
 If you create `src/routes/about.tsx` that exports a React component like:
 
-CODE
+```
+export default function About() {
+  return <div>About</div>
+}
+```
 
-The `About` component will be rendered when loading /about route.
+The `About` component will be rendered when loading `/about` route.
 
 ## Index routes
 
@@ -43,7 +47,7 @@ You can also create a nested folder structure, and files will still be routed in
 
 ## Pages with Dynamic Routes
 
-Tuono supports pages with dynamic routes segments. 
+Tuono supports pages with dynamic routes segments.
 For example, if you create a file called `src/routes/posts/[id].tsx`,
 then it will be accessible at `posts/1`, `posts/2`, etc.
 
@@ -77,5 +81,21 @@ export default function PostRootLayout({ children }) {
 ```
 
 Referring to the two examples above consider that:
-- `/posts/examples-post` → will be wrapped by both `RootLayout` and `PostRootLayout`
-- `/about` → will be wrapped only by `RootLayout`
+
+- `/posts/examples-post` → will be wrapped by:
+
+```tsx
+<RootLayout>
+  <PostRootLayout>
+    <ExamplePost />
+  </PostRootLayout>
+</RootLayout>
+```
+
+- `/about` → will be wrapped by:
+
+```tsx
+<RootLayout>
+  <About />
+</RootLayout>
+```
