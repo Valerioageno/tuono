@@ -29,9 +29,8 @@ fn it_successfully_create_the_index_route() {
     assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/index.rs"]"#));
     assert!(temp_main_rs_content.contains("mod index;"));
 
-    assert!(temp_main_rs_content.contains(
-        r#".route("/", get(index::route)).route("/__tuono/data/data.json", get(index::api))"#
-    ));
+    assert!(temp_main_rs_content
+        .contains(r#".route("/", get(index::route)).route("/__tuono/data", get(index::api))"#));
 }
 
 #[test]
@@ -133,7 +132,6 @@ fn it_successfully_create_catch_all_routes() {
     assert!(temp_main_rs_content
         .contains(r#".route("/*all_routes", get(dyn__catch_all_all_routes::route))"#));
 
-    assert!(temp_main_rs_content.contains(
-        r#".route("/__tuono/data/*all_routes/data.json", get(dyn__catch_all_all_routes::api))"#
-    ));
+    assert!(temp_main_rs_content
+        .contains(r#".route("/__tuono/data/*all_routes", get(dyn__catch_all_all_routes::api))"#));
 }
