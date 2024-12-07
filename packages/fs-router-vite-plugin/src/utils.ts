@@ -34,9 +34,9 @@ export function routePathToVariable(routePath: string): string {
 }
 
 export function multiSortBy<T>(
-  arr: T[],
-  accessors: ((item: T) => unknown)[] = [(d): unknown => d],
-): T[] {
+  arr: Array<T>,
+  accessors: Array<(item: T) => unknown> = [(d): unknown => d],
+): Array<T> {
   return arr
     .map((d, i) => [d, i] as const)
     .sort(([a, ai], [b, bi]) => {

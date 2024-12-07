@@ -48,7 +48,7 @@ export default tseslint.config(
     },
     rules: {
       // #region @typescript-eslint
-      '@typescript-eslint/array-type': 'error',
+      '@typescript-eslint/array-type': ['error', { default: 'generic' }],
       '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-unsafe-function-type': 'error',

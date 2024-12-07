@@ -9,7 +9,7 @@ interface Pokemon {
 }
 
 interface IndexProps {
-  results: Pokemon[]
+  results: Array<Pokemon>
 }
 
 export default function IndexPage({

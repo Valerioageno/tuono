@@ -5,7 +5,7 @@ export interface RouteNode {
   path?: string
   cleanedPath?: string
   isLayout?: boolean
-  children?: RouteNode[]
+  children?: Array<RouteNode>
   parent?: RouteNode
   variableName?: string
 }

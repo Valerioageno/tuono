@@ -24,7 +24,7 @@ export class Route {
   path?: string
   fullPath!: string
 
-  children?: Route[]
+  children?: Array<Route>
   parentRoute?: Route
   originalIndex?: number
   component: RouteComponent
@@ -77,7 +77,7 @@ export class Route {
     this.fullPath = fullPath || ''
   }
 
-  addChildren(routes: Route[]): Route {
+  addChildren(routes: Array<Route>): Route {
     this.children = routes
     return this
   }

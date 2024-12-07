@@ -1,4 +1,5 @@
 import { Link } from 'tuono'
+
 import styles from './PokemonView.module.css'
 
 interface Pokemon {

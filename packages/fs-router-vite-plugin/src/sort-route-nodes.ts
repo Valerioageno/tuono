@@ -4,7 +4,7 @@ import { ROOT_PATH_ID } from './constants'
 
 // Routes need to be sorted in order to iterate over the handleNode fn
 // with first the items that might be parent routes
-export const sortRouteNodes = (routes: RouteNode[]): RouteNode[] =>
+export const sortRouteNodes = (routes: Array<RouteNode>): Array<RouteNode> =>
   multiSortBy(routes, [
     (d): number => (d.routePath === '/' ? -1 : 1),
     (d): number => d.routePath.split('/').length,

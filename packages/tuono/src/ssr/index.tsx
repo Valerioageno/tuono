@@ -22,14 +22,14 @@ window.__vite_plugin_react_preamble_installed__ = true
 <script type="module" src="http://localhost:${TUONO_DEV_SERVER_PORT}${VITE_PROXY_PATH}/@vite/client"></script>
 <script type="module" src="http://localhost:${TUONO_DEV_SERVER_PORT}${VITE_PROXY_PATH}/client-main.tsx"></script>`
 
-function generateCssLinks(cssBundles: string[], mode: Mode): string {
+function generateCssLinks(cssBundles: Array<string>, mode: Mode): string {
   if (mode === 'Dev') return ''
   return cssBundles.reduce((acc, value) => {
     return acc + `<link rel="stylesheet" type="text/css" href="/${value}" />`
   }, '')
 }
 
-function generateJsScripts(jsBundles: string[], mode: Mode): string {
+function generateJsScripts(jsBundles: Array<string>, mode: Mode): string {
   if (mode === 'Dev') return ''
   return jsBundles.reduce((acc, value) => {
     return acc + `<script type="module" src="/${value}"></script>`
@@ -44,8 +44,8 @@ export function serverSideRendering(routeTree: RouteTree) {
     >
 
     const mode = serverProps.mode as Mode
-    const jsBundles = serverProps.jsBundles as string[]
-    const cssBundles = serverProps.cssBundles as string[]
+    const jsBundles = serverProps.jsBundles as Array<string>
+    const cssBundles = serverProps.cssBundles as Array<string>
     const router = createRouter({ routeTree }) // Render the app
 
     const helmetContext = {}

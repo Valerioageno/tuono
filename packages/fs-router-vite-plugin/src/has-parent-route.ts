@@ -3,7 +3,7 @@ import { multiSortBy } from './utils'
 import type { RouteNode } from './types'
 
 export function hasParentRoute(
-  routes: RouteNode[],
+  routes: Array<RouteNode>,
   node: RouteNode,
   routePathToCheck = '/',
 ): RouteNode | null {

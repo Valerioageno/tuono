@@ -8,8 +8,8 @@ export interface Heading {
   getNode: () => HTMLHeadingElement
 }
 
-function getHeadingsData(headings: HTMLHeadingElement[]): Heading[] {
-  const result: Heading[] = []
+function getHeadingsData(headings: Array<HTMLHeadingElement>): Array<Heading> {
+  const result: Array<Heading> = []
 
   for (const heading of headings) {
     if (heading.id) {
@@ -26,7 +26,7 @@ function getHeadingsData(headings: HTMLHeadingElement[]): Heading[] {
   return result
 }
 
-export function getHeadings(): Heading[] {
+export function getHeadings(): Array<Heading> {
   const root = document.getElementById('mdx-root')
   console.log(root)
 

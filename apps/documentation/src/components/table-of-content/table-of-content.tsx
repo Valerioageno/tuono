@@ -14,7 +14,7 @@ interface TableOfContentsProps {
   withTabs: boolean
 }
 
-function getActiveElement(rects: DOMRect[]): number {
+function getActiveElement(rects: Array<DOMRect>): number {
   if (rects.length === 0) {
     return -1
   }
@@ -40,8 +40,8 @@ export function TableOfContents({
   withTabs,
 }: TableOfContentsProps): JSX.Element | null {
   const [active, setActive] = useState(0)
-  const [headings, setHeadings] = useState<Heading[]>([])
-  const headingsRef = useRef<Heading[]>([])
+  const [headings, setHeadings] = useState<Array<Heading>>([])
+  const headingsRef = useRef<Array<Heading>>([])
   const router = useRouter()
 
   const filteredHeadings = headings.filter((heading) => heading.depth > 1)

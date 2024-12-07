@@ -9,7 +9,7 @@ interface Breadcrumb {
   label: string
 }
 interface BreadcrumbsProps {
-  breadcrumbs: Breadcrumb[]
+  breadcrumbs: Array<Breadcrumb>
 }
 
 export default function TuonoBreadcrumbs({
