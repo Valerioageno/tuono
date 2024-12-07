@@ -1,26 +1,25 @@
 import type { ReactNode } from 'react'
 
-interface SidebarElementType<T> {
+interface SidebarElementBase<T extends string> {
   type: T
 }
 
-interface SidebarLink extends SidebarElementType<'element'> {
+type SidebarDivider = SidebarElementBase<'divider'>
+
+interface SidebarLink extends SidebarElementBase<'element'> {
   label: string
   href: string
-  children?: SidebarLink[]
+  children?: Array<SidebarLink>
   leftIcon?: ReactNode
 }
 
-interface SidebarTitle extends SidebarElementType<'title'> {
+interface SidebarTitle extends SidebarElementBase<'title'> {
   label: string
 }
 
-type SidebarElements =
-  | SidebarElementType<'divider'>
-  | SidebarLink
-  | SidebarTitle
+type SidebarElement = SidebarDivider | SidebarLink | SidebarTitle
 
-export const sidebarElements: SidebarElements[] = [
+export const sidebarElements: Array<SidebarElement> = [
   {
     type: 'element',
     label: 'Home',
