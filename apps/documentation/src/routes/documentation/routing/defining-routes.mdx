@@ -11,4 +11,66 @@ import Breadcrumbs, { Element } from '@/components/breadcrumbs'
 
 # Defining routes
 
-Todo
+Tuono has a file-system based router built on the concept of routes.
+
+When a file is added to the `src/routes` directory, it's automatically available as a route.
+
+In Tuono, a page is a [React Component](https://react.dev/learn/your-first-component) exported from a `.tsx` file in the `src/routes` directory.
+Each page is associated with a route based on its file name.
+
+Every page is server side rendered by default.
+
+Example: If you create `src/routes/about.tsx` that exports a React component like below, it will be accessible at /about.
+
+```tsx
+export default function About() {
+  return <div>About</div>
+}
+```
+
+## Index routes
+
+The router will automatically route files named `index` to the root of the directory.
+
+- `src/routes/index.tsx` → `/`
+- `src/routes/blog/index.tsx`→ `/blog`
+
+## Nested routes
+
+The router supports nested files. If you create a nested folder structure, files will automatically be routed in the same way still.
+
+- `src/routes/blog/first-post.tsx` → `/blog/first-post`
+- `src/routes/dashboard/settings/username.tsx` → `/dashboard/settings/username`
+
+## Pages with Dynamic Routes
+
+Tuono supports pages with dynamic routes. For example, if you create a file called `src/routes/posts/[id].tsx`,
+then it will be accessible at `posts/1`, `posts/2`, etc.
+
+## The Root route
+
+Tuono allows you to have a layout component to wrap all the routes included within the same folder.
+To define such component you will have to create a `__root.tsx` file (is allowed only a single `__root` file per folder).
+
+This file won't generate any route.
+
+The following example will wrap all the routes defined in the project.
+
+```tsx
+// src/routes/__root.tsx
+export default function RootLayout({ children }) {
+  return <main>{children}</main>
+}
+```
+
+The following example wraps only the routes defined within the `src/routes/posts` folder.
+
+```tsx
+// src/routes/posts/__root.tsx
+export default function PostRootLayout({ children }) {
+  return <article>{children}</article>
+}
+```
+
+With such examples a `/posts/examples-post` route will be wrapper by both layouts while a
+generic `/about` route will just have the first `RootLayout` as wrapper.
