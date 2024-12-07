@@ -3,11 +3,13 @@ use crate::{ssr::Js, Payload};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{Html, IntoResponse, Redirect};
 use axum::Json;
+use axum_extra::extract::cookie::{Cookie, CookieJar};
 use erased_serde::Serialize;
 
 pub struct Props {
     data: Box<dyn Serialize>,
     http_code: StatusCode,
+    cookies: CookieJar,
 }
 
 pub enum Response {
@@ -57,26 +59,45 @@ impl Props {
         Props {
             data: Box::new(data),
             http_code: StatusCode::OK,
+            cookies: CookieJar::new(),
         }
+    }
+
+    pub fn status(&mut self, http_code: StatusCode) {
+        self.http_code = http_code;
     }
 
     pub fn new_with_status(data: impl Serialize + 'static, http_code: StatusCode) -> Self {
         Props {
             data: Box::new(data),
             http_code,
+            cookies: CookieJar::new(),
         }
+    }
+
+    pub fn add_cookie(&mut self, cookie: Cookie) {
+        let jar = self.cookies.clone().add(cookie.into_owned());
+        self.cookies = jar
     }
 }
 
 impl Response {
     pub fn render_to_string(&self, req: Request) -> impl IntoResponse {
         match self {
-            Self::Props(Props { data, http_code }) => {
-                let payload = Payload::new(&req, data).client_payload().unwrap();
+            Self::Props(Props {
+                data,
+                http_code,
+                cookies,
+            }) => {
+                let payload = Payload::new(&req, data.as_ref()).client_payload().unwrap();
 
                 match Js::render_to_string(Some(&payload)) {
-                    Ok(html) => (*http_code, Html(html)),
-                    Err(_) => (*http_code, Html("500 Internal server error".to_string())),
+                    Ok(html) => (*http_code, cookies.clone(), Html(html)),
+                    Err(_) => (
+                        *http_code,
+                        cookies.clone(),
+                        Html("500 Internal server error".to_string()),
+                    ),
                 }
                 .into_response()
             }
@@ -87,9 +108,16 @@ impl Response {
 
     pub fn json(&self) -> impl IntoResponse {
         match self {
-            Self::Props(Props { data, http_code }) => {
-                (*http_code, Json(JsonResponse::new(data))).into_response()
-            }
+            Self::Props(Props {
+                data,
+                http_code,
+                cookies,
+            }) => (
+                *http_code,
+                cookies.clone(),
+                Json(JsonResponse::new(data.as_ref())),
+            )
+                .into_response(),
             Self::Redirect(destination) => (
                 StatusCode::PERMANENT_REDIRECT,
                 Json(JsonResponse::new_redirect(destination.to_string())),
@@ -99,5 +127,34 @@ impl Response {
             // is outside the react domain
             Self::Custom(_) => (StatusCode::OK, Json("{}")).into_response(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_update_the_props_status_and_cookie() {
+        let mut props = Props::new("{}");
+        props.status(StatusCode::NOT_FOUND);
+        props.add_cookie(Cookie::new("test", "cookie"));
+        assert_eq!(props.http_code, StatusCode::NOT_FOUND);
+        assert_eq!(
+            props.cookies.get("test").unwrap(),
+            &Cookie::new("test", "cookie")
+        );
+    }
+
+    #[test]
+    fn should_add_a_cookie_jar() {
+        let mut props = Props::new("{}");
+        props.status(StatusCode::NOT_FOUND);
+        props.add_cookie(Cookie::new("test", "cookie"));
+        assert_eq!(props.http_code, StatusCode::NOT_FOUND);
+        assert_eq!(
+            props.cookies.get("test").unwrap(),
+            &Cookie::new("test", "cookie")
+        );
     }
 }
