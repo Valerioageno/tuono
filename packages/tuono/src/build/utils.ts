@@ -1,5 +1,7 @@
 import path from 'path'
 
+import { pathToFileURL } from 'url'
+
 import type { AliasOptions } from 'vite'
 
 import type { TuonoConfig } from '../config'
@@ -9,7 +11,6 @@ import {
   CONFIG_FOLDER_NAME,
   CONFIG_FILE_NAME,
 } from './constants'
-import { pathToFileURL } from 'url'
 
 /**
  *  Normalize vite alias option:
@@ -44,16 +45,18 @@ const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
   if (!alias) return
 
   if (Array.isArray(alias)) {
-    return alias.map(({ replacement, ...userAliasDefinition }) => ({
-      ...userAliasDefinition,
-      replacement: normalizeAliasPath(replacement),
-    }))
+    return (alias as Extract<AliasOptions, readonly unknown[]>).map(
+      ({ replacement, ...userAliasDefinition }) => ({
+        ...userAliasDefinition,
+        replacement: normalizeAliasPath(replacement),
+      }),
+    )
   }
 
   if (typeof alias === 'object') {
-    let normalizedAlias: AliasOptions = {}
-    for (let [key, value] of Object.entries(alias)) {
-      normalizedAlias[key] = normalizeAliasPath(value)
+    const normalizedAlias: AliasOptions = {}
+    for (const [key, value] of Object.entries(alias)) {
+      normalizedAlias[key] = normalizeAliasPath(value as string)
     }
     return normalizedAlias
   }
@@ -71,14 +74,14 @@ const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
 export const normalizeConfig = (config: TuonoConfig): TuonoConfig => {
   return {
     vite: {
-      alias: normalizeViteAlias(config?.vite?.alias),
+      alias: normalizeViteAlias(config.vite?.alias),
     },
   }
 }
 
 export const loadConfig = async (): Promise<TuonoConfig> => {
   try {
-    const configFile = await import(
+    const configFile = (await import(
       pathToFileURL(
         path.join(
           process.cwd(),
@@ -87,7 +90,7 @@ export const loadConfig = async (): Promise<TuonoConfig> => {
           CONFIG_FILE_NAME,
         ),
       ).href
-    )
+    )) as { default: TuonoConfig }
 
     return normalizeConfig(configFile.default)
   } catch (err) {
@@ -97,8 +100,8 @@ export const loadConfig = async (): Promise<TuonoConfig> => {
   }
 }
 
-export const blockingAsync = (callback: () => Promise<void>) => {
-  ;(async () => {
+export const blockingAsync = (callback: () => Promise<void>): void => {
+  void (async (): Promise<void> => {
     await callback()
   })()
 }

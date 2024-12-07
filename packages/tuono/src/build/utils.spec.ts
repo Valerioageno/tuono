@@ -14,7 +14,7 @@ describe('loadConfig', () => {
   it('should error if the config does not exist', async () => {
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {})
+      .mockImplementation(() => undefined)
     await loadConfig()
 
     expect(consoleErrorSpy).toHaveBeenCalledTimes(2)

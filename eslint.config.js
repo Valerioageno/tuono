@@ -7,7 +7,6 @@ export default tseslint.config(
   {
     ignores: [
       // #region shared
-      '**/build',
       '**/dist',
       '**/.tuono',
       '**/vite.config.ts.timestamp**',
