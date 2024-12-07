@@ -16,9 +16,9 @@ interface RouterState {
   isTransitioning: boolean
   status: 'idle'
   location: ParsedLocation
-  matches: string[]
-  pendingMatches: string[]
-  cachedMatches: string[]
+  matches: Array<string>
+  pendingMatches: Array<string>
+  cachedMatches: Array<string>
   statusCode: 200
   updateLocation: (loc: ParsedLocation) => void
 }

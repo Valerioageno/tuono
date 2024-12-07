@@ -36,9 +36,9 @@ let skipMessage = false
 
 async function getRouteNodes(
   config = defaultConfig,
-): Promise<{ routeNodes: RouteNode[]; rustHandlersNodes: string[] }> {
-  const routeNodes: RouteNode[] = []
-  const rustHandlersNodes: string[] = []
+): Promise<{ routeNodes: Array<RouteNode>; rustHandlersNodes: Array<string> }> {
+  const routeNodes: Array<RouteNode> = []
+  const rustHandlersNodes: Array<string> = []
 
   async function recurse(dir: string): Promise<void> {
     const fullDir = path.resolve(config.folderName, dir)
@@ -127,7 +127,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
 
   const preRouteNodes = sortRouteNodes(beforeRouteNodes)
 
-  const routeNodes: RouteNode[] = []
+  const routeNodes: Array<RouteNode> = []
 
   // Loop over the flat list of routeNodes and
   // build up a tree based on the routeNodes' routePath

@@ -1,6 +1,6 @@
 import type { Segment } from './types'
 
-export function joinPaths(paths: (string | undefined)[]): string {
+export function joinPaths(paths: Array<string | undefined>): string {
   return cleanPath(paths.filter(Boolean).join('/'))
 }
 
@@ -9,14 +9,14 @@ function cleanPath(path: string): string {
   return path.replace(/\/{2,}/g, '/')
 }
 
-export function parsePathname(pathname?: string): Segment[] {
+export function parsePathname(pathname?: string): Array<Segment> {
   if (!pathname) {
     return []
   }
 
   pathname = cleanPath(pathname)
 
-  const segments: Segment[] = []
+  const segments: Array<Segment> = []
 
   if (pathname.slice(0, 1) === '/') {
     pathname = pathname.substring(1)

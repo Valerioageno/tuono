@@ -59,7 +59,7 @@ export class Router {
   }
 
   #buildRouteTree = (): void => {
-    const recurseRoutes = (childRoutes: Route[]): void => {
+    const recurseRoutes = (childRoutes: Array<Route>): void => {
       childRoutes.forEach((route: Route, i: number) => {
         route.init(i)
 

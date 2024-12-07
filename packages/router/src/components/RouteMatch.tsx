@@ -36,7 +36,7 @@ interface ParentProps<TData = unknown> {
 }
 
 interface TraverseRootComponentsProps<TData = unknown> {
-  routes: Route[]
+  routes: Array<Route>
   data: TData
   isLoading: boolean
   children?: React.ReactNode
@@ -84,7 +84,10 @@ const TraverseRootComponents = React.memo(
   },
 )
 
-const loadParentComponents = (route: Route, loader: Route[] = []): Route[] => {
+const loadParentComponents = (
+  route: Route,
+  loader: Array<Route> = [],
+): Array<Route> => {
   const parentComponent = route.options.getParentRoute?.() as Route
 
   loader.push(parentComponent)

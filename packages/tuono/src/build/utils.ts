@@ -45,7 +45,7 @@ const normalizeViteAlias = (alias?: AliasOptions): AliasOptions | undefined => {
   if (!alias) return
 
   if (Array.isArray(alias)) {
-    return (alias as Extract<AliasOptions, readonly unknown[]>).map(
+    return (alias as Extract<AliasOptions, ReadonlyArray<unknown>>).map(
       ({ replacement, ...userAliasDefinition }) => ({
         ...userAliasDefinition,
         replacement: normalizeAliasPath(replacement),

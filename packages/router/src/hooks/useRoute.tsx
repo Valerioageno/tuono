@@ -47,7 +47,7 @@ export default function useRoute(pathname?: string): Route | undefined {
   for (const dynamicRoute of dynamicRoutes) {
     const dynamicRouteSegments = dynamicRoute.split('/').filter(Boolean)
 
-    const routeSegmentsCollector: string[] = []
+    const routeSegmentsCollector: Array<string> = []
 
     for (let i = 0; i < dynamicRouteSegments.length; i++) {
       if (
