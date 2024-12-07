@@ -72,5 +72,6 @@ export default function PostRootLayout({ children }) {
 }
 ```
 
-With such examples a `/posts/examples-post` route will be wrapper by both layouts while a
-generic `/about` route will just have the first `RootLayout` as wrapper.
+Referring to the two examples above consider that:
+- `/posts/examples-post` → will be wrapped by both `RootLayout` and `PostRootLayout`
+- `/about` → will be wrapped only by `RootLayout`
