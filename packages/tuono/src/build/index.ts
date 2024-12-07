@@ -1,8 +1,10 @@
-import { build, createServer, InlineConfig, mergeConfig } from 'vite'
+import type { InlineConfig } from 'vite'
+import { build, createServer, mergeConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import ViteFsRouter from 'tuono-fs-router-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 import mdx from '@mdx-js/rollup'
+
 import { loadConfig, blockingAsync } from './utils'
 
 const VITE_PORT = 3001
@@ -18,14 +20,14 @@ const BASE_CONFIG: InlineConfig = {
   },
   plugins: [
     { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
-    // @ts-ignore: TS configuration issue.
+    // @ts-expect-error: TS configuration issue.
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     ViteFsRouter(),
     LazyLoadingPlugin(),
   ],
 }
 
-const developmentSSRBundle = () => {
+const developmentSSRBundle = (): void => {
   blockingAsync(async () => {
     const config = await loadConfig()
     await build(
@@ -40,8 +42,9 @@ const developmentSSRBundle = () => {
           emptyOutDir: true,
           rollupOptions: {
             input: './.tuono/server-main.tsx',
-            // Silent all logs
-            onLog() {},
+            onLog() {
+              // Silence all logs
+            },
             output: {
               entryFileNames: 'dev-server.js',
               format: 'iife',
@@ -57,7 +60,7 @@ const developmentSSRBundle = () => {
   })
 }
 
-const developmentCSRWatch = () => {
+const developmentCSRWatch = (): void => {
   blockingAsync(async () => {
     const config = await loadConfig()
     const server = await createServer(
@@ -85,7 +88,7 @@ const developmentCSRWatch = () => {
   })
 }
 
-const buildProd = () => {
+const buildProd = (): void => {
   blockingAsync(async () => {
     const config = await loadConfig()
 
@@ -132,7 +135,7 @@ const buildProd = () => {
   })
 }
 
-const buildConfig = () => {
+const buildConfig = (): void => {
   blockingAsync(async () => {
     await build({
       root: '.tuono',
