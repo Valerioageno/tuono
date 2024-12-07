@@ -7,6 +7,7 @@ import {
   AppShell,
   Container,
 } from '@mantine/core'
+import type { CSSVariablesResolver } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Head } from 'tuono'
 
@@ -25,7 +26,7 @@ interface RootRouteProps {
 const theme = createTheme({
   primaryColor: 'violet',
   primaryShade: { light: 6, dark: 9 },
-  fontFamily: 'Roboto',
+  fontFamily: 'Inter',
   respectReducedMotion: true,
   radius: {
     xs: '8px',
@@ -60,6 +61,26 @@ const theme = createTheme({
       },
     },
   },
+  other: {
+    sidebarGrayLight: '#495057',
+    sidebarGrayDark: '#adb5bd',
+    sidebarTextHoverLight: '#212529',
+    sidebarTextHoverDark: '#f8f9fa',
+  },
+})
+
+const resolver: CSSVariablesResolver = (th) => ({
+  variables: {},
+  light: {
+    '--mantine-color-sidebar-gray': th.other.sidebarGrayLight as string,
+    '--mantine-color-sidebar-text-hover': th.other
+      .sidebarTextHoverLight as string,
+  },
+  dark: {
+    '--mantine-color-sidebar-gray': th.other.sidebarGrayDark as string,
+    '--mantine-color-sidebar-text-hover': th.other
+      .sidebarTextHoverDark as string,
+  },
 })
 
 export default function RootRoute({ children }: RootRouteProps): JSX.Element {
@@ -77,8 +98,9 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <ColorSchemeScript />
-      <MantineProvider theme={theme}>
+      <MantineProvider theme={theme} cssVariablesResolver={resolver}>
         <AppShell
+          layout="alt"
           header={{ height: 60 }}
           navbar={{
             width: 300,
@@ -86,7 +108,7 @@ export default function RootRoute({ children }: RootRouteProps): JSX.Element {
             collapsed: { mobile: !opened },
           }}
         >
-          <Navbar opened={opened} toggle={toggle} />
+          <Navbar toggle={toggle} />
           <Sidebar close={toggle} />
           <AppShell.Main>
             <Container id="mdx-root" component="article" size="md" p={20}>

@@ -1,6 +1,6 @@
 import type { JSX, ReactNode } from 'react'
-import { useState } from 'react'
 import { NavLink, type NavLinkProps } from '@mantine/core'
+import clsx from 'clsx'
 import { Link, useRouter } from 'tuono'
 import { IconChevronRight } from '@tabler/icons-react'
 
@@ -17,24 +17,19 @@ export default function SidebarLink(
   props: SidebarLinkProps & NavLinkProps,
 ): JSX.Element {
   const { pathname } = useRouter()
-  const [isOpen, setIsOpen] = useState<boolean>(!!props.defaultOpened)
+
+  const isActive = pathname === props.href
 
   const internalProps = {
-    active: pathname === props.href,
-    className: styles.link,
+    active: isActive,
+    className: clsx(styles.link, isActive && styles.active),
     rightSection: props.children && (
       <IconChevronRight
         size="1.2rem"
         stroke={1.5}
         className="mantine-rotate-rtl"
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setIsOpen((state) => !state)
-        }}
       />
     ),
-    opened: isOpen,
     autoContrast: true,
     ...props,
   }
