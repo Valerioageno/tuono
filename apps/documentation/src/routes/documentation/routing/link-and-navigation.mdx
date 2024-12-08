@@ -11,9 +11,10 @@ import Breadcrumbs, { Element } from '@/components/breadcrumbs'
 
 # Link and navigation
 
-The Tuono router allows you to do client-side route transitions between pages, similar to a single-page application.
+The Tuono router features client-side route transitions when navigating between pages.
+This could be useful in SPA (single page applications).
 
-A React component called `Link` is provided to do this client-side route transition.
+How? Use the `Link` component provided from Tuono exports:
 
 ```tsx
 import { Link } from 'tuono'
@@ -41,10 +42,12 @@ The example above uses multiple links. Each one maps a path (`href`) to a known 
 - `/about` → `src/routes/about.tsx`
 - `/blog/hello-world` → `src/routes/blog/[slug].tsx`
 
-Any `<Link />` in the viewport will be prefetched by default when it will appear within the viewport.
-The corresponding data for server-rendered routes is fetched only when the `<Link />` is clicked.
+> Additional considerations:
+>
+> - Any `<Link />` in the viewport is prefetched by default when it appears within the viewport.
+> - The corresponding data for server-rendered routes is fetched only when the `<Link />` is clicked.
 
-## The useRouter hook
+## The `useRouter` hook
 
 The `Link` component should be able to cover most of your routing needs,
 but you can also do client-side navigations without it using the `useRouter` hook.
