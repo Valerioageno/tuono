@@ -76,7 +76,6 @@ const developmentSSRBundle = (): void => {
 }
 
 const developmentCSRWatch = (): void => {
-  console.info('developmentCSRWatch')
   blockingAsync(async () => {
     const config = await loadConfig()
     const server = await createServer(
