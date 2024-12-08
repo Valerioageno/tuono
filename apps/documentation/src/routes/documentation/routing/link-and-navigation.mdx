@@ -49,8 +49,10 @@ The example above uses multiple links. Each one maps a path (`href`) to a known 
 
 ## The `useRouter` hook
 
-The `Link` component should be able to cover most of your routing needs,
-but you can also do client-side navigations without it using the `useRouter` hook.
+The Link component is not suitable for programmatic navigation.
+To handle this, the library provides the `useRouter` hook.
+
+For example, after a user submits a form and the API request succeeds, they can be redirected to another page.
 
 ```tsx
 import { useRouter } from 'tuono'
@@ -59,9 +61,13 @@ export default function GoToAboutPage() {
   const router = useRouter()
 
   return (
-    <button onClick={() => router.push('/about')}>
-      Click here to check out the about page
-    </button>
+    <ProfileForm
+      onUpdateSuccess={() => {
+        router.push('/profile')
+      }}
+    />
   )
 }
 ```
+
+> For more information about this hook visit the [dedicated API reference page](/documentation/hooks/use-router).
