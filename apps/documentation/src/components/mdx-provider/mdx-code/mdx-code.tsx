@@ -4,5 +4,5 @@ import { Code } from '@mantine/core'
 export default function MdxCode(
   props: HTMLAttributes<HTMLPreElement>,
 ): JSX.Element {
-  return <Code {...props} style={{ fontSize: 14 }} />
+  return <Code {...props} style={{ fontSize: 'inherit' }} />
 }
