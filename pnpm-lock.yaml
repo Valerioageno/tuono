@@ -60,22 +60,22 @@ importers:
   apps/documentation:
     dependencies:
       '@mantine/code-highlight':
-        specifier: ^7.11.2
+        specifier: 7.14.2
         version: 7.14.2(@mantine/core@7.14.2(@mantine/hooks@7.14.2(react@18.3.1))(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.14.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/core':
-        specifier: ^7.11.2
+        specifier: 7.14.2
         version: 7.14.2(@mantine/hooks@7.14.2(react@18.3.1))(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/hooks':
-        specifier: ^7.11.2
+        specifier: 7.14.2
         version: 7.14.2(react@18.3.1)
       '@mdx-js/react':
-        specifier: ^3.0.1
+        specifier: 3.1.0
         version: 3.1.0(@types/react@18.3.13)(react@18.3.1)
       '@tabler/icons-react':
-        specifier: ^3.11.0
+        specifier: 3.22.0
         version: 3.22.0(react@18.3.1)
       clsx:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       react:
         specifier: 18.3.1
@@ -84,26 +84,26 @@ importers:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       tuono:
-        specifier: npm:tuono@0.15.0
-        version: 0.15.0(@types/react@18.3.13)(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.25.0)(sugarss@4.0.1(postcss@8.4.49))
+        specifier: npm:tuono@0.16.0
+        version: 0.16.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
     devDependencies:
-      '@types/mdx':
-        specifier: ^2.0.13
-        version: 2.0.13
+      '@mdx-js/rollup':
+        specifier: 3.1.0
+        version: 3.1.0(acorn@8.14.0)(rollup@4.25.0)
       '@types/react':
-        specifier: ^18.3.13
+        specifier: 18.3.13
         version: 18.3.13
       '@types/react-dom':
-        specifier: ^18.3.0
+        specifier: 18.3.0
         version: 18.3.0
       postcss:
-        specifier: ^8.4.39
+        specifier: 8.4.49
         version: 8.4.49
       postcss-preset-mantine:
-        specifier: ^1.17.0
+        specifier: 1.17.0
         version: 1.17.0(postcss@8.4.49)
       postcss-simple-vars:
-        specifier: ^7.0.1
+        specifier: 7.0.1
         version: 7.0.1(postcss@8.4.49)
 
   examples/tuono-app:
@@ -3111,20 +3111,20 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tuono-fs-router-vite-plugin@0.15.0:
-    resolution: {integrity: sha512-QHjlfAcUCQHId7j3X4/tlyt/eGMMOqGC1XMLqzkEWj3hMq5J4NpHP6VDEOiAokL7f24DWFcs8lhj1rndy3kpaw==}
+  tuono-fs-router-vite-plugin@0.16.0:
+    resolution: {integrity: sha512-NjMNhCp9vqladhelMI8Whhp6qhwvoyBRUUyeJpqfRVp/W/vwL/+za6iciscWQ1+yVMEDjY5lnMGA0yQuz0cnIg==}
 
-  tuono-lazy-fn-vite-plugin@0.15.0:
-    resolution: {integrity: sha512-6LfLkbQ5zQmJAQ5H37UbMdcylkyjlQNcntF7SIHLXKyW2dNrlZ48Q7WfT/lfVtSVMLv7p7fowlYq1apiT+w51Q==}
+  tuono-lazy-fn-vite-plugin@0.16.0:
+    resolution: {integrity: sha512-+ab7pbRrqGqYPePHdPvMGZMWsnEJi2TPTvkHXwV5dcflpRvhhrCppC7QbG5lk24HD+hCFryWpOiZlfzf/j6p+w==}
 
-  tuono-router@0.15.0:
-    resolution: {integrity: sha512-0zQis7TtChUvRotosdOQkExkxaTwntOOdpWJ4EEFKcDgQ78u8my3jtufqlFKOS0Y9TiqpZ013xOqMtkNZXNQsA==}
+  tuono-router@0.16.0:
+    resolution: {integrity: sha512-JuTXoSjjgKCbFWJQTRQA2NyN9fHqasXrE1+vC3TV1PJ5P66EM2f4zlAzwMkUNbeGWCl/Kihi/gKT1pVqnieUFA==}
     peerDependencies:
       react: '>=16.3.0'
       react-dom: '>=16.3.0'
 
-  tuono@0.15.0:
-    resolution: {integrity: sha512-qudQFrKp/QqSwdHke73yw8zBwHWhBAoMm390nx1Rr3FTu9JQcSaly4DRSHbKLK0QaWs4bZ29tFLPs9Uo92lNhQ==}
+  tuono@0.16.0:
+    resolution: {integrity: sha512-VFuRPsIf3V3UMlTtgVo1/EgKruJRjNMFkahF88a9he1b7TS0FFTlw/AEC8D92NmkB6PFjyH7g9ZNw8bpogPTmQ==}
     hasBin: true
     peerDependencies:
       react: '>=16.3.0'
@@ -6846,7 +6846,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tuono-fs-router-vite-plugin@0.15.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-fs-router-vite-plugin@0.16.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/types': 7.26.0
@@ -6863,7 +6863,7 @@ snapshots:
       - supports-color
       - terser
 
-  tuono-lazy-fn-vite-plugin@0.15.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-lazy-fn-vite-plugin@0.16.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/types': 7.26.0
@@ -6879,7 +6879,7 @@ snapshots:
       - supports-color
       - terser
 
-  tuono-router@0.15.0(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-router@0.16.0(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -6898,7 +6898,7 @@ snapshots:
       - sugarss
       - terser
 
-  tuono@0.15.0(@types/react@18.3.13)(acorn@8.14.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.25.0)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono@0.16.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/generator': 7.26.2
@@ -6909,7 +6909,6 @@ snapshots:
       '@babel/template': 7.25.9
       '@babel/traverse': 7.25.9
       '@babel/types': 7.26.0
-      '@mdx-js/rollup': 3.1.0(acorn@8.14.0)(rollup@4.25.0)
       '@types/babel__core': 7.20.5
       '@types/node': 22.10.0
       '@vitejs/plugin-react-swc': 3.7.2(vite@5.4.11(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)))
@@ -6917,18 +6916,16 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-helmet-async: 2.0.5(react@18.3.1)
-      tuono-fs-router-vite-plugin: 0.15.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
-      tuono-lazy-fn-vite-plugin: 0.15.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
-      tuono-router: 0.15.0(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-fs-router-vite-plugin: 0.16.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-lazy-fn-vite-plugin: 0.16.0(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-router: 0.16.0(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
       vite: 5.4.11(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
     transitivePeerDependencies:
       - '@swc/helpers'
       - '@types/react'
-      - acorn
       - immer
       - less
       - lightningcss
-      - rollup
       - sass
       - sass-embedded
       - stylus
