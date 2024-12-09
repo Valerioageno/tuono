@@ -1,0 +1,12 @@
+{
+  "polyfills": [
+    {
+      "identifier": "HTMLElement",
+      "import": ["@lit-labs/ssr-dom-shim", "HTMLElement"]
+    },
+    {
+      "identifier": "customElements",
+      "import": ["@lit-labs/ssr-dom-shim", "customElements"]
+    }
+  ]
+}

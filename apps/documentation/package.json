@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "format": "prettier -u --write --ignore-unknown './src/**/*'",
-    "format:check": "prettier --check --ignore-unknown './src/**/*'",
+    "format": "prettier -u --write --ignore-unknown .",
+    "format:check": "prettier --check --ignore-unknown .",
     "types": "tsc --noEmit"
   },
   "dependencies": {
