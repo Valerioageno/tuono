@@ -11,22 +11,22 @@
     "types": "tsc --noEmit"
   },
   "dependencies": {
-    "@mantine/code-highlight": "^7.11.2",
-    "@mantine/core": "^7.11.2",
-    "@mantine/hooks": "^7.11.2",
-    "@mdx-js/react": "^3.0.1",
-    "@tabler/icons-react": "^3.11.0",
-    "clsx": "^2.1.1",
+    "@mantine/code-highlight": "7.14.2",
+    "@mantine/core": "7.14.2",
+    "@mantine/hooks": "7.14.2",
+    "@mdx-js/react": "3.1.0",
+    "@tabler/icons-react": "3.22.0",
+    "clsx": "2.1.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tuono": "npm:tuono@0.15.0"
+    "tuono": "npm:tuono@0.16.0"
   },
   "devDependencies": {
-    "@types/mdx": "^2.0.13",
-    "@types/react": "^18.3.13",
-    "@types/react-dom": "^18.3.0",
-    "postcss": "^8.4.39",
-    "postcss-preset-mantine": "^1.17.0",
-    "postcss-simple-vars": "^7.0.1"
+    "@mdx-js/rollup": "3.1.0",
+    "@types/react": "18.3.13",
+    "@types/react-dom": "18.3.0",
+    "postcss": "8.4.49",
+    "postcss-preset-mantine": "1.17.0",
+    "postcss-simple-vars": "7.0.1"
   }
 }
