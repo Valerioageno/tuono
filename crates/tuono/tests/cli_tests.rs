@@ -30,7 +30,7 @@ fn it_successfully_create_the_index_route() {
     assert!(temp_main_rs_content.contains("mod index;"));
 
     assert!(temp_main_rs_content
-        .contains(r#".route("/", get(index::route)).route("/__tuono/data", get(index::api))"#));
+        .contains(r#".route("/", get(index::route)).route("/__tuono/data/", get(index::api))"#));
 }
 
 #[test]
