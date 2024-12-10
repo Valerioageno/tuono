@@ -1,7 +1,5 @@
 import type { RouteNode } from './types'
 
-const ROUTE_GROUP_PATTERN_REGEX = /\(.+\)/g
-
 export function removeExt(d: string, keepExtension: boolean = false): string {
   return keepExtension ? d : d.substring(0, d.lastIndexOf('.')) || d
 }
