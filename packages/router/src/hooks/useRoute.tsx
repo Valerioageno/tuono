@@ -50,6 +50,11 @@ export default function useRoute(pathname?: string): Route | undefined {
     const routeSegmentsCollector: Array<string> = []
 
     for (let i = 0; i < dynamicRouteSegments.length; i++) {
+      if (dynamicRouteSegments[i]?.startsWith('[...')) {
+        routeSegmentsCollector.push(dynamicRouteSegments[i] ?? '')
+        match = `/${routeSegmentsCollector.join('/')}`
+        break
+      }
       if (
         dynamicRouteSegments[i] === pathSegments[i] ||
         DYNAMIC_PATH_REGEX.test(dynamicRouteSegments[i] || '')

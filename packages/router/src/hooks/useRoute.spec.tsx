@@ -17,6 +17,7 @@ describe('Test useRoute fn', () => {
             '/posts/[post]': { id: '/posts/[post]' },
             '/posts/defined-post': { id: '/posts/defined-post' },
             '/posts/[post]/[comment]': { id: '/posts/[post]/[comment]' },
+            '/blog/[...catch_all]': { id: '/blog/[...catch_all]' },
           },
         }
       },
@@ -30,6 +31,11 @@ describe('Test useRoute fn', () => {
     expect(useRoute('/posts/defined-post')?.id).toBe('/posts/defined-post')
     expect(useRoute('/posts/dynamic-post/dynamic-comment')?.id).toBe(
       '/posts/[post]/[comment]',
+    )
+    expect(useRoute('/blog/catch_all')?.id).toBe('/blog/[...catch_all]')
+    expect(useRoute('/blog')?.id).toBe('/blog/[...catch_all]')
+    expect(useRoute('/blog/catch_all/catch_all')?.id).toBe(
+      '/blog/[...catch_all]',
     )
   })
 })
