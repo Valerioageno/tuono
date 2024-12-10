@@ -15,7 +15,6 @@ import {
   removeGroups,
   removeLastSlash,
   removeUnderscores,
-  removeLayoutSegments,
 } from './utils'
 
 import type { Config, RouteNode } from './types'
@@ -61,8 +60,7 @@ async function getRouteNodes(
           }
           const filePath = replaceBackslash(path.join(dir, dirent.name))
           const filePathNoExt = removeExt(filePath)
-          let routePath =
-            cleanPath(`/${filePathNoExt.split('.').join('/')}`) || ''
+          let routePath = cleanPath(`/${filePathNoExt}`) || ''
 
           const variableName = routePathToVariable(routePath)
 
@@ -139,7 +137,7 @@ export async function routeGenerator(config = defaultConfig): Promise<void> {
     node.path = determineNodePath(node)
 
     node.cleanedPath = removeLastSlash(
-      removeGroups(removeUnderscores(removeLayoutSegments(node.path)) ?? ''),
+      removeGroups(removeUnderscores(node.path) ?? ''),
     )
 
     if (node.parent) {

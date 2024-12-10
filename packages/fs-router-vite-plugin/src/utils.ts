@@ -78,22 +78,8 @@ export function removeTrailingUnderscores(s?: string): string | undefined {
   return s?.replaceAll(/(_$)/gi, '').replaceAll(/(_\/)/gi, '/')
 }
 
-/**
- * Removes all segments from a given path that start with an underscore ('_').
- *
- * @param routePath - The path from which to remove segments. Defaults to '/'.
- * @returns The path with all underscore-prefixed segments removed.
- * @example
- * removeLayoutSegments('/workspace/_auth/foo') // '/workspace/foo'
- */
-export function removeLayoutSegments(routePath: string = '/'): string {
-  const segments = routePath.split('/')
-  const newSegments = segments.filter((segment) => !segment.startsWith('_'))
-  return newSegments.join('/')
-}
-
 export function removeGroups(s: string): string {
-  return s.replaceAll(ROUTE_GROUP_PATTERN_REGEX, '').replaceAll('//', '/')
+  return s.replaceAll('//', '/')
 }
 
 export function trimPathLeft(pathToTrim: string): string {
