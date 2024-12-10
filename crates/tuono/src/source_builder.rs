@@ -86,10 +86,9 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
                 route_declarations.push_str(&format!(
                     r#".route("{axum_route}", get({module_import}::route))"#
                 ));
-                let slash = if axum_route.ends_with('/') { "" } else { "/" };
 
                 route_declarations.push_str(&format!(
-                        r#".route("/__tuono/data{axum_route}{slash}data.json", get({module_import}::api))"#
+                    r#".route("/__tuono/data{axum_route}", get({module_import}::api))"#
                 ));
             } else {
                 for method in route.api_data.as_ref().unwrap().methods.clone() {

@@ -29,9 +29,8 @@ fn it_successfully_create_the_index_route() {
     assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/index.rs"]"#));
     assert!(temp_main_rs_content.contains("mod index;"));
 
-    assert!(temp_main_rs_content.contains(
-        r#".route("/", get(index::route)).route("/__tuono/data/data.json", get(index::api))"#
-    ));
+    assert!(temp_main_rs_content
+        .contains(r#".route("/", get(index::route)).route("/__tuono/data/", get(index::api))"#));
 }
 
 #[test]
@@ -94,4 +93,45 @@ fn it_successfully_create_multiple_api_for_the_same_file() {
     assert!(temp_main_rs_content.contains(
         r#".route("/api/health_check", get(api_health_check::get__tuono_internal_api))"#
     ));
+}
+
+#[test]
+#[serial]
+fn it_successfully_create_catch_all_routes() {
+    let temp_tuono_project = TempTuonoProject::new();
+
+    temp_tuono_project.add_route("./src/routes/[...all_routes].rs");
+
+    temp_tuono_project.add_api(
+        "./src/routes/api/[...all_apis].rs",
+        &format!("{POST_API_FILE}"),
+    );
+
+    let mut test_tuono_build = Command::cargo_bin("tuono").unwrap();
+    test_tuono_build
+        .arg("build")
+        .arg("--no-js-emit")
+        .assert()
+        .success();
+
+    let temp_main_rs_path = temp_tuono_project.path().join(".tuono/main.rs");
+
+    let temp_main_rs_content =
+        fs::read_to_string(&temp_main_rs_path).expect("Failed to read '.tuono/main.rs' content.");
+
+    assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/api/[...all_apis].rs"]"#));
+    assert!(temp_main_rs_content.contains("mod api_dyn__catch_all_all_apis;"));
+
+    assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/[...all_routes].rs"]"#));
+    assert!(temp_main_rs_content.contains("mod dyn__catch_all_all_routes;"));
+
+    assert!(temp_main_rs_content.contains(
+        r#".route("/api/*all_apis", post(api_dyn__catch_all_all_apis::post__tuono_internal_api))"#
+    ));
+
+    assert!(temp_main_rs_content
+        .contains(r#".route("/*all_routes", get(dyn__catch_all_all_routes::route))"#));
+
+    assert!(temp_main_rs_content
+        .contains(r#".route("/__tuono/data/*all_routes", get(dyn__catch_all_all_routes::api))"#));
 }
