@@ -84,7 +84,7 @@ impl<'a> Payload<'a> {
                     .filter(|path| !path.is_empty())
                     .collect::<Vec<&str>>();
 
-                for dyn_route in dynamic_routes.iter() {
+                '_dynamic_routes_loop: for dyn_route in dynamic_routes.iter() {
                     let dyn_route_segments = dyn_route
                         .split('/')
                         .filter(|path| !path.is_empty())
@@ -93,6 +93,20 @@ impl<'a> Payload<'a> {
                     let mut route_segments_collector: Vec<&str> = vec![];
 
                     for i in 0..dyn_route_segments.len() {
+                        if dyn_route_segments[i].starts_with("[...") {
+                            route_segments_collector.push(dyn_route_segments[i]);
+
+                            let manifest_key = route_segments_collector.join("/");
+
+                            let route_data = manifest.get(&format!("/{manifest_key}"));
+                            if let Some(data) = route_data {
+                                js_bundles_sources.push(&data.file);
+                                data.css
+                                    .iter()
+                                    .for_each(|source| css_bundles_sources.push(source))
+                            }
+                            break '_dynamic_routes_loop;
+                        }
                         if path_segments.len() == i {
                             break;
                         }
@@ -168,6 +182,14 @@ mod tests {
                 css: vec!["assets/posts/[post]/[comment].css".to_string()],
             },
         );
+        manifest_mock.insert(
+            "/pokemons/[...catch_all]".to_string(),
+            BundleInfo {
+                file: "assets/catch_all.js".to_string(),
+                css: vec!["assets/catch_all.css".to_string()],
+            },
+        );
+
         manifest_mock.insert(
             "/posts/custom-post".to_string(),
             BundleInfo {
@@ -274,6 +296,28 @@ mod tests {
         );
     }
 
+    #[test]
+    fn should_load_the_correct_catch_all_bundles() {
+        let mut payload = prepare_payload(
+            Some("http://localhost:3000/pokemons/a-poke/a-poke"),
+            Mode::Prod,
+        );
+        let _ = payload.client_payload();
+        assert_eq!(
+            payload.js_bundles,
+            Some(vec![
+                &"assets/bundled-file.js".to_string(),
+                &"assets/catch_all.js".to_string()
+            ])
+        );
+        assert_eq!(
+            payload.css_bundles,
+            Some(vec![
+                &"assets/bundled-file.css".to_string(),
+                &"assets/catch_all.css".to_string()
+            ])
+        );
+    }
     #[test]
     fn should_load_the_defined_path_bundles() {
         let mut payload = prepare_payload(Some("http://localhost:3000/about"), Mode::Prod);
