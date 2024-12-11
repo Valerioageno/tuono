@@ -32,7 +32,17 @@ function createBaseViteConfigFromTuonoConfig(
 
     plugins: [
       ...(tuonoConfig.vite?.plugins ?? []),
-      react(),
+
+      /**
+       * even if `include` is not a valid option for this
+       * plugin, we have to use it.
+       * If not specified, when running `tuono dev`, the mdx
+       * won't be compiled include any style in the page and it might
+       * seem broken.
+       */
+      // @ts-expect-error see above comment
+      react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
+
       ViteFsRouter(),
       LazyLoadingPlugin(),
     ],
