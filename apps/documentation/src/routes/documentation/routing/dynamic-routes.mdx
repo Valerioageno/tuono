@@ -21,10 +21,14 @@ you can use dynamic segments, which are populated at request time.
 A dynamic segment can be created by wrapping a
 file or a folder name in square brackets: `[segmentName]`.
 
-You are going to probably use something like:
+The dynamic segment can be used in both folder and file name:
 
-- `[id]`
-- `[slug]`
+- `src/routes/blog/[slug].tsx`
+- `src/routes/blog/[slug]/index.tsx`
+
+The same path can have multiple dynamic segments:
+
+- `src/routes/blog/[post]/[comment].tsx`
 
 ### Example
 
