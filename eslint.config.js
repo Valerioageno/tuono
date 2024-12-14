@@ -14,6 +14,7 @@ export default tseslint.config(
 
       // #region package-specific
       'packages/fs-router-vite-plugin/tests/generator/**',
+      'packages/lazy-fn-vite-plugin/tests/sources/**',
 
       'packages/tuono/bin/**',
       // #endregion package-specific
