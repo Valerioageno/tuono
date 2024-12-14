@@ -15,45 +15,47 @@ type ImportFn = () => Promise<{ default: React.ComponentType<any> }>
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const dynamic = (importFn: ImportFn): React.JSX.Element => {
-  /**
-   *
-   * This function is just a placeholder. The real work is done by the bundler.
-   * The custom babel plugin will create two different bundles for the client and the server.
-   *
-   * The client will import the React's lazy function while the server will statically
-   * import the file.
-   *
-   * Example:
-   *
-   * // User code
-   * import { dynamic } from 'tuono'
-   * const MyComponent = dynamic(() => import('./my-component'))
-   *
-   * // Client side generated code
-   * import { lazy } from 'react'
-   * const MyComponent = lazy(() => import('./my-component'))
-   *
-   * // Server side generated code
-   * import MyComponent from './my-component'
-   *
-   * Check the `lazy-fn-vite-plugin` package for more
-   */
-  return <></>
+	/**
+	 *
+	 * This function is just a placeholder. The real work is done by the bundler.
+	 * The custom babel plugin will create two different bundles for the client and the server.
+	 *
+	 * The client will import the React's lazy function while the server will statically
+	 * import the file.
+	 *
+	 * Example:
+	 *
+	 * // User code
+	 * import { dynamic } from 'tuono'
+	 * const MyComponent = dynamic(() => import('./my-component'))
+	 *
+	 * // Client side generated code
+	 * import { lazy } from 'react'
+	 * const MyComponent = lazy(() => import('./my-component'))
+	 *
+	 * // Server side generated code
+	 * import MyComponent from './my-component'
+	 *
+	 * Check the `lazy-fn-vite-plugin` package for more
+	 */
+	return <></>
 }
 
-export const lazyLoadComponent = (factory: ImportFn): RouteComponent => {
-  let LoadedComponent: ComponentType<any> | undefined
-  const LazyComponent = React.lazy(factory) as unknown as RouteComponent
+export const tuono__internal__lazyLoadComponent = (
+	factory: ImportFn,
+): RouteComponent => {
+	let LoadedComponent: ComponentType<any> | undefined
+	const LazyComponent = React.lazy(factory) as unknown as RouteComponent
 
-  const loadComponent = (): Promise<void> =>
-    factory().then((module) => {
-      LoadedComponent = module.default
-    })
+	const loadComponent = (): Promise<void> =>
+		factory().then((module) => {
+			LoadedComponent = module.default
+		})
 
-  const Component = (props: any): ReactElement =>
-    React.createElement(LoadedComponent || LazyComponent, props)
+	const Component = (props: any): ReactElement =>
+		React.createElement(LoadedComponent || LazyComponent, props)
 
-  Component.preload = loadComponent
+	Component.preload = loadComponent
 
-  return Component
+	return Component
 }
