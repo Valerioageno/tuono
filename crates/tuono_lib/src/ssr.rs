@@ -36,10 +36,10 @@ struct ProdJs;
 impl ProdJs {
     thread_local! {
         pub static SSR: RefCell<Ssr<'static, 'static>> = RefCell::new(
-                Ssr::from(
-                    read_to_string(PathBuf::from(PROD_BUNDLE_PATH)).expect("Server bundle not found"), ""
-                    ).unwrap()
-                )
+            Ssr::from(
+                read_to_string(PathBuf::from(PROD_BUNDLE_PATH)).expect("Server bundle not found"), ""
+            ).unwrap()
+        )
     }
 }
 
