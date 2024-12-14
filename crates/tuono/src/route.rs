@@ -97,8 +97,8 @@ pub struct ApiData {
 }
 
 impl ApiData {
-    pub fn new(path: &String) -> Option<Self> {
-        if !path.starts_with("/api/") {
+    pub fn new(path: &String, is_api_only_mode: bool) -> Option<Self> {
+        if !path.starts_with("/api/") && !is_api_only_mode {
             return None;
         }
 
@@ -124,12 +124,12 @@ pub struct Route {
 }
 
 impl Route {
-    pub fn new(cleaned_path: String) -> Self {
+    pub fn new(cleaned_path: String, is_api_only_mode: bool) -> Self {
         Route {
             path: cleaned_path.clone(),
             axum_info: None,
             is_dynamic: has_dynamic_path(&cleaned_path),
-            api_data: ApiData::new(&cleaned_path),
+            api_data: ApiData::new(&cleaned_path, is_api_only_mode),
         }
     }
 
@@ -232,12 +232,12 @@ mod tests {
 
     #[test]
     fn should_correctly_create_the_axum_infos() {
-        let info = AxumInfo::new(&Route::new("/index".to_string()));
+        let info = AxumInfo::new(&Route::new("/index".to_string(), false));
 
         assert_eq!(info.axum_route, "/");
         assert_eq!(info.module_import, "index");
 
-        let dyn_info = AxumInfo::new(&Route::new("/[posts]".to_string()));
+        let dyn_info = AxumInfo::new(&Route::new("/[posts]".to_string(), false));
 
         assert_eq!(dyn_info.axum_route, "/:posts");
         assert_eq!(dyn_info.module_import, "dyn_posts");
@@ -256,7 +256,7 @@ mod tests {
         ];
 
         for (path, html) in routes {
-            let route = Route::new(path.to_string());
+            let route = Route::new(path.to_string(), false);
 
             assert_eq!(route.output_file_path(), PathBuf::from(html))
         }

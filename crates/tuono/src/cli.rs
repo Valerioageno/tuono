@@ -88,15 +88,17 @@ pub fn app() -> std::io::Result<()> {
             check_ports(Mode::Dev);
 
             let app = init_tuono_folder(Mode::Dev)?;
-            app.build_tuono_config()
-                .expect("Failed to build tuono.config.ts");
+            if !app.is_api_only_mode {
+                app.build_tuono_config()
+                    .expect("Failed to build tuono.config.ts");
+            }
 
-            watch::watch().unwrap();
+            watch::watch(app.is_api_only_mode).unwrap();
         }
         Actions::Build { ssg, no_js_emit } => {
             let app = init_tuono_folder(Mode::Prod)?;
 
-            if no_js_emit {
+            if no_js_emit || app.is_api_only_mode {
                 println!("Rust build successfully finished");
                 return Ok(());
             }

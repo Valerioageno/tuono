@@ -235,7 +235,7 @@ mod tests {
     fn should_load_the_axum_get_function() {
         let mut source_builder = App::new();
 
-        let mut route = Route::new(String::from("index.tsx"));
+        let mut route = Route::new(String::from("index.tsx"), false);
         route.update_axum_info();
 
         source_builder
