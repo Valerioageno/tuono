@@ -1,2 +1,3 @@
 dist
 pnpm-lock.yaml
+tests/sources/*
