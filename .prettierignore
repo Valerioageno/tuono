@@ -1,1 +1,2 @@
 pnpm-lock.yaml
+packages/lazy-fn-vite-plugin/tests/sources/*
