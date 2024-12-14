@@ -52,20 +52,7 @@ fn build_react_ssr_src() -> Job {
     .0
 }
 
-#[tokio::main]
-pub async fn watch() -> Result<()> {
-    watch_react_src().start().await;
-
-    let run_server = build_rust_src();
-
-    let build_ssr_bundle = build_react_ssr_src();
-
-    build_ssr_bundle.start().await;
-
-    run_server.start().await;
-
-    build_ssr_bundle.to_wait().await;
-
+async fn watch_exec_handler(is_api_only_mode: bool, rust_server: Job, vite_server: Option<Job>) {
     let wx = Watchexec::new(move |mut action| {
         let mut should_reload_ssr_bundle = false;
         let mut should_reload_rust_server = false;
@@ -78,7 +65,7 @@ pub async fn watch() -> Result<()> {
                 }
 
                 // Either tsx, jsx and mdx
-                if file_path.ends_with("sx") || file_path.ends_with("mdx") {
+                if !is_api_only_mode && (file_path.ends_with("sx") || file_path.ends_with("mdx")) {
                     should_reload_ssr_bundle = true
                 }
             }
@@ -86,14 +73,15 @@ pub async fn watch() -> Result<()> {
 
         if should_reload_rust_server {
             println!("  Reloading...");
-            run_server.stop();
+            rust_server.stop();
             bundle_axum_source(Mode::Dev).expect("Failed to bundle rust source");
-            run_server.start();
+            rust_server.start();
         }
 
-        if should_reload_ssr_bundle {
-            build_ssr_bundle.stop();
-            build_ssr_bundle.start();
+        if should_reload_ssr_bundle && !is_api_only_mode {
+            let vite = vite_server.as_ref().unwrap();
+            vite.stop();
+            vite.start();
         }
 
         // if Ctrl-C is received, quit
@@ -102,11 +90,31 @@ pub async fn watch() -> Result<()> {
         }
 
         action
-    })?;
+    })
+    .expect("Failed to create WatchExec hanlder");
 
     // watch the current directory
     wx.config.pathset(["./src"]);
 
-    let _ = wx.main().await.into_diagnostic()?;
+    let _ = wx.main().await.into_diagnostic().unwrap();
+}
+
+#[tokio::main]
+pub async fn watch(is_api_only_mode: bool) -> Result<()> {
+    let run_server = build_rust_src();
+
+    if !is_api_only_mode {
+        watch_react_src().start().await;
+        let build_ssr_bundle = build_react_ssr_src();
+        build_ssr_bundle.start().await;
+        run_server.start().await;
+        build_ssr_bundle.to_wait().await;
+        watch_exec_handler(is_api_only_mode, run_server, Some(build_ssr_bundle)).await;
+    } else {
+        run_server.start().await;
+
+        watch_exec_handler(is_api_only_mode, run_server, None).await;
+    }
+
     Ok(())
 }

@@ -1,24 +1,28 @@
-use crate::{ssr::Js, Payload};
-use axum::extract::{Path, Request};
-use axum::response::Html;
-use std::collections::HashMap;
+#[cfg(feature = "ssr")]
+mod ssr {
+    use crate::ssr::Js;
+    use crate::Payload;
+    use axum::extract::{Path, Request};
+    use axum::response::Html;
+    use std::collections::HashMap;
 
-pub async fn catch_all(
-    Path(params): Path<HashMap<String, String>>,
-    request: Request,
-) -> Html<String> {
-    let pathname = request.uri();
-    let headers = request.headers();
+    pub async fn catch_all(
+        Path(params): Path<HashMap<String, String>>,
+        request: Request,
+    ) -> Html<String> {
+        let pathname = request.uri();
+        let headers = request.headers();
 
-    let req = crate::Request::new(pathname.to_owned(), headers.to_owned(), params);
+        let req = crate::Request::new(pathname.to_owned(), headers.to_owned(), params);
 
-    // TODO: remove unwrap
-    let payload = Payload::new(&req, &"").client_payload().unwrap();
+        // TODO: remove unwrap
+        let payload = Payload::new(&req, &"").client_payload().unwrap();
 
-    let result = Js::render_to_string(Some(&payload));
+        let result = Js::render_to_string(Some(&payload));
 
-    match result {
-        Ok(html) => Html(html),
-        _ => Html("500 internal server error".to_string()),
+        match result {
+            Ok(html) => Html(html),
+            _ => Html("500 internal server error".to_string()),
+        }
     }
 }

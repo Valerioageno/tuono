@@ -10,7 +10,7 @@ const GET_API_FILE: &str = r"#[tuono_lib::api(GET)]";
 #[test]
 #[serial]
 fn it_successfully_create_the_index_route() {
-    let temp_tuono_project = TempTuonoProject::new();
+    let temp_tuono_project = TempTuonoProject::new(false);
 
     temp_tuono_project.add_route("./src/routes/index.rs");
 
@@ -36,7 +36,7 @@ fn it_successfully_create_the_index_route() {
 #[test]
 #[serial]
 fn it_successfully_create_an_api_route() {
-    let temp_tuono_project = TempTuonoProject::new();
+    let temp_tuono_project = TempTuonoProject::new(false);
 
     temp_tuono_project.add_api("./src/routes/api/health_check.rs", POST_API_FILE);
 
@@ -65,7 +65,7 @@ fn it_successfully_create_an_api_route() {
 #[test]
 #[serial]
 fn it_successfully_create_multiple_api_for_the_same_file() {
-    let temp_tuono_project = TempTuonoProject::new();
+    let temp_tuono_project = TempTuonoProject::new(false);
 
     temp_tuono_project.add_api(
         "./src/routes/api/health_check.rs",
@@ -98,7 +98,7 @@ fn it_successfully_create_multiple_api_for_the_same_file() {
 #[test]
 #[serial]
 fn it_successfully_create_catch_all_routes() {
-    let temp_tuono_project = TempTuonoProject::new();
+    let temp_tuono_project = TempTuonoProject::new(false);
 
     temp_tuono_project.add_route("./src/routes/[...all_routes].rs");
 
@@ -134,4 +134,35 @@ fn it_successfully_create_catch_all_routes() {
 
     assert!(temp_main_rs_content
         .contains(r#".route("/__tuono/data/*all_routes", get(dyn__catch_all_all_routes::api))"#));
+}
+
+#[test]
+#[serial]
+fn it_successfully_create_an_api_only_project() {
+    let temp_tuono_project = TempTuonoProject::new(true);
+
+    temp_tuono_project.add_api(
+        "./src/routes/blog/[slug].rs",
+        &format!("{POST_API_FILE}\n{GET_API_FILE}"),
+    );
+
+    let mut test_tuono_build = Command::cargo_bin("tuono").unwrap();
+    test_tuono_build
+        .arg("build")
+        .arg("--no-js-emit")
+        .assert()
+        .success();
+
+    let temp_main_rs_path = temp_tuono_project.path().join(".tuono/main.rs");
+
+    let temp_main_rs_content =
+        fs::read_to_string(&temp_main_rs_path).expect("Failed to read '.tuono/main.rs' content.");
+
+    assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/blog/[slug].rs"]"#));
+
+    dbg!(&temp_main_rs_content);
+
+    assert!(temp_main_rs_content.contains(
+        r#".route("/blog/:slug", post(api_dyn__catch_all_all_apis::post__tuono_internal_api))"#
+    ));
 }

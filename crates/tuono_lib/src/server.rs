@@ -1,16 +1,28 @@
-use crate::manifest::load_manifest;
 use crate::mode::{Mode, GLOBAL_MODE};
-use axum::routing::{get, Router};
+use axum::routing::Router;
 use colored::Colorize;
-use ssr_rs::Ssr;
-use tower_http::services::ServeDir;
 
+use crate::logger::LoggerLayer;
+
+#[cfg(feature = "ssr")]
 use crate::{
-    catch_all::catch_all, logger::LoggerLayer, vite_reverse_proxy::vite_reverse_proxy,
+    catch_all::catch_all, vite_reverse_proxy::vite_reverse_proxy,
     vite_websocket_proxy::vite_websocket_proxy,
 };
 
+#[cfg(feature = "ssr")]
+use crate::manifest::load_manifest;
+#[cfg(feature = "ssr")]
+use axum::routing::get;
+#[cfg(feature = "ssr")]
+use ssr_rs::Ssr;
+#[cfg(feature = "ssr")]
+use tower_http::services::ServeDir;
+
+#[cfg(feature = "ssr")]
 const DEV_PUBLIC_DIR: &str = "public";
+
+#[cfg(feature = "ssr")]
 const PROD_PUBLIC_DIR: &str = "out/client";
 
 pub struct Server {
@@ -19,6 +31,7 @@ pub struct Server {
 }
 
 impl Server {
+    #[cfg(feature = "ssr")]
     pub fn init(router: Router, mode: Mode) -> Server {
         Ssr::create_platform();
 
@@ -31,6 +44,14 @@ impl Server {
         Server { router, mode }
     }
 
+    #[cfg(not(feature = "ssr"))]
+    pub fn init(router: Router, mode: Mode) -> Server {
+        GLOBAL_MODE.set(mode).unwrap();
+
+        Server { router, mode }
+    }
+
+    #[cfg(feature = "ssr")]
     pub async fn start(&self) {
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
 
@@ -68,5 +89,25 @@ impl Server {
                 .await
                 .expect("Failed to serve production server");
         }
+    }
+
+    #[cfg(not(feature = "ssr"))]
+    pub async fn start(&self) {
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+
+        if self.mode == Mode::Dev {
+            println!("  Ready at: {}\n", "http://localhost:3000".blue().bold());
+        } else {
+            println!(
+                "  Production server at: {}\n",
+                "http://localhost:3000".blue().bold()
+            );
+        }
+
+        let router = self.router.to_owned().layer(LoggerLayer::new());
+
+        axum::serve(listener, router)
+            .await
+            .expect("Failed to serve production server");
     }
 }

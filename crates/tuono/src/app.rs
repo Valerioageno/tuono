@@ -1,6 +1,8 @@
 use glob::glob;
 use glob::GlobError;
 use http::Method;
+use serde::Deserialize;
+use serde::Serialize;
 use std::collections::hash_set::HashSet;
 use std::collections::{hash_map::Entry, HashMap};
 use std::fs::File;
@@ -10,6 +12,7 @@ use std::path::PathBuf;
 use std::process::Child;
 use std::process::Command;
 use std::process::Stdio;
+use toml::{Table, Value};
 
 use crate::route::Route;
 
@@ -37,14 +40,57 @@ pub struct App {
     pub route_map: HashMap<String, Route>,
     pub base_path: PathBuf,
     pub has_app_state: bool,
+    pub is_api_only_mode: bool,
 }
 
-fn has_app_state(base_path: PathBuf) -> std::io::Result<bool> {
+fn has_app_state(base_path: &PathBuf) -> std::io::Result<bool> {
     let file = File::open(base_path.join("src/app.rs"))?;
     let mut buf_reader = BufReader::new(file);
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents)?;
     Ok(contents.contains("pub fn main"))
+}
+
+#[derive(Deserialize, Serialize)]
+struct CargoToml {
+    dependencies: Table,
+}
+
+fn is_api_only_mode(base_path: &PathBuf) -> bool {
+    if let Ok(file) = File::open(base_path.join("Cargo.toml")) {
+        let mut buf_reader = BufReader::new(file);
+        let mut contents = String::new();
+        if let Ok(_) = buf_reader.read_to_string(&mut contents) {
+            let cargo_toml = toml::from_str::<CargoToml>(&contents).unwrap_or_else(|_| {
+                eprintln!("Failed to parse Cargo.toml content");
+                std::process::exit(1);
+            });
+
+            match cargo_toml.dependencies.get("tuono_lib") {
+                Some(tuono_lib) => match tuono_lib {
+                    Value::String(_) => return false,
+                    Value::Table(elements) => match elements.get("features") {
+                        Some(features) => match features {
+                            Value::Array(ftrs) => {
+                                return ftrs.contains(&Value::String("api".into()))
+                            }
+                            _ => return false,
+                        },
+                        None => return false,
+                    },
+                    _ => return false,
+                },
+                None => {
+                    eprintln!("tuono_lib dependency not found in Cargo.toml");
+                    std::process::exit(1);
+                }
+            }
+        }
+        eprintln!("Failed to read Cargo.toml file");
+        std::process::exit(1);
+    };
+    eprintln!("Cargo.toml file not found");
+    std::process::exit(1);
 }
 
 impl App {
@@ -54,7 +100,8 @@ impl App {
         let mut app = App {
             route_map: HashMap::new(),
             base_path: base_path.clone(),
-            has_app_state: has_app_state(base_path).unwrap_or(false),
+            has_app_state: has_app_state(&base_path).unwrap_or(false),
+            is_api_only_mode: is_api_only_mode(&base_path),
         };
 
         app.collect_routes();
@@ -118,7 +165,7 @@ impl App {
 
         if entry.extension().expect("failed to read entry extension") == "rs" {
             if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
-                let mut route = Route::new(path);
+                let mut route = Route::new(path, self.is_api_only_mode);
                 route.update_axum_info();
                 route_map.insert(route);
             } else {
@@ -128,7 +175,7 @@ impl App {
             return;
         }
         if let Entry::Vacant(route_map) = self.route_map.entry(path.clone()) {
-            let route = Route::new(path);
+            let route = Route::new(path, self.is_api_only_mode);
             route_map.insert(route);
         }
     }
