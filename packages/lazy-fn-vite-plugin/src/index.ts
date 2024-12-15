@@ -1,7 +1,7 @@
 import { transformSync } from '@babel/core'
+import type { PluginItem as BabelPluginItem } from '@babel/core'
 import * as BabelTypes from '@babel/types'
 import type { Plugin as VitePlugin, Rollup } from 'vite'
-import type { PluginItem as BabelPluginItem } from '@babel/core'
 
 import {
   TUONO_MAIN_PACKAGE,
@@ -17,8 +17,21 @@ import { isTuonoDynamicFnImported } from './utils'
 const RemoveTuonoLazyImport: BabelPluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
   visitor: {
-    ImportSpecifier: (path) => {
-      if (isTuonoDynamicFnImported(path)) {
+    ImportDeclaration: (path) => {
+      const importNode = path.node
+      if (importNode.source.value !== TUONO_MAIN_PACKAGE) return
+
+      path.traverse({
+        ImportSpecifier: (importSpecifierPath) => {
+          if (isTuonoDynamicFnImported(importSpecifierPath)) {
+            importSpecifierPath.remove()
+          }
+        },
+      })
+
+      // If there are no specifiers left after traverse
+      // remove the import to avoid unwanted side effects
+      if (importNode.specifiers.length === 0) {
         path.remove()
       }
     },
@@ -30,7 +43,7 @@ const RemoveTuonoLazyImport: BabelPluginItem = {
  * This plugin replace the `dynamic` function with the `__tuono__internal__lazyLoadComponent` one
  */
 const ReplaceTuonoLazyImport: BabelPluginItem = {
-  name: 'remove-tuono-lazy-import-plugin',
+  name: 'replace-tuono-lazy-import-plugin',
   visitor: {
     ImportSpecifier: (path) => {
       if (
