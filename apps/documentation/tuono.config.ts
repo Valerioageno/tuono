@@ -7,9 +7,6 @@ const config: TuonoConfig = {
       '@': 'src',
       '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
-    optimizeDeps: {
-      exclude: ['@mdx-js/react'],
-    },
     plugins: [
       { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
     ],
