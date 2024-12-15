@@ -1,26 +1,10 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
 import { it, expect, describe } from 'vitest'
 import type { Plugin } from 'vite'
 
 import { LazyLoadingPlugin } from '../src'
-
-const SOURCE_CODE = `
-import { createRoute, dynamic } from 'tuono'
-
-const IndexImport = dynamic(() => import('./../src/routes/index'))
-const PokemonspokemonImport = dynamic(
-  () => import('./../src/routes/pokemons/[pokemon]'),
-)
-`
-
-const NON_DYNAMIC_SOURCE = `
-import { createRoute } from 'tuono'
-import {dynamic} from 'external-lib'
-
-const IndexImport = dynamic(() => import('./../src/routes/index'))
-const PokemonspokemonImport = dynamic(
-  () => import('./../src/routes/pokemons/[pokemon]'),
-)
-`
 
 type ViteTransformHandler = Exclude<
   Plugin['transform'],
@@ -33,45 +17,35 @@ function getTransform(): (...args: Parameters<ViteTransformHandler>) => string {
   return LazyLoadingPlugin().transform as never
 }
 
-describe('Transpile tuono source', () => {
-  it('Into the client bundle', () => {
-    const pluginTransform = getTransform()
-    const bundle = pluginTransform(SOURCE_CODE, 'id')
-    expect(bundle)
-      .toBe(`import { createRoute, lazyLoadComponent as dynamic } from 'tuono';
-const IndexImport = dynamic(() => import('./../src/routes/index'));
-const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
-  })
+describe('"dynamic" fn', async () => {
+  const folderNames = await fs.readdir(`${process.cwd()}/tests/sources`)
 
-  it('Into the server bundle', () => {
-    const pluginTransform = getTransform()
-    const bundle = pluginTransform(SOURCE_CODE, 'id', {
-      ssr: true,
-    })
-    expect(bundle).toBe(`import { createRoute } from 'tuono';
-import IndexImport from "./../src/routes/index";
-import PokemonspokemonImport from "./../src/routes/pokemons/[pokemon]";`)
-  })
-})
+  it.each(folderNames)(
+    'should correctly build the "%s" dynamic fn',
+    async (folderName) => {
+      const testDirPath = `${process.cwd()}/tests/sources/${folderName}`
 
-describe('Non tuono dynamic function', () => {
-  it('Into the client bundle', () => {
-    const pluginTransform = getTransform()
-    const bundle = pluginTransform(NON_DYNAMIC_SOURCE, 'id')
-    expect(bundle).toBe(`import { createRoute } from 'tuono';
-import { dynamic } from 'external-lib';
-const IndexImport = dynamic(() => import('./../src/routes/index'));
-const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
-  })
+      const source = await fs.readFile(
+        path.join(testDirPath, 'source.tsx'),
+        'utf-8',
+      )
 
-  it('Into the server bundle', () => {
-    const pluginTransform = getTransform()
-    const bundle = pluginTransform(NON_DYNAMIC_SOURCE, 'id', {
-      ssr: true,
-    })
-    expect(bundle).toBe(`import { createRoute } from 'tuono';
-import { dynamic } from 'external-lib';
-const IndexImport = dynamic(() => import('./../src/routes/index'));
-const PokemonspokemonImport = dynamic(() => import('./../src/routes/pokemons/[pokemon]'));`)
-  })
+      const pluginTransform = getTransform()
+      const clientBundle = pluginTransform(source, 'id')
+      const serverBundle = pluginTransform(source, 'id', { ssr: true })
+
+      const expectedClientSrc = `${testDirPath}/client.expected.tsx`
+      const expectedServerSrc = `${testDirPath}/server.expected.tsx`
+
+      await expect(clientBundle).toMatchFileSnapshot(
+        expectedClientSrc,
+        `${testDirPath} client build should be equal to ${expectedClientSrc}`,
+      )
+
+      await expect(serverBundle).toMatchFileSnapshot(
+        expectedServerSrc,
+        `${testDirPath} server build should be equal to ${expectedServerSrc}`,
+      )
+    },
+  )
 })

@@ -33,7 +33,7 @@ const RemoveTuonoLazyImport: PluginItem = {
 
 /**
  * [CLIENT build]
- * This plugin replace the `dynamic` function with the `lazyLoadComponent` one
+ * This plugin replace the `dynamic` function with the `__tuono__internal__lazyLoadComponent` one
  */
 const ReplaceTuonoLazyImport: PluginItem = {
   name: 'remove-tuono-lazy-import-plugin',
