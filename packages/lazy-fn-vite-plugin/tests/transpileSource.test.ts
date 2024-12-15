@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import path from 'node:path'
+import os from 'node:os'
 
 import { it, expect, describe } from 'vitest'
 import type { Plugin } from 'vite'
@@ -17,35 +17,48 @@ function getTransform(): (...args: Parameters<ViteTransformHandler>) => string {
   return LazyLoadingPlugin().transform as never
 }
 
-describe('"dynamic" fn', async () => {
+describe('"dynamic" sources', async () => {
   const folderNames = await fs.readdir(`${process.cwd()}/tests/sources`)
 
-  it.each(folderNames)(
-    'should correctly build the "%s" dynamic fn',
-    async (folderName) => {
-      const testDirPath = `${process.cwd()}/tests/sources/${folderName}`
+  describe.each(folderNames)('%s', async (folderName) => {
+    const testDirPath = `${process.cwd()}/tests/sources/${folderName}`
 
-      const source = await fs.readFile(
-        path.join(testDirPath, 'source.tsx'),
-        'utf-8',
-      )
+    const sourceRaw = await fs.readFile(`${testDirPath}/source.tsx`, 'utf-8')
+    /**
+     * When adding `packages/lazy-fn-vite-plugin/tests/sources/dynamic-only` only
+     * the test involving that fixture were broken on Windows... but not the one in the other fixtures:
+     * - packages/lazy-fn-vite-plugin/tests/sources/vanilla
+     * - packages/lazy-fn-vite-plugin/tests/sources/external-dynamic
+     *
+     * Awkwardly this doesn't happen on  `packages/fs-router-vite-plugin/tests/generator.spec.ts`
+     *
+     * Too much pain and sadness to investigate this right now.
+     * Might worth creating an utility function in the future if this happens again
+     */
+    const source = sourceRaw.replace(new RegExp(os.EOL, 'g'), '\n')
 
+    it('should generate file for client', async () => {
       const pluginTransform = getTransform()
       const clientBundle = pluginTransform(source, 'id')
-      const serverBundle = pluginTransform(source, 'id', { ssr: true })
 
       const expectedClientSrc = `${testDirPath}/client.expected.tsx`
-      const expectedServerSrc = `${testDirPath}/server.expected.tsx`
 
       await expect(clientBundle).toMatchFileSnapshot(
         expectedClientSrc,
         `${testDirPath} client build should be equal to ${expectedClientSrc}`,
       )
+    })
+
+    it('should generate file for server', async () => {
+      const pluginTransform = getTransform()
+      const serverBundle = pluginTransform(source, 'id', { ssr: true })
+
+      const expectedServerSrc = `${testDirPath}/server.expected.tsx`
 
       await expect(serverBundle).toMatchFileSnapshot(
         expectedServerSrc,
         `${testDirPath} server build should be equal to ${expectedServerSrc}`,
       )
-    },
-  )
+    })
+  })
 })
