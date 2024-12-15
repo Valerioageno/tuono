@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises'
-
 import path from 'node:path'
 
 import { it, expect, describe } from 'vitest'
@@ -17,16 +16,19 @@ type ViteTransformHandler = Exclude<
 function getTransform(): (...args: Parameters<ViteTransformHandler>) => string {
   return LazyLoadingPlugin().transform as never
 }
+
 describe('"dynamic" fn', async () => {
-  const folderNames = await fs.readdir(process.cwd() + '/tests/sources')
+  const folderNames = await fs.readdir(`${process.cwd()}/tests/sources`)
 
   it.each(folderNames)(
     'should correctly build the "%s" dynamic fn',
     async (folderName) => {
       const testDirPath = `${process.cwd()}/tests/sources/${folderName}`
 
-      const sourceBuf = await fs.readFile(path.join(testDirPath, 'source.tsx'))
-      const source = sourceBuf.toString()
+      const source = await fs.readFile(
+        path.join(testDirPath, 'source.tsx'),
+        'utf-8',
+      )
 
       const pluginTransform = getTransform()
       const clientBundle = pluginTransform(source, 'id')
