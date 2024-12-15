@@ -41,7 +41,7 @@ export const dynamic = (importFn: ImportFn): React.JSX.Element => {
   return <></>
 }
 
-export const tuono__internal__lazyLoadComponent = (
+export const __tuono__internal__lazyLoadComponent = (
   factory: ImportFn,
 ): RouteComponent => {
   let LoadedComponent: ComponentType<any> | undefined
