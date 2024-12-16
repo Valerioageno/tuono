@@ -5,7 +5,7 @@ import { describe, it, expect } from 'vitest'
 import { routeGenerator } from '../src/generator'
 
 describe('generator works', async () => {
-  const folderNames = await fs.readdir(process.cwd() + '/tests/generator')
+  const folderNames = await fs.readdir(`${process.cwd()}/tests/generator`)
 
   it.each(folderNames)(
     'should wire-up the routes for a "%s" tree',
