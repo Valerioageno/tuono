@@ -26,7 +26,7 @@ Some of its features are:
 
 ## 📖 Documentation
 
-The [documentation](https://tuono.dev/documentation) is available on
+The [documentation](https://tuono.dev/) is available on
 [tuono.dev](https://tuono.dev/).
 
 ## Introduction
