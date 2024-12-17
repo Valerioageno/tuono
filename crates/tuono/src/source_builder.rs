@@ -84,11 +84,11 @@ fn create_routes_declaration(routes: &HashMap<String, Route>) -> String {
 
             if !route.is_api() {
                 route_declarations.push_str(&format!(
-                    r#".route("{axum_route}", get({module_import}::route))"#
+                    r#".route("{axum_route}", get({module_import}::tuono__internal__route))"#
                 ));
 
                 route_declarations.push_str(&format!(
-                    r#".route("/__tuono/data{axum_route}", get({module_import}::api))"#
+                    r#".route("/__tuono/data{axum_route}", get({module_import}::tuono__internal__api))"#
                 ));
             } else {
                 for method in route.api_data.as_ref().unwrap().methods.clone() {

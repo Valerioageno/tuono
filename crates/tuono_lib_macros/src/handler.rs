@@ -45,7 +45,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
 
         #item
 
-        pub async fn route(
+        pub async fn tuono__internal__route(
             #axum_arguments
         ) -> impl tuono_lib::axum::response::IntoResponse {
 
@@ -59,7 +59,7 @@ pub fn handler_core(_args: TokenStream, item: TokenStream) -> TokenStream {
            #fn_name(req.clone(), #argument_names).await.render_to_string(req)
         }
 
-        pub async fn api(
+        pub async fn tuono__internal__api(
             #axum_arguments
         ) -> impl tuono_lib::axum::response::IntoResponse {
 
