@@ -1,7 +1,8 @@
 import { transformSync } from '@babel/core'
 import type { PluginItem as BabelPluginItem } from '@babel/core'
 import * as BabelTypes from '@babel/types'
-import type { Plugin as VitePlugin, Rollup } from 'vite'
+import { createFilter } from 'vite'
+import type { Plugin as VitePlugin, Rollup, FilterPattern } from 'vite'
 
 import {
   TUONO_MAIN_PACKAGE,
@@ -118,11 +119,23 @@ const TurnLazyIntoStaticImport: BabelPluginItem = {
   },
 }
 
-export function LazyLoadingPlugin(): VitePlugin {
+interface LazyLoadingPluginOptions {
+  include: FilterPattern
+}
+
+export function LazyLoadingPlugin(
+  options: LazyLoadingPluginOptions,
+): VitePlugin {
+  const { include } = options
+
+  const filter = createFilter(include)
+
   return {
     name: 'vite-plugin-tuono-lazy-loading',
     enforce: 'pre',
-    transform(code, _id, opts): Rollup.TransformResult {
+    transform(code, id, opts): Rollup.TransformResult {
+      if (!filter(id)) return
+
       /**
        * @todo we should exclude non tsx files from this transformation
        *       this might benefit build time avoiding running `includes` on non-tsx files.
