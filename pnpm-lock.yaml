@@ -294,6 +294,9 @@ importers:
       '@babel/types':
         specifier: ^7.24.0
         version: 7.26.0
+      '@rollup/plugin-inject':
+        specifier: ^5.0.5
+        version: 5.0.5(rollup@4.25.0)
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -327,6 +330,9 @@ importers:
       vite:
         specifier: ^5.2.11
         version: 5.4.11(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
+      web-streams-polyfill:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       '@types/babel-traverse':
         specifier: ^6.25.10
@@ -798,6 +804,15 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@rollup/plugin-inject@5.0.5':
+    resolution: {integrity: sha512-2+DEJbNBoPROPkgTDNe8/1YXWcqxbN5DTjASVIOx8HS+pITXushyNiBV56RB08zuptzz8gT3YfkqriTBVycepg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/pluginutils@5.1.3':
     resolution: {integrity: sha512-Pnsb6f32CD2W3uCaLZIzDmeFyQ2b8UWMFI7xtwUezpcGBDVDW6y9XgAWIlARiGAo6eNF5FK5aQTr0LFyNyqq5A==}
@@ -3423,6 +3438,10 @@ packages:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
 
+  web-streams-polyfill@4.0.0:
+    resolution: {integrity: sha512-0zJXHRAYEjM2tUfZ2DiSOHAa2aw1tisnnhU3ufD57R8iefL+DcdJyRBRyJpG+NUimDgbTI/lH+gAE1PAvV3Cgw==}
+    engines: {node: '>= 8'}
+
   webidl-conversions@7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
     engines: {node: '>=12'}
@@ -4030,6 +4049,14 @@ snapshots:
       fastq: 1.17.1
 
   '@nolyfill/is-core-module@1.0.39': {}
+
+  '@rollup/plugin-inject@5.0.5(rollup@4.25.0)':
+    dependencies:
+      '@rollup/pluginutils': 5.1.3(rollup@4.25.0)
+      estree-walker: 2.0.2
+      magic-string: 0.30.14
+    optionalDependencies:
+      rollup: 4.25.0
 
   '@rollup/pluginutils@5.1.3(rollup@4.25.0)':
     dependencies:
@@ -7275,6 +7302,8 @@ snapshots:
   w3c-xmlserializer@5.0.0:
     dependencies:
       xml-name-validator: 5.0.0
+
+  web-streams-polyfill@4.0.0: {}
 
   webidl-conversions@7.0.0: {}
 

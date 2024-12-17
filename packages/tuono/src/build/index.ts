@@ -1,6 +1,7 @@
-import type { InlineConfig } from 'vite'
+import type { InlineConfig, Plugin } from 'vite'
 import { build, createServer, mergeConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import inject from '@rollup/plugin-inject'
 import ViteFsRouter from 'tuono-fs-router-vite-plugin'
 import { LazyLoadingPlugin } from 'tuono-lazy-fn-vite-plugin'
 
@@ -9,6 +10,14 @@ import type { TuonoConfig } from '../config'
 import { loadConfig, blockingAsync } from './utils'
 
 const VITE_PORT = 3001
+const VITE_SSR_PLUGINS: Array<Plugin> = [
+  {
+    enforce: 'post',
+    ...inject({
+      ReadableStream: ['web-streams-polyfill', 'ReadableStream'],
+    }),
+  },
+]
 
 /**
  * From a given {@link TuonoConfig} return a `vite` "mergeable" {@link InlineConfig}
@@ -65,6 +74,7 @@ const developmentSSRBundle = (): void => {
       mergeConfig<InlineConfig, InlineConfig>(
         createBaseViteConfigFromTuonoConfig(config),
         {
+          plugins: VITE_SSR_PLUGINS,
           build: {
             ssr: true,
             minify: false,
@@ -143,6 +153,7 @@ const buildProd = (): void => {
       mergeConfig<InlineConfig, InlineConfig>(
         createBaseViteConfigFromTuonoConfig(config),
         {
+          plugins: VITE_SSR_PLUGINS,
           build: {
             ssr: true,
             minify: true,

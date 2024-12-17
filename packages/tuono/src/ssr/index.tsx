@@ -1,10 +1,12 @@
 import 'fast-text-encoding' // Mandatory for React18
 import * as React from 'react'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
+import { renderToStaticMarkup, renderToReadableStream } from 'react-dom/server'
 import type { HelmetServerState } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
 import { RouterProvider, createRouter } from 'tuono-router'
 import type { createRoute } from 'tuono-router'
+
+import { streamToString } from './utils'
 
 type RouteTree = ReturnType<typeof createRoute>
 type Mode = 'Dev' | 'Prod'
@@ -37,7 +39,7 @@ function generateJsScripts(jsBundles: Array<string>, mode: Mode): string {
 }
 
 export function serverSideRendering(routeTree: RouteTree) {
-  return function render(payload: string | undefined): string {
+  return async function render(payload: string | undefined): Promise<string> {
     const serverProps = (payload ? JSON.parse(payload) : {}) as Record<
       string,
       unknown
@@ -49,13 +51,15 @@ export function serverSideRendering(routeTree: RouteTree) {
     const router = createRouter({ routeTree }) // Render the app
 
     const helmetContext = {}
-    const app = renderToString(
+    const stream = await renderToReadableStream(
       <HelmetProvider context={helmetContext}>
         <RouterProvider router={router} serverProps={serverProps as never} />
       </HelmetProvider>,
     )
 
     const { helmet } = helmetContext as { helmet: HelmetServerState }
+
+    const app = await streamToString(stream)
 
     return `<!doctype html>
   <html ${helmet.htmlAttributes.toString()}>
