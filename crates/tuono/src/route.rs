@@ -52,7 +52,7 @@ impl AxumInfo {
                     .replace('/', "_")
                     .replace('-', "_hyphen_")
                     .replace('[', "dyn_")
-                    .replace("...", "_catch_all_")
+                    .replace("...", "catch_all_")
                     .replace(']', ""),
                 axum_route: axum_route
                     .replace("[...", "*")
