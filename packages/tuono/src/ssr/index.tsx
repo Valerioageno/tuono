@@ -1,4 +1,6 @@
 import 'fast-text-encoding' // Mandatory for React18
+import type { ReadableStream } from 'node:stream/web'
+
 import * as React from 'react'
 import { renderToStaticMarkup, renderToReadableStream } from 'react-dom/server'
 import type { HelmetServerState } from 'react-helmet-async'
@@ -50,14 +52,14 @@ export function serverSideRendering(routeTree: RouteTree) {
     const cssBundles = serverProps.cssBundles as Array<string>
     const router = createRouter({ routeTree }) // Render the app
 
-    const helmetContext = {}
-    const stream = await renderToReadableStream(
+    const helmetContext = {} as { helmet: HelmetServerState }
+    const stream = (await renderToReadableStream(
       <HelmetProvider context={helmetContext}>
         <RouterProvider router={router} serverProps={serverProps as never} />
       </HelmetProvider>,
-    )
+    )) as unknown as ReadableStream<Uint8Array> // ReadableStream should be implemented in node
 
-    const { helmet } = helmetContext as { helmet: HelmetServerState }
+    const { helmet } = helmetContext
 
     const app = await streamToString(stream)
 

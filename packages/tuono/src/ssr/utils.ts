@@ -1,3 +1,7 @@
+// react ReadableStream type is an empty interface so we are using the one from
+// node which match the runtime value
+import type { ReadableStream } from 'node:stream/web'
+
 function concatArrayBuffers(chunks: Array<Uint8Array>): Uint8Array {
   const result = new Uint8Array(chunks.reduce((a, c) => a + c.length, 0))
   let offset = 0
@@ -13,10 +17,8 @@ async function streamToArrayBuffer(
 ): Promise<Uint8Array> {
   const chunks: Array<Uint8Array> = []
 
-  // @ts-expect-error ReadableStream has AsyncIterator https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream#async_iteration
-  // eslint-disable-next-line @typescript-eslint/await-thenable
   for await (const chunk of stream) {
-    chunks.push(chunk as Uint8Array)
+    chunks.push(chunk)
   }
 
   return concatArrayBuffers(chunks)
