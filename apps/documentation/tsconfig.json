@@ -32,6 +32,5 @@
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["src", "tuono.config.ts", "postcss.config.js"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "tuono.config.ts", "postcss.config.js"]
 }
