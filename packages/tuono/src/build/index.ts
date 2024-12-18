@@ -17,6 +17,12 @@ const VITE_PORT = 3001
 function createBaseViteConfigFromTuonoConfig(
   tuonoConfig: TuonoConfig,
 ): InlineConfig {
+  /**
+   * @warning Keep in sync with {@link LazyLoadingPlugin} tests:
+   * packages/lazy-fn-vite-plugin/tests/transpileSource.test.ts
+   */
+  const pluginFilesInclude = /\.(jsx|js|mdx|md|tsx|ts)$/
+
   const viteBaseConfig: InlineConfig = {
     root: '.tuono',
     logLevel: 'silent',
@@ -41,10 +47,10 @@ function createBaseViteConfigFromTuonoConfig(
        * seem broken.
        */
       // @ts-expect-error see above comment
-      react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
+      react({ include: pluginFilesInclude }),
 
       ViteFsRouter(),
-      LazyLoadingPlugin(),
+      LazyLoadingPlugin({ include: pluginFilesInclude }),
     ],
   }
 
