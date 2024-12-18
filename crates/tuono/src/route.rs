@@ -52,9 +52,8 @@ impl AxumInfo {
                     .replace('/', "_")
                     .replace('-', "_hyphen_")
                     .replace('[', "dyn_")
-                    .replace("...", "_catch_all_")
-                    .replace(']', "")
-                    .replace("__", "_"),
+                    .replace("...", "catch_all_")
+                    .replace(']', ""),
                 axum_route: axum_route
                     .replace("[...", "*")
                     .replace('[', ":")
@@ -261,13 +260,5 @@ mod tests {
 
             assert_eq!(route.output_file_path(), PathBuf::from(html))
         }
-    }
-
-    #[test]
-    fn should_correctly_replace_double_underscore() {
-        let dyn_info = AxumInfo::new(&Route::new("/[posts__id]".to_string()));
-
-        assert_eq!(dyn_info.axum_route, "/:posts__id");
-        assert_eq!(dyn_info.module_import, "dyn_posts_id");
     }
 }
