@@ -84,8 +84,8 @@ importers:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       tuono:
-        specifier: npm:tuono@0.16.2
-        version: 0.16.2(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
+        specifier: npm:tuono@0.16.4
+        version: 0.16.4(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
     devDependencies:
       '@mdx-js/rollup':
         specifier: 3.1.0
@@ -3111,20 +3111,20 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tuono-fs-router-vite-plugin@0.16.2:
-    resolution: {integrity: sha512-D0SHBX4IT1eQGeNNmXUYpnAtwVPutmnboMGRc0Tsf6tK2PjHY4Q10X2vUwFXm9Ps1mg0DHdAHl/90b4mtvG6Xg==}
+  tuono-fs-router-vite-plugin@0.16.4:
+    resolution: {integrity: sha512-GZtHp7avh/Ne4Km7XtBNi3Es41v/3EjBvmd4cYwbNvwCcckDXRv8gVZZSQ7lTAdq1WLH0aWrHb/xcocMM1eX6Q==}
 
-  tuono-lazy-fn-vite-plugin@0.16.2:
-    resolution: {integrity: sha512-LFIO73qG9ckKdPmtT79vnwjcnFiRm2ntyoJU2Ce3/BNPVgDR1McITjEkeWwSwwRXiMDTX1cb7uDabprZcV8qSg==}
+  tuono-lazy-fn-vite-plugin@0.16.4:
+    resolution: {integrity: sha512-uUomBxRKjEhTtNA1B3VhuUd1EOor2CsGjD8s7nPN08vPDZ2KiUXN1bpXlGYdGPByVBAgILZtPpggZTCh0A9Mhw==}
 
-  tuono-router@0.16.2:
-    resolution: {integrity: sha512-NhRbICCjF9l/1saRbvFOoso342FBJC6+Cx4rzFdHnY+uPqBd+SrDjydDpw1b+uqoHj1p5Y+QcXNIEqHRK1ajww==}
+  tuono-router@0.16.4:
+    resolution: {integrity: sha512-BC5urCZQDl4QJ8CPJe48d9wWgVWBuyfZCSLHvFBURoYKYAqg3Qo8W8w8xcCM+qQq4IFZU8ClgVPOeqbXQ34f8A==}
     peerDependencies:
       react: '>=16.3.0'
       react-dom: '>=16.3.0'
 
-  tuono@0.16.2:
-    resolution: {integrity: sha512-Cvs5ZMezUIZAU++F9/qMWfU0gN1BSF+o3yBw9YpYuIbWhsLWbIzgTUHs+kKOIGBlpgjARldwXDnWMPMz0m2h7A==}
+  tuono@0.16.4:
+    resolution: {integrity: sha512-ym2xjwojC8/3vE3jGTBCVgrykvZ3EIBs63o+wuG4DJ4+MaK5j36vCvmAz9U6oURyNGRS0lYpr8PKOXzB9CCT0w==}
     hasBin: true
     peerDependencies:
       react: '>=16.3.0'
@@ -6846,7 +6846,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tuono-fs-router-vite-plugin@0.16.2(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-fs-router-vite-plugin@0.16.4(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/types': 7.26.0
@@ -6863,7 +6863,7 @@ snapshots:
       - supports-color
       - terser
 
-  tuono-lazy-fn-vite-plugin@0.16.2(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-lazy-fn-vite-plugin@0.16.4(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/types': 7.26.0
@@ -6879,7 +6879,7 @@ snapshots:
       - supports-color
       - terser
 
-  tuono-router@0.16.2(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono-router@0.16.4(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -6898,7 +6898,7 @@ snapshots:
       - sugarss
       - terser
 
-  tuono@0.16.2(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
+  tuono@0.16.4(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/generator': 7.26.2
@@ -6916,9 +6916,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-helmet-async: 2.0.5(react@18.3.1)
-      tuono-fs-router-vite-plugin: 0.16.2(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
-      tuono-lazy-fn-vite-plugin: 0.16.2(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
-      tuono-router: 0.16.2(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-fs-router-vite-plugin: 0.16.4(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-lazy-fn-vite-plugin: 0.16.4(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
+      tuono-router: 0.16.4(@types/node@22.10.0)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sugarss@4.0.1(postcss@8.4.49))
       vite: 5.4.11(@types/node@22.10.0)(sugarss@4.0.1(postcss@8.4.49))
     transitivePeerDependencies:
       - '@swc/helpers'
