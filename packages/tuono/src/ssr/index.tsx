@@ -53,15 +53,20 @@ export function serverSideRendering(routeTree: RouteTree) {
     const router = createRouter({ routeTree }) // Render the app
 
     const helmetContext = {} as { helmet: HelmetServerState }
-    const stream = (await renderToReadableStream(
+    const stream = await renderToReadableStream(
       <HelmetProvider context={helmetContext}>
         <RouterProvider router={router} serverProps={serverProps as never} />
       </HelmetProvider>,
-    )) as unknown as ReadableStream<Uint8Array> // ReadableStream should be implemented in node
+    )
+
+    await stream.allReady
 
     const { helmet } = helmetContext
 
-    const app = await streamToString(stream)
+    const app = await streamToString(
+      // ReadableStream should be implemented in node)
+      stream as unknown as ReadableStream<Uint8Array>,
+    )
 
     return `<!doctype html>
   <html ${helmet.htmlAttributes.toString()}>
