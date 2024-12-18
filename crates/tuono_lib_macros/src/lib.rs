@@ -1,3 +1,8 @@
+//! ## Tuono
+//! Tuono is a full-stack web framework for building React applications using Rust as the backend with a strong focus on usability and performance.
+//!
+//! You can find the full documentation at [tuono.dev](https://tuono.dev/)
+
 extern crate proc_macro;
 use proc_macro::TokenStream;
 
