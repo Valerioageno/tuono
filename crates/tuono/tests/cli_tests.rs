@@ -120,19 +120,49 @@ fn it_successfully_create_catch_all_routes() {
         fs::read_to_string(&temp_main_rs_path).expect("Failed to read '.tuono/main.rs' content.");
 
     assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/api/[...all_apis].rs"]"#));
-    assert!(temp_main_rs_content.contains("mod api_dyn__catch_all_all_apis;"));
+    assert!(temp_main_rs_content.contains("mod api_dyn_catch_all_all_apis;"));
 
     assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/[...all_routes].rs"]"#));
-    assert!(temp_main_rs_content.contains("mod dyn__catch_all_all_routes;"));
+    assert!(temp_main_rs_content.contains("mod dyn_catch_all_all_routes;"));
 
     assert!(temp_main_rs_content.contains(
-        r#".route("/api/*all_apis", post(api_dyn__catch_all_all_apis::post__tuono_internal_api))"#
+        r#".route("/api/*all_apis", post(api_dyn_catch_all_all_apis::post__tuono_internal_api))"#
     ));
 
     assert!(temp_main_rs_content.contains(
-        r#".route("/*all_routes", get(dyn__catch_all_all_routes::tuono__internal__route))"#
+        r#".route("/*all_routes", get(dyn_catch_all_all_routes::tuono__internal__route))"#
+    ));
+
+    assert!(temp_main_rs_content.contains(
+        r#".route("/*all_routes", get(dyn_catch_all_all_routes::tuono__internal__route))"#
     ));
 
     assert!(temp_main_rs_content
-        .contains(r#".route("/__tuono/data/*all_routes", get(dyn__catch_all_all_routes::tuono__internal__api))"#));
+        .contains(r#".route("/__tuono/data/*all_routes", get(dyn_catch_all_all_routes::tuono__internal__api))"#));
+}
+
+#[test]
+#[serial]
+fn it_successfully_replaces_double_underscore() {
+    let temp_tuono_project = TempTuonoProject::new();
+
+    temp_tuono_project.add_route("./src/routes/[_posts].rs");
+
+    let mut test_tuono_build = Command::cargo_bin("tuono").unwrap();
+    test_tuono_build
+        .arg("build")
+        .arg("--no-js-emit")
+        .assert()
+        .success();
+
+    let temp_main_rs_path = temp_tuono_project.path().join(".tuono/main.rs");
+
+    let temp_main_rs_content =
+        fs::read_to_string(&temp_main_rs_path).expect("Failed to read '.tuono/main.rs' content.");
+
+    assert!(temp_main_rs_content.contains(r#"#[path="../src/routes/[_posts].rs"]"#));
+    assert!(temp_main_rs_content.contains("mod dyn_posts;"));
+
+    assert!(temp_main_rs_content
+        .contains(r#".route("/:_posts", get(dyn_posts::tuono__internal__route))"#));
 }
