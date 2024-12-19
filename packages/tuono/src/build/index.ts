@@ -15,6 +15,7 @@ const VITE_SSR_PLUGINS: Array<Plugin> = [
     enforce: 'post',
     ...inject({
       ReadableStream: ['web-streams-polyfill', 'ReadableStream'],
+      MessageChannel: ["message-port-polyfill", "MessageChannelPolyfill"],
     }),
   },
 ]
